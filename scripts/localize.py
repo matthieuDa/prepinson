@@ -56,7 +56,7 @@ class Localizer(HTMLParser):
   if tag=='button' and a.get('class')=='menu-toggle':self.parts.append(switch(self.l,self.route))
   for k,v in list(a.items()):
    if v is None:continue
-   if k in ['alt','title','aria-label'] or (tag=='meta' and k=='content'):a[k]=tr(v,self.l)
+   if k in ['alt','title','aria-label','placeholder'] or (tag=='meta' and k=='content'):a[k]=tr(v,self.l)
    if k=='href':a[k]=local_href(v,self.l)
   if tag=='link' and a.get('rel')=='canonical':a['href']='https://www.prepinson.com'+url(self.route,self.l)
   self.parts.append('<'+tag+''.join(' '+k if v is None else ' '+k+'="'+escape(v,quote=True)+'"' for k,v in a.items())+'>')

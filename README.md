@@ -8,7 +8,7 @@ The five page types are available in six languages (30 static HTML pages): Engli
 
 `dist/` contains the ready-to-run site, shared CSS/JS, SVG icons and local media. `server.mjs` supports video range requests. Run `./scripts/build.sh` with Python 3 to regenerate all languages from `work/build.py`, `work/home-haras.html`, `src/journal.html`, `src/programmes.html` and `src/locales/*.tsv`. A build is not needed to launch. Run `npm run check` and `python3 scripts/check_site.py` for syntax, local links, icons and language-alternate checks.
 
-Features: responsive navigation, original estate film, keyboard-accessible photo lightboxes, individual house pages, verified external booking and Instagram links, semantic HTML, page descriptions, canonical URLs, JSON-LD, translated metadata, reciprocal hreflang links and a multilingual sitemap.
+Features: responsive navigation, original estate film, keyboard-accessible photo lightboxes, individual house pages, official team profiles, expanded archive gallery, verified external booking and Instagram links for both the haras and houses, Netlify-ready contact and mailing-list forms, a branded favicon, semantic HTML, page descriptions, canonical URLs, JSON-LD, translated metadata, reciprocal hreflang links and a multilingual sitemap.
 
 Content sources: the existing official Prépinson site, the linked Casapilot Grange listing and Airbnb Ortho25 listing. Media provenance is recorded in work/asset-sources.json and work/property-sources.json. Media belongs to its respective owners; this is the requested local redesign.
 
