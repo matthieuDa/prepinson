@@ -1,0 +1,11 @@
+outputs/
+node_modules/
+.DS_Store
+.openai/
+
+# Scratch and raw source captures kept out of the public repo.
+work/*
+!work/build.py
+!work/home-haras.html
+!work/asset-sources.json
+!work/property-sources.json
