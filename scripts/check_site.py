@@ -25,6 +25,9 @@ class Page(HTMLParser):
         super().__init__()
         self.attrs = []
         self.ids = set()
+        self.duplicate_ids = set()
+        self.forms = []
+        self.current_form = None
         self.lang = None
         self.h1 = 0
         self.title = ""
@@ -37,7 +40,14 @@ class Page(HTMLParser):
         values = dict(attrs)
         self.attrs.append((tag, values))
         if values.get("id"):
+            if values["id"] in self.ids:
+                self.duplicate_ids.add(values["id"])
             self.ids.add(values["id"])
+        if tag == "form":
+            self.current_form = {"attrs": values, "fields": []}
+            self.forms.append(self.current_form)
+        elif tag in {"input", "select", "textarea", "button"} and self.current_form is not None:
+            self.current_form["fields"].append((tag, values))
         if tag == "html":
             self.lang = values.get("lang")
         elif tag == "h1":
@@ -49,6 +59,8 @@ class Page(HTMLParser):
             self.script_text = ""
 
     def handle_endtag(self, tag):
+        if tag == "form":
+            self.current_form = None
         if tag == "title":
             self.in_title = False
         elif tag == "script" and self.script_type == "application/ld+json":
@@ -67,9 +79,11 @@ def fail(path, message):
 
 
 expected = {DIST / lang / route / "index.html" if route else DIST / lang / "index.html" for lang in LANGS for route in ROUTES}
+utility = {DIST / lang / kind / "thanks" / "index.html" for lang in LANGS for kind in ("contact", "newsletter")}
+all_expected = expected | utility
 actual = set(DIST.glob("*/**/index.html")) - {DIST / "index.html"}
-if actual != expected:
-    fail("dist", f"route matrix mismatch; missing={sorted(map(str, expected-actual))}, extra={sorted(map(str, actual-expected))}")
+if actual != all_expected:
+    fail("dist", f"route matrix mismatch; missing={sorted(map(str, all_expected-actual))}, extra={sorted(map(str, actual-all_expected))}")
 
 pages = {}
 for path in sorted(expected):
@@ -82,6 +96,8 @@ for path in sorted(expected):
     route = "/".join(rel.parts[1:-1])
     canonical = DOMAIN + f"/{lang}/" + (route + "/" if route else "")
 
+    if page.duplicate_ids:
+        fail(rel, f"duplicate IDs: {page.duplicate_ids}")
     if page.lang != lang:
         fail(rel, f"html lang {page.lang!r}, expected {lang!r}")
     if page.h1 != 1:
@@ -104,7 +120,7 @@ for path in sorted(expected):
             fail(rel, f"missing {key}")
     if metas.get("og:url") != canonical:
         fail(rel, "og:url differs from canonical")
-    if metas.get("og:image") != ASSET_DOMAIN + "/assets/og-prepinson.jpg":
+    if metas.get("og:image") != ASSET_DOMAIN + ("/assets/og-houses.jpg" if route.startswith("houses") else "/assets/og-prepinson.jpg"):
         fail(rel, "unexpected social image")
     if metas.get("twitter:image") != metas.get("og:image"):
         fail(rel, "Twitter image differs from social image")
@@ -131,7 +147,7 @@ for path in sorted(expected):
         if tag == "script" and attrs.get("src", "").startswith(("http://", "https://")):
             fail(rel, "third-party script present")
         if tag == "img":
-            if attrs.get("class") == "hero-image" and (attrs.get("loading") == "lazy" or attrs.get("fetchpriority") != "high"):
+            if "hero-image" in attrs.get("class", "").split() and (attrs.get("loading") == "lazy" or attrs.get("fetchpriority") != "high"):
                 fail(rel, "hero image must load with high priority, without lazy loading")
             if not attrs.get("width") or not attrs.get("height"):
                 fail(rel, f"image missing dimensions: {attrs.get('src')}")
@@ -152,8 +168,10 @@ for path in sorted(expected):
                     fail(rel, f"missing anchor {value}")
         if tag == "source":
             for candidate in attrs.get("srcset", "").split(","):
+                if not candidate.strip():
+                    continue
                 path_part = candidate.strip().split()[0]
-                if path_part.startswith("/") and not (DIST / path_part.lstrip("/")).exists():
+                if path_part.startswith("/") and not (DIST / urlsplit(path_part).path.lstrip("/")).exists():
                     fail(rel, f"missing responsive asset {path_part}")
 
 gateway = (DIST / "index.html").read_text(encoding="utf-8")
@@ -191,8 +209,73 @@ for pattern in (r"€\s*\d", r"\b\d+[.,]?\d*\s*€", r"\bEUR\s*\d", r"\bUSD\s*\d
         fail("dist", f"public price pattern found: {pattern}")
 if re.search(r"(?:api[_-]?key|client[_-]?secret|access[_-]?token)\s*[:=]\s*['\"][^'\"]{8,}", public, re.I):
     fail("dist", "possible credential in public HTML")
-if "newsletter" in public.lower() and re.search(r'<form[^>]+newsletter', public, re.I):
-    fail("dist", "newsletter form must remain inactive")
+for path, page in pages.items():
+    lang = path.relative_to(DIST).parts[0]
+    route = "/".join(path.relative_to(DIST).parts[1:-1])
+    forms = {form["attrs"].get("name"): form for form in page.forms}
+    required_forms = ["newsletter"] + ([] if route in {"legal", "privacy"} else ["contact-" + lang])
+    for name in required_forms:
+        if name not in forms:
+            fail(path, f"missing expected form {name}")
+            continue
+        form = forms[name]
+        kind = "newsletter" if name == "newsletter" else "contact"
+        attrs = form["attrs"]
+        fields = {v.get("name"): v for _, v in form["fields"] if v.get("name")}
+        if attrs.get("action") != f"/{lang}/{kind}/thanks/" or attrs.get("method", "").upper() != "POST":
+            fail(path, f"wrong form endpoint for {name}")
+        if attrs.get("data-netlify") != "true" or attrs.get("netlify-honeypot") != "company":
+            fail(path, f"missing Netlify detection/spam protection for {name}")
+        for field in ("form-name", "email", "company", "language", "source_page"):
+            if field not in fields:
+                fail(path, f"missing {field} in {name}")
+        if fields.get("form-name", {}).get("value") != name:
+            fail(path, f"wrong hidden form-name for {name}")
+        if fields.get("language", {}).get("value") != lang:
+            fail(path, f"wrong form language for {name}")
+        if fields.get("email", {}).get("type") != "email" or "required" not in fields.get("email", {}):
+            fail(path, f"email validation missing for {name}")
+        if kind == "newsletter":
+            consent = fields.get("consent", {})
+            if consent.get("value") != "yes" or "required" not in consent or "checked" in consent:
+                fail(path, "newsletter consent must be explicit, required and unchecked")
+            if not fields.get("consent_version", {}).get("value"):
+                fail(path, "newsletter consent version absent")
+        if "?" in fields.get("source_page", {}).get("value", ""):
+            fail(path, "query parameters must not be recorded in form source")
+
+for path in utility:
+    page = Page(); raw = path.read_text(encoding="utf-8"); page.feed(raw); pages[path] = page
+    metas = {a.get("name"): a.get("content", "") for t, a in page.attrs if t == "meta"}
+    if "noindex" not in metas.get("robots", "") or page.h1 != 1:
+        fail(path, "confirmation must have one h1 and noindex")
+    if page.lang != path.relative_to(DIST).parts[0]:
+        fail(path, "confirmation language mismatch")
+    if str(path.relative_to(DIST).parent) in (DIST / "sitemap.xml").read_text():
+        fail(path, "confirmation included in sitemap")
+
+# Check every fragment after parsing the entire route set, including same-page links.
+for path, page in pages.items():
+    for tag, attrs in page.attrs:
+        href = attrs.get("href", "")
+        if not href.startswith(("/", "#")):
+            continue
+        parts = urlsplit(href)
+        target = DIST / parts.path.lstrip("/") if parts.path else path
+        if target.is_dir(): target /= "index.html"
+        if parts.fragment and target.suffix == ".html":
+            if target not in pages:
+                if not target.exists():
+                    fail(path, f"missing local page {href}")
+                    continue
+                parsed = Page(); parsed.feed(target.read_text()); pages_target = parsed
+            else: pages_target = pages[target]
+            if parts.fragment not in pages_target.ids:
+                fail(path, f"missing target anchor {href}")
+
+for phrase in ("HubSpot", "Three factual stories", "Individual photographs will be added", "Use these verified official links", "Practical questions", "8 8 guests"):
+    if phrase in public:
+        fail("dist", f"outdated editorial text: {phrase}")
 if "instagram.com/embed" in public or "lightwidget" in public.lower():
     fail("dist", "remote Instagram/LightWidget embed present")
 
@@ -201,4 +284,4 @@ if errors:
     for error in errors[:100]:
         print("-", error)
     raise SystemExit(1)
-print(f"PASS: {len(expected)} localized pages, route matrix, metadata, hreflang, structured data, sitemap, assets, forms and security configuration.")
+print(f"PASS: {len(expected)} public pages + {len(utility)} confirmations, route matrix, metadata, hreflang, structured data, sitemap, assets, forms and security configuration.")

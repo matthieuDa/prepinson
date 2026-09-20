@@ -1,0 +1,1853 @@
+{
+  "archive-1.jpg": {
+    "width": 1024,
+    "height": 684,
+    "variants": [
+      {
+        "src": "/assets/archive-1-480.webp",
+        "width": 480,
+        "height": 321
+      },
+      {
+        "src": "/assets/archive-1-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/archive-1-1024.webp",
+        "width": 1024,
+        "height": 684
+      }
+    ]
+  },
+  "archive-2.jpg": {
+    "width": 1024,
+    "height": 684,
+    "variants": [
+      {
+        "src": "/assets/archive-2-480.webp",
+        "width": 480,
+        "height": 321
+      },
+      {
+        "src": "/assets/archive-2-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/archive-2-1024.webp",
+        "width": 1024,
+        "height": 684
+      }
+    ]
+  },
+  "archive-3.jpg": {
+    "width": 684,
+    "height": 1024,
+    "variants": [
+      {
+        "src": "/assets/archive-3-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/archive-3-684.webp",
+        "width": 684,
+        "height": 1024
+      }
+    ]
+  },
+  "archive-4.jpg": {
+    "width": 1024,
+    "height": 684,
+    "variants": [
+      {
+        "src": "/assets/archive-4-480.webp",
+        "width": 480,
+        "height": 321
+      },
+      {
+        "src": "/assets/archive-4-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/archive-4-1024.webp",
+        "width": 1024,
+        "height": 684
+      }
+    ]
+  },
+  "archive-5.jpg": {
+    "width": 5464,
+    "height": 3640,
+    "variants": [
+      {
+        "src": "/assets/archive-5-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/archive-5-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/archive-5-1200.webp",
+        "width": 1200,
+        "height": 799
+      },
+      {
+        "src": "/assets/archive-5-1600.webp",
+        "width": 1600,
+        "height": 1066
+      },
+      {
+        "src": "/assets/archive-5-2000.webp",
+        "width": 2000,
+        "height": 1332
+      }
+    ]
+  },
+  "archive-6.jpg": {
+    "width": 684,
+    "height": 1024,
+    "variants": [
+      {
+        "src": "/assets/archive-6-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/archive-6-684.webp",
+        "width": 684,
+        "height": 1024
+      }
+    ]
+  },
+  "archive-7.jpg": {
+    "width": 3975,
+    "height": 2655,
+    "variants": [
+      {
+        "src": "/assets/archive-7-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/archive-7-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/archive-7-1200.webp",
+        "width": 1200,
+        "height": 801
+      },
+      {
+        "src": "/assets/archive-7-1600.webp",
+        "width": 1600,
+        "height": 1069
+      },
+      {
+        "src": "/assets/archive-7-2000.webp",
+        "width": 2000,
+        "height": 1336
+      }
+    ]
+  },
+  "archive-8.jpg": {
+    "width": 684,
+    "height": 1024,
+    "variants": [
+      {
+        "src": "/assets/archive-8-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/archive-8-684.webp",
+        "width": 684,
+        "height": 1024
+      }
+    ]
+  },
+  "arena.jpg": {
+    "width": 1800,
+    "height": 1202,
+    "variants": [
+      {
+        "src": "/assets/arena-480.webp",
+        "width": 480,
+        "height": 321
+      },
+      {
+        "src": "/assets/arena-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/arena-1200.webp",
+        "width": 1200,
+        "height": 801
+      },
+      {
+        "src": "/assets/arena-1600.webp",
+        "width": 1600,
+        "height": 1068
+      },
+      {
+        "src": "/assets/arena-1800.webp",
+        "width": 1800,
+        "height": 1202
+      }
+    ]
+  },
+  "care.jpg": {
+    "width": 1202,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/care-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/care-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/care-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/care-1202.webp",
+        "width": 1202,
+        "height": 1800
+      }
+    ]
+  },
+  "cottage-1.jpg": {
+    "width": 1350,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/cottage-1-480.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "/assets/cottage-1-768.webp",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "src": "/assets/cottage-1-1200.webp",
+        "width": 1200,
+        "height": 1600
+      },
+      {
+        "src": "/assets/cottage-1-1350.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
+  },
+  "cottage-2.jpg": {
+    "width": 1350,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/cottage-2-480.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "/assets/cottage-2-768.webp",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "src": "/assets/cottage-2-1200.webp",
+        "width": 1200,
+        "height": 1600
+      },
+      {
+        "src": "/assets/cottage-2-1350.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
+  },
+  "cottage-3.jpg": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/cottage-3-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/cottage-3-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/cottage-3-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/cottage-3-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/cottage-3-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "cottage-4.jpg": {
+    "width": 1350,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/cottage-4-480.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "/assets/cottage-4-768.webp",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "src": "/assets/cottage-4-1200.webp",
+        "width": 1200,
+        "height": 1600
+      },
+      {
+        "src": "/assets/cottage-4-1350.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
+  },
+  "cottage-5.jpg": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/cottage-5-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/cottage-5-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/cottage-5-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/cottage-5-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/cottage-5-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "cottage.jpg": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/cottage-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/cottage-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/cottage-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/cottage-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/cottage-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "estate-2.jpg": {
+    "width": 1800,
+    "height": 1278,
+    "variants": [
+      {
+        "src": "/assets/estate-2-480.webp",
+        "width": 480,
+        "height": 341
+      },
+      {
+        "src": "/assets/estate-2-768.webp",
+        "width": 768,
+        "height": 545
+      },
+      {
+        "src": "/assets/estate-2-1200.webp",
+        "width": 1200,
+        "height": 852
+      },
+      {
+        "src": "/assets/estate-2-1600.webp",
+        "width": 1600,
+        "height": 1136
+      },
+      {
+        "src": "/assets/estate-2-1800.webp",
+        "width": 1800,
+        "height": 1278
+      }
+    ]
+  },
+  "estate.jpg": {
+    "width": 1800,
+    "height": 1196,
+    "variants": [
+      {
+        "src": "/assets/estate-480.webp",
+        "width": 480,
+        "height": 319
+      },
+      {
+        "src": "/assets/estate-768.webp",
+        "width": 768,
+        "height": 510
+      },
+      {
+        "src": "/assets/estate-1200.webp",
+        "width": 1200,
+        "height": 797
+      },
+      {
+        "src": "/assets/estate-1600.webp",
+        "width": 1600,
+        "height": 1063
+      },
+      {
+        "src": "/assets/estate-1800.webp",
+        "width": 1800,
+        "height": 1196
+      }
+    ]
+  },
+  "eva-schiller.jpg": {
+    "width": 572,
+    "height": 856,
+    "variants": [
+      {
+        "src": "/assets/eva-schiller-480.webp",
+        "width": 480,
+        "height": 718
+      },
+      {
+        "src": "/assets/eva-schiller-572.webp",
+        "width": 572,
+        "height": 856
+      }
+    ]
+  },
+  "grange-1.jpg": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/grange-1-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/grange-1-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/grange-1-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/grange-1-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/grange-1-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ],
+    "mobile": [
+      {
+        "src": "/assets/grange-1-portrait-480.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "/assets/grange-1-portrait-768.webp",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "src": "/assets/grange-1-portrait-900.webp",
+        "width": 900,
+        "height": 1200
+      }
+    ]
+  },
+  "grange-2.jpg": {
+    "width": 1800,
+    "height": 1070,
+    "variants": [
+      {
+        "src": "/assets/grange-2-480.webp",
+        "width": 480,
+        "height": 285
+      },
+      {
+        "src": "/assets/grange-2-768.webp",
+        "width": 768,
+        "height": 457
+      },
+      {
+        "src": "/assets/grange-2-1200.webp",
+        "width": 1200,
+        "height": 713
+      },
+      {
+        "src": "/assets/grange-2-1600.webp",
+        "width": 1600,
+        "height": 951
+      },
+      {
+        "src": "/assets/grange-2-1800.webp",
+        "width": 1800,
+        "height": 1070
+      }
+    ]
+  },
+  "grange-3.jpg": {
+    "width": 1800,
+    "height": 999,
+    "variants": [
+      {
+        "src": "/assets/grange-3-480.webp",
+        "width": 480,
+        "height": 266
+      },
+      {
+        "src": "/assets/grange-3-768.webp",
+        "width": 768,
+        "height": 426
+      },
+      {
+        "src": "/assets/grange-3-1200.webp",
+        "width": 1200,
+        "height": 666
+      },
+      {
+        "src": "/assets/grange-3-1600.webp",
+        "width": 1600,
+        "height": 888
+      },
+      {
+        "src": "/assets/grange-3-1800.webp",
+        "width": 1800,
+        "height": 999
+      }
+    ]
+  },
+  "grange-4.jpg": {
+    "width": 1800,
+    "height": 1278,
+    "variants": [
+      {
+        "src": "/assets/grange-4-480.webp",
+        "width": 480,
+        "height": 341
+      },
+      {
+        "src": "/assets/grange-4-768.webp",
+        "width": 768,
+        "height": 545
+      },
+      {
+        "src": "/assets/grange-4-1200.webp",
+        "width": 1200,
+        "height": 852
+      },
+      {
+        "src": "/assets/grange-4-1600.webp",
+        "width": 1600,
+        "height": 1136
+      },
+      {
+        "src": "/assets/grange-4-1800.webp",
+        "width": 1800,
+        "height": 1278
+      }
+    ]
+  },
+  "grange-5.jpg": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/grange-5-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/grange-5-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/grange-5-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/grange-5-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/grange-5-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "grange-6.jpg": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/grange-6-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/grange-6-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/grange-6-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/grange-6-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/grange-6-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "haras-poster.jpg": {
+    "width": 1280,
+    "height": 720,
+    "variants": [
+      {
+        "src": "/assets/haras-poster-480.webp",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "src": "/assets/haras-poster-768.webp",
+        "width": 768,
+        "height": 432
+      },
+      {
+        "src": "/assets/haras-poster-1200.webp",
+        "width": 1200,
+        "height": 675
+      },
+      {
+        "src": "/assets/haras-poster-1280.webp",
+        "width": 1280,
+        "height": 720
+      }
+    ]
+  },
+  "hero.jpg": {
+    "width": 1800,
+    "height": 1012,
+    "variants": [
+      {
+        "src": "/assets/hero-480.webp",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "src": "/assets/hero-768.webp",
+        "width": 768,
+        "height": 432
+      },
+      {
+        "src": "/assets/hero-1200.webp",
+        "width": 1200,
+        "height": 675
+      },
+      {
+        "src": "/assets/hero-1600.webp",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "src": "/assets/hero-1800.webp",
+        "width": 1800,
+        "height": 1012
+      }
+    ]
+  },
+  "horse-1.jpg": {
+    "width": 1800,
+    "height": 1202,
+    "variants": [
+      {
+        "src": "/assets/horse-1-480.webp",
+        "width": 480,
+        "height": 321
+      },
+      {
+        "src": "/assets/horse-1-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/horse-1-1200.webp",
+        "width": 1200,
+        "height": 801
+      },
+      {
+        "src": "/assets/horse-1-1600.webp",
+        "width": 1600,
+        "height": 1068
+      },
+      {
+        "src": "/assets/horse-1-1800.webp",
+        "width": 1800,
+        "height": 1202
+      }
+    ]
+  },
+  "horse-2.jpg": {
+    "width": 1202,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/horse-2-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/horse-2-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/horse-2-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/horse-2-1202.webp",
+        "width": 1202,
+        "height": 1800
+      }
+    ]
+  },
+  "horse-3.jpg": {
+    "width": 1202,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/horse-3-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/horse-3-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/horse-3-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/horse-3-1202.webp",
+        "width": 1202,
+        "height": 1800
+      }
+    ]
+  },
+  "horse-4.jpg": {
+    "width": 1202,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/horse-4-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/horse-4-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/horse-4-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/horse-4-1202.webp",
+        "width": 1202,
+        "height": 1800
+      }
+    ]
+  },
+  "house-1.jpg": {
+    "width": 1202,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/house-1-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/house-1-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/house-1-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/house-1-1202.webp",
+        "width": 1202,
+        "height": 1800
+      }
+    ]
+  },
+  "house-2.jpg": {
+    "width": 1800,
+    "height": 1202,
+    "variants": [
+      {
+        "src": "/assets/house-2-480.webp",
+        "width": 480,
+        "height": 321
+      },
+      {
+        "src": "/assets/house-2-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/house-2-1200.webp",
+        "width": 1200,
+        "height": 801
+      },
+      {
+        "src": "/assets/house-2-1600.webp",
+        "width": 1600,
+        "height": 1068
+      },
+      {
+        "src": "/assets/house-2-1800.webp",
+        "width": 1800,
+        "height": 1202
+      }
+    ]
+  },
+  "house-3.jpg": {
+    "width": 1202,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/house-3-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/house-3-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/house-3-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/house-3-1202.webp",
+        "width": 1202,
+        "height": 1800
+      }
+    ]
+  },
+  "house-4.jpg": {
+    "width": 1800,
+    "height": 1202,
+    "variants": [
+      {
+        "src": "/assets/house-4-480.webp",
+        "width": 480,
+        "height": 321
+      },
+      {
+        "src": "/assets/house-4-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/house-4-1200.webp",
+        "width": 1200,
+        "height": 801
+      },
+      {
+        "src": "/assets/house-4-1600.webp",
+        "width": 1600,
+        "height": 1068
+      },
+      {
+        "src": "/assets/house-4-1800.webp",
+        "width": 1800,
+        "height": 1202
+      }
+    ]
+  },
+  "house-5.jpg": {
+    "width": 1202,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/house-5-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/house-5-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/house-5-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/house-5-1202.webp",
+        "width": 1202,
+        "height": 1800
+      }
+    ]
+  },
+  "nicolas-derouault.jpg": {
+    "width": 621,
+    "height": 930,
+    "variants": [
+      {
+        "src": "/assets/nicolas-derouault-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/nicolas-derouault-621.webp",
+        "width": 621,
+        "height": 930
+      }
+    ]
+  },
+  "pasture.jpg": {
+    "width": 2200,
+    "height": 1469,
+    "variants": [
+      {
+        "src": "/assets/pasture-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/pasture-768.webp",
+        "width": 768,
+        "height": 513
+      },
+      {
+        "src": "/assets/pasture-1200.webp",
+        "width": 1200,
+        "height": 801
+      },
+      {
+        "src": "/assets/pasture-1600.webp",
+        "width": 1600,
+        "height": 1068
+      },
+      {
+        "src": "/assets/pasture-2000.webp",
+        "width": 2000,
+        "height": 1335
+      }
+    ]
+  },
+  "prepinson-bay-horse-outdoors.webp": {
+    "width": 1800,
+    "height": 1452,
+    "variants": [
+      {
+        "src": "/assets/prepinson-bay-horse-outdoors-480.webp",
+        "width": 480,
+        "height": 387
+      },
+      {
+        "src": "/assets/prepinson-bay-horse-outdoors-768.webp",
+        "width": 768,
+        "height": 620
+      },
+      {
+        "src": "/assets/prepinson-bay-horse-outdoors-1200.webp",
+        "width": 1200,
+        "height": 968
+      },
+      {
+        "src": "/assets/prepinson-bay-horse-outdoors-1600.webp",
+        "width": 1600,
+        "height": 1291
+      },
+      {
+        "src": "/assets/prepinson-bay-horse-outdoors-1800.webp",
+        "width": 1800,
+        "height": 1452
+      }
+    ]
+  },
+  "prepinson-daily-horse-care.webp": {
+    "width": 1400,
+    "height": 1687,
+    "variants": [
+      {
+        "src": "/assets/prepinson-daily-horse-care-480.webp",
+        "width": 480,
+        "height": 578
+      },
+      {
+        "src": "/assets/prepinson-daily-horse-care-768.webp",
+        "width": 768,
+        "height": 925
+      },
+      {
+        "src": "/assets/prepinson-daily-horse-care-1200.webp",
+        "width": 1200,
+        "height": 1446
+      },
+      {
+        "src": "/assets/prepinson-daily-horse-care-1400.webp",
+        "width": 1400,
+        "height": 1687
+      }
+    ]
+  },
+  "prepinson-haras-team.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/prepinson-haras-team-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-haras-team-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-haras-team-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-haras-team-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-haras-team-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "prepinson-horse-handler-outdoors.webp": {
+    "width": 1400,
+    "height": 2100,
+    "variants": [
+      {
+        "src": "/assets/prepinson-horse-handler-outdoors-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/prepinson-horse-handler-outdoors-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/prepinson-horse-handler-outdoors-1200.webp",
+        "width": 1200,
+        "height": 1800
+      },
+      {
+        "src": "/assets/prepinson-horse-handler-outdoors-1400.webp",
+        "width": 1400,
+        "height": 2100
+      }
+    ]
+  },
+  "prepinson-horses-green-paddocks.webp": {
+    "width": 2400,
+    "height": 1600,
+    "variants": [
+      {
+        "src": "/assets/prepinson-horses-green-paddocks-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-horses-green-paddocks-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-horses-green-paddocks-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-horses-green-paddocks-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-horses-green-paddocks-2000.webp",
+        "width": 2000,
+        "height": 1333
+      }
+    ]
+  },
+  "prepinson-indoor-riding-arena.webp": {
+    "width": 2200,
+    "height": 1467,
+    "variants": [
+      {
+        "src": "/assets/prepinson-indoor-riding-arena-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-indoor-riding-arena-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-indoor-riding-arena-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-indoor-riding-arena-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-indoor-riding-arena-2000.webp",
+        "width": 2000,
+        "height": 1334
+      }
+    ]
+  },
+  "prepinson-mare-and-foal.webp": {
+    "width": 1400,
+    "height": 1612,
+    "variants": [
+      {
+        "src": "/assets/prepinson-mare-and-foal-480.webp",
+        "width": 480,
+        "height": 553
+      },
+      {
+        "src": "/assets/prepinson-mare-and-foal-768.webp",
+        "width": 768,
+        "height": 884
+      },
+      {
+        "src": "/assets/prepinson-mare-and-foal-1200.webp",
+        "width": 1200,
+        "height": 1382
+      },
+      {
+        "src": "/assets/prepinson-mare-and-foal-1400.webp",
+        "width": 1400,
+        "height": 1612
+      }
+    ]
+  },
+  "prepinson-ortho-24-bedroom.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/prepinson-ortho-24-bedroom-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-bedroom-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-bedroom-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-bedroom-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-bedroom-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "prepinson-ortho-24-billiards.webp": {
+    "width": 1400,
+    "height": 1815,
+    "variants": [
+      {
+        "src": "/assets/prepinson-ortho-24-billiards-480.webp",
+        "width": 480,
+        "height": 622
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-billiards-768.webp",
+        "width": 768,
+        "height": 996
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-billiards-1200.webp",
+        "width": 1200,
+        "height": 1556
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-billiards-1400.webp",
+        "width": 1400,
+        "height": 1815
+      }
+    ]
+  },
+  "prepinson-ortho-24-hot-tub.webp": {
+    "width": 1800,
+    "height": 1176,
+    "variants": [
+      {
+        "src": "/assets/prepinson-ortho-24-hot-tub-480.webp",
+        "width": 480,
+        "height": 314
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-hot-tub-768.webp",
+        "width": 768,
+        "height": 502
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-hot-tub-1200.webp",
+        "width": 1200,
+        "height": 784
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-hot-tub-1600.webp",
+        "width": 1600,
+        "height": 1045
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-hot-tub-1800.webp",
+        "width": 1800,
+        "height": 1176
+      }
+    ]
+  },
+  "prepinson-ortho-24-house-pool.webp": {
+    "width": 2400,
+    "height": 1600,
+    "variants": [
+      {
+        "src": "/assets/prepinson-ortho-24-house-pool-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-house-pool-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-house-pool-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-house-pool-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-house-pool-2000.webp",
+        "width": 2000,
+        "height": 1333
+      }
+    ]
+  },
+  "prepinson-ortho-24-kitchen.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/prepinson-ortho-24-kitchen-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-kitchen-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-kitchen-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-kitchen-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-ortho-24-kitchen-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "prepinson-ortho-25-double-bedroom.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/prepinson-ortho-25-double-bedroom-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-double-bedroom-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-double-bedroom-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-double-bedroom-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-double-bedroom-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "prepinson-ortho-25-garden-terrace.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/prepinson-ortho-25-garden-terrace-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-garden-terrace-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-garden-terrace-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-garden-terrace-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-garden-terrace-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ],
+    "mobile": [
+      {
+        "src": "/assets/prepinson-ortho-25-garden-terrace-portrait-480.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-garden-terrace-portrait-768.webp",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "src": "/assets/prepinson-ortho-25-garden-terrace-portrait-900.webp",
+        "width": 900,
+        "height": 1200
+      }
+    ]
+  },
+  "prepinson-outdoor-arena.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/prepinson-outdoor-arena-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-outdoor-arena-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-outdoor-arena-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-outdoor-arena-1600.webp",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "src": "/assets/prepinson-outdoor-arena-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "prepinson-outdoor-jumping-arena.webp": {
+    "width": 2400,
+    "height": 1548,
+    "variants": [
+      {
+        "src": "/assets/prepinson-outdoor-jumping-arena-480.webp",
+        "width": 480,
+        "height": 310
+      },
+      {
+        "src": "/assets/prepinson-outdoor-jumping-arena-768.webp",
+        "width": 768,
+        "height": 495
+      },
+      {
+        "src": "/assets/prepinson-outdoor-jumping-arena-1200.webp",
+        "width": 1200,
+        "height": 774
+      },
+      {
+        "src": "/assets/prepinson-outdoor-jumping-arena-1600.webp",
+        "width": 1600,
+        "height": 1032
+      },
+      {
+        "src": "/assets/prepinson-outdoor-jumping-arena-2000.webp",
+        "width": 2000,
+        "height": 1290
+      }
+    ]
+  },
+  "prepinson-rider-saddle-detail.webp": {
+    "width": 1400,
+    "height": 2100,
+    "variants": [
+      {
+        "src": "/assets/prepinson-rider-saddle-detail-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/prepinson-rider-saddle-detail-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/prepinson-rider-saddle-detail-1200.webp",
+        "width": 1200,
+        "height": 1800
+      },
+      {
+        "src": "/assets/prepinson-rider-saddle-detail-1400.webp",
+        "width": 1400,
+        "height": 2100
+      }
+    ]
+  },
+  "prepinson-show-jumping-training.webp": {
+    "width": 1400,
+    "height": 2100,
+    "variants": [
+      {
+        "src": "/assets/prepinson-show-jumping-training-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/prepinson-show-jumping-training-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/prepinson-show-jumping-training-1200.webp",
+        "width": 1200,
+        "height": 1800
+      },
+      {
+        "src": "/assets/prepinson-show-jumping-training-1400.webp",
+        "width": 1400,
+        "height": 2100
+      }
+    ]
+  },
+  "prepinson-stables-flowers.webp": {
+    "width": 1400,
+    "height": 2100,
+    "variants": [
+      {
+        "src": "/assets/prepinson-stables-flowers-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/prepinson-stables-flowers-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/prepinson-stables-flowers-1200.webp",
+        "width": 1200,
+        "height": 1800
+      },
+      {
+        "src": "/assets/prepinson-stables-flowers-1400.webp",
+        "width": 1400,
+        "height": 2100
+      }
+    ]
+  },
+  "rider.jpg": {
+    "width": 1469,
+    "height": 2200,
+    "variants": [
+      {
+        "src": "/assets/rider-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/rider-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/rider-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/rider-1469.webp",
+        "width": 1469,
+        "height": 2200
+      }
+    ]
+  },
+  "young-horse.jpg": {
+    "width": 1469,
+    "height": 2200,
+    "variants": [
+      {
+        "src": "/assets/young-horse-480.webp",
+        "width": 480,
+        "height": 719
+      },
+      {
+        "src": "/assets/young-horse-768.webp",
+        "width": 768,
+        "height": 1150
+      },
+      {
+        "src": "/assets/young-horse-1200.webp",
+        "width": 1200,
+        "height": 1797
+      },
+      {
+        "src": "/assets/young-horse-1469.webp",
+        "width": 1469,
+        "height": 2200
+      }
+    ]
+  },
+  "hero-horses-2000.webp": {
+    "width": 2000,
+    "height": 1333,
+    "variants": [
+      {
+        "src": "/assets/hero-horses-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/hero-horses-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/hero-horses-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/hero-horses-1600.webp",
+        "width": 1600,
+        "height": 1066
+      },
+      {
+        "src": "/assets/hero-horses-2000.webp",
+        "width": 2000,
+        "height": 1333
+      }
+    ],
+    "mobile": [
+      {
+        "src": "/assets/hero-horses-portrait-480.webp",
+        "width": 480,
+        "height": 858
+      },
+      {
+        "src": "/assets/hero-horses-portrait-746.webp",
+        "width": 746,
+        "height": 1333
+      }
+    ],
+    "mobileCrop": {
+      "left": 340,
+      "top": 0,
+      "width": 746,
+      "height": 1333
+    }
+  },
+  "training-2000.webp": {
+    "width": 2000,
+    "height": 1289,
+    "variants": [
+      {
+        "src": "/assets/training-480.webp",
+        "width": 480,
+        "height": 309
+      },
+      {
+        "src": "/assets/training-768.webp",
+        "width": 768,
+        "height": 495
+      },
+      {
+        "src": "/assets/training-1200.webp",
+        "width": 1200,
+        "height": 773
+      },
+      {
+        "src": "/assets/training-1600.webp",
+        "width": 1600,
+        "height": 1031
+      },
+      {
+        "src": "/assets/training-2000.webp",
+        "width": 2000,
+        "height": 1289
+      }
+    ],
+    "mobile": [
+      {
+        "src": "/assets/training-portrait-480.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "/assets/training-portrait-768.webp",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "src": "/assets/training-portrait-967.webp",
+        "width": 967,
+        "height": 1289
+      }
+    ]
+  },
+  "facilities-2000.webp": {
+    "width": 2000,
+    "height": 1333,
+    "variants": [
+      {
+        "src": "/assets/facilities-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/facilities-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/facilities-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/facilities-1600.webp",
+        "width": 1600,
+        "height": 1066
+      },
+      {
+        "src": "/assets/facilities-2000.webp",
+        "width": 2000,
+        "height": 1333
+      }
+    ],
+    "mobile": [
+      {
+        "src": "/assets/facilities-portrait-480.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "/assets/facilities-portrait-768.webp",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "src": "/assets/facilities-portrait-1000.webp",
+        "width": 1000,
+        "height": 1333
+      }
+    ]
+  },
+  "house-hero-2000.webp": {
+    "width": 2000,
+    "height": 1333,
+    "variants": [
+      {
+        "src": "/assets/house-hero-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/house-hero-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/house-hero-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/house-hero-1600.webp",
+        "width": 1600,
+        "height": 1066
+      },
+      {
+        "src": "/assets/house-hero-2000.webp",
+        "width": 2000,
+        "height": 1333
+      }
+    ],
+    "mobile": [
+      {
+        "src": "/assets/house-hero-portrait-480.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "/assets/house-hero-portrait-768.webp",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "src": "/assets/house-hero-portrait-1000.webp",
+        "width": 1000,
+        "height": 1333
+      }
+    ]
+  }
+}

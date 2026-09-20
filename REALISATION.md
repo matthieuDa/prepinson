@@ -1,44 +1,70 @@
-# Réalisation du site Prepinson
+# Réalisation Prepinson — restauration de la V1
 
-## Livraison réalisée
+## Livraison
 
-- Générateur statique unique pour 12 routes et 6 langues : anglais, français, néerlandais, allemand, suédois et luxembourgeois, soit 72 pages localisées.
-- Sélection automatique temporaire de langue uniquement sur `/`, avec priorité au choix manuel enregistré, puis à `Accept-Language`. Toutes les URL explicites restent stables.
-- Métadonnées propres à chaque page et langue, canonical, hreflang réciproques, `x-default`, Open Graph, Twitter Card et image de partage 1200 × 630.
-- `robots.txt` et sitemap multilingue complets, générés depuis le même registre de routes.
-- Données structurées `Organization`, `WebSite`, `WebPage` et `LocalBusiness`, avec les deux fiches Google Maps distinctes.
-- Contenu validé : 18 boxes sport, manège 27 × 60 m, carrière 40 × 75 m, 28 ha, équipements et quatre programmes. Aucun tarif ni prix indicatif publié.
-- Pages dédiées aux chevaux à vendre, installations, programmes, références Dalton/Juni/Jackson, maisons, activités, mentions légales et confidentialité.
-- Bloc Maisons et FAQ sur l’accueil. Le bouton de contact mène au formulaire de la page.
-- Newsletter visible mais désactivée, sans champ ni collecte, jusqu’à la connexion HubSpot.
-- Galerie Instagram locale et liens externes. Aucun widget LightWidget ni script Instagram tiers.
-- Photos couleur haute définition d’Eva exportées en WebP aux largeurs 480, 768, 1200, 1600 et 2000 px, qualité 80. L’image sociale JPEG est recadrée à 1200 × 630, qualité élevée.
-- Navigation clavier, lien d’évitement, focus visible, menu accessible, mouvement réduit et mises en page de 360 à 1920 px.
-- CSP stricte et en-têtes de sécurité : anti-framing, nosniff, politique de référent, permissions et isolation d’origine.
+La référence est la version approuvée par Eva, commit `fd597a0`. La présentation et les textes approuvés ont été réintégrés dans le générateur actuel, sans revenir à l’ancienne chaîne de localisation.
 
-## Contrôles
+- Navigation V1, sélecteur de langue compact, tiroir mobile et nom Prepinson visible ; logo agrandi conformément à la demande.
+- Cormorant Garamond et DM Sans hébergées localement, titres italiques et compositions éditoriales restaurés.
+- Accueil : introduction avec portrait, trois savoir-faire photographiques, installations et chiffres, références, équipe, Maisons, Journal, contact et pied de page V1.
+- Parcours Maisons restaurés : cartes, capacités, équipements vérifiés, réservation Casapilot/Airbnb et deux galeries de six photos avec visionneuse.
+- Quatre programmes en accordéons et demandes contextualisées ; pages installations, ventes, références et activités intégrées au même vocabulaire visuel.
+- FAQ artificielle, doublons, textes de chantier et ancienne annonce HubSpot retirés. Titres visuels séparés des titres SEO.
+- 18 boxes sport, manège 27 × 60 m, carrière 40 × 75 m, 28 ha. Aucun prix publié.
+- Dalton, Juni et Jackson sont des références historiques ; aucune disponibilité commerciale ni identité photographique n’est supposée.
+- Film des maisons vérifié visuellement : il montre Ortho 24. Il a été retiré d’Ortho 25 pour éviter une attribution incorrecte.
 
-- Le validateur du projet vérifie les 72 pages, les liens locaux, les ancres, les images responsives, les titres, descriptions, canonical, hreflang, Open Graph, JSON-LD, sitemap, robots, formulaires et la configuration de sécurité.
-- Les liens d’activités, de réservation et les deux liens Google Maps ont été contrôlés le 20 septembre 2026. Les liens obsolètes du Cheslé et d’Ardenne Aventures ont été remplacés par leurs pages officielles actives.
-- Lighthouse local sans exclusion, après corrections : mobile 99 performance, 100 accessibilité, 100 bonnes pratiques et 100 SEO ; desktop 99 performance, 100 accessibilité, 100 bonnes pratiques et 100 SEO.
-- Le scan reproductible du worktree et des 305 objets Git historiques ne trouve aucun identifiant, document privé ou montant public correspondant aux motifs contrôlés.
-- La revue indépendante GPT-6 Astra High a corrigé la négociation `Accept-Language` pour les qualités nulles ou invalides, le chargement du hero Ortho 25 et les URL d’images sociales propres au preview. Les neuf cas de routage de langue passent.
-- Deploy Preview vérifié : `https://deploy-preview-1--prepinson.netlify.app/`.
-- Lighthouse du déploiement immuable Netlify, sans retirer de contrôle : mobile et desktop 100 performance, 100 accessibilité et 100 bonnes pratiques. Le SEO obtient 69 uniquement parce que le seul audit SEO échoué est `is-crawlable`, conséquence directe du `noindex` obligatoire du preview. Le même build en configuration de production, sans cet en-tête, obtient 100 SEO.
-- La barre de collaboration Netlify est injectée uniquement sur l’URL stable du Deploy Preview. Les audits automatisés utilisent le permalien immuable du même déploiement afin de mesurer le site livré sans ce code tiers propre à Netlify.
+## Photographies et performance
 
-## Réglages d’export des images
+La photographie couleur des juments et poulains remplace l’ancienne image d’accueil refusée par Eva. Les fleurs des écuries, la jument et son poulain, le saut en couleur et le cavalier dans la carrière sont affectés aux sections correspondantes. Aucun filtre de désaturation ajouté.
 
-- Pour une nouvelle photographie avec Squoosh : redimensionner au plus près de 2000 px de large, exporter en WebP avec une qualité proche de 80, conserver les métadonnées désactivées et vérifier les visages, crins et feuillages à 100 %.
-- Générer les variantes 480, 768, 1200, 1600 et 2000 px en conservant exactement le même cadrage. Le HTML choisit automatiquement la taille adaptée à l’écran.
-- Pour la vignette WhatsApp et Open Graph : cadrage horizontal 1200 × 630, JPEG qualité 84 environ, sujet principal éloigné des bords et poids visé inférieur à 300 Ko.
-- Utiliser un nom descriptif en minuscules, sans espace ni accent, puis ajouter un texte alternatif factuel sans supposer l’identité d’un cheval.
+Les images utilisent des variantes AVIF avec repli WebP et leurs dimensions réelles. Des cadrages portraits dédiés aux téléphones conservent les sujets sans charger toute la largeur inutilisée. Les galeries utilisent des tailles adaptées à leurs colonnes ; leur visionneuse ouvre l’original. Aucun agrandissement artificiel des sources.
 
-## Dépendances restant avant la production
+La carte de partage est distincte pour les univers Haras et Maisons, en 1200 × 630. Les polices et médias restent locaux. Les URL des ressources sont versionnées après modification.
 
-- Connecter HubSpot et définir le consentement, la double confirmation et la durée de conservation avant d’activer la newsletter.
-- Le forfait gratuit LightWidget ne prend pas en charge HTTPS. Garder la galerie locale ou souscrire un service adapté après décision d’Eva.
-- Faire identifier formellement par Eva les photos de Dalton, Juni et Jackson avant de les associer à ces chevaux.
-- Confirmer la dénomination sociale, le siège légal, l’identité du responsable de traitement et les durées de conservation dans les sources officielles.
-- Obtenir et publier les consignes d’accès précises destinées aux transporteurs.
-- Effectuer séparément la migration du domaine, la levée du `noindex` du preview et les éventuelles modifications des fiches Google Business Profile.
+## Newsletter et contact
+
+Le formulaire `newsletter` est partagé entre les six langues, avec adresse e-mail, consentement obligatoire non précoché, version du consentement, langue, page d’origine sans paramètres et champ antispam. Il couvre le haras et les maisons, sans champ d’intérêt supplémentaire.
+
+Les six formulaires `contact-{lang}` sont conservés. Les pages Maisons affichent le contact des séjours et présélectionnent le contexte pertinent. Une demande de contact n’inscrit pas à la newsletter.
+
+Tous les formulaires fonctionnent par POST natif ; JavaScript ajoute chargement, succès et erreurs accessibles. La saisie est préservée en cas d’échec et aucun envoi n’est répété automatiquement. Les 12 confirmations localisées sont non indexables et absentes du sitemap.
+
+Netlify assure la collecte ; aucune campagne, confirmation par e-mail ni intégration HubSpot n’est activée. Les tests navigateur utilisent exclusivement des réponses simulées et ne créent pas d’abonnements réels.
+
+**Vérification de réception Netlify : en attente d’accès au compte.** La session disponible n’est pas connectée. Il faut consulter les notifications avant une soumission contrôlée, puis constater l’enregistrement dans Netlify. La présence du HTML traité ne constitue pas une preuve de stockage. Aucune communication externe n’a été envoyée pour cette recette.
+
+## Validation
+
+- 72 pages publiques en anglais, français, néerlandais, allemand, suédois et luxembourgeois, 12 confirmations et passerelle linguistique.
+- Contrôle des routes, liens et ancres, canonical, hreflang, JSON-LD, sitemap, ressources responsives et contrats de formulaires.
+- Neuf scénarios de négociation linguistique. Seule la racine choisit temporairement une langue ; les URL explicites restent stables.
+- 504 configurations de mise en page : 72 pages × 360, 390, 768, 1024, 1280, 1440 et 1920 pixels.
+- Tests des six langues, consentement et adresse invalides, double clic, erreurs HTTP/réseau/délai, succès et soumission sans JavaScript.
+- Menu clavier, Échap, retour du focus, arrière-plan inerte, sélection linguistique, accordéons, galerie et arrêt des vidéos vérifiés.
+- Revue indépendante GPT-6 Astra High : comparaison directe avec la V1, restauration des textes et italiques, corrections des contrastes, liens descriptifs, photographie de saut en couleur, descriptions des galeries et film attribué à la bonne maison.
+- Lighthouse du 20 septembre 2026, configuration de production locale sans exclusion : 24 audits (12 gabarits × mobile/ordinateur), SEO/accessibilité/bonnes pratiques 100 partout, performance mobile 97–100 et ordinateur 100 partout. Les deux pages de confirmation restent volontairement non indexables et ne sont pas des pages publiques de référencement.
+
+Les captures et rapports détaillés se trouvent dans `outputs/v1-restoration/` dans l’espace de travail ; ils ne sont pas déployés. Les scripts de recette sont conservés dans le dépôt.
+
+## Dépendances avant production
+
+- Vérifier la réception des formulaires dans le compte Netlify et les notifications souhaitées.
+- Confirmer la dénomination sociale, le siège légal, le responsable du traitement et les durées de conservation à appliquer. Aucune durée légale fictive n’a été inventée.
+- Faire identifier les photographies individuelles de Dalton, Juni et Jackson avant toute association nominative.
+- Obtenir les consignes précises pour les transporteurs ; le site invite déjà à coordonner leur arrivée avec l’équipe.
+- Préparer séparément les futures campagnes et leur désabonnement. HubSpot n’est pas nécessaire à la collecte actuelle.
+- Traiter séparément la migration du domaine et la mise en indexation de production.
+
+La livraison concerne uniquement la branche `codex/prepinson-delivery` et le Deploy Preview de la pull request existante. Aucun changement de domaine, fiche Google Business, compte HubSpot ou abonnement tiers n’est effectué.
+
+## Résultats et preuves de recette
+
+- Lighthouse complet : `outputs/v1-restoration/lighthouse-final/summary.md`, avec les 24 rapports JSON et HTML.
+- Revue indépendante : `outputs/v1-restoration/independent-review/REVUE.md` et 15 comparatifs V1/résultat.
+- Responsive : `outputs/v1-restoration/final/layout-report.json`, 504 configurations sans erreur ; captures finales dans le même dossier.
+- Formulaires : suite navigateur réussie dans les six langues, envois simulés uniquement.
+- Scan : fichiers actuels/publics et 506 objets Git historiques examinés ; aucun motif de secret, document privé ou montant public détecté dans le périmètre vérifié. Ce contrôle ne constitue pas une garantie absolue de sécurité.
+- Build déterministe : deux générations successives produisent la même empreinte des fichiers texte livrés.
+
+La vérification HTTP du Deploy Preview est effectuée après le push ; sa preuve est enregistrée dans le dossier de recette. Le `noindex` du preview reste obligatoire et son impact sur le score SEO est rapporté séparément.

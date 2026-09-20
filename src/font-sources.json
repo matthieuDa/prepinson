@@ -1,0 +1,42 @@
+[
+  {
+    "file": "cormorant-garamond-italic-ext.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd58jD-htM8A_6pUKz9ugk.woff2",
+    "bytes": 20280
+  },
+  {
+    "file": "cormorant-garamond-italic.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd58jD-iNM8A_6pUKz9.woff2",
+    "bytes": 23660
+  },
+  {
+    "file": "cormorant-garamond-regular-ext.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_v86KnrOitk9IfqxUYT9.woff2",
+    "bytes": 19888
+  },
+  {
+    "file": "cormorant-garamond-regular.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_v86KnTOitk9IfqxUQ.woff2",
+    "bytes": 22896
+  },
+  {
+    "file": "dm-sans-regular-ext.woff2",
+    "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6z9mXgjU0.woff2",
+    "bytes": 18192
+  },
+  {
+    "file": "dm-sans-regular.woff2",
+    "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2",
+    "bytes": 36980
+  },
+  {
+    "file": "dm-sans-medium-ext.woff2",
+    "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6z9mXgjU0.woff2",
+    "bytes": 18192
+  },
+  {
+    "file": "dm-sans-medium.woff2",
+    "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2",
+    "bytes": 36980
+  }
+]
