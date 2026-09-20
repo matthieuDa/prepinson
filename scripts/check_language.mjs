@@ -20,6 +20,8 @@ for (const [language, cookie, expected] of cases) {
   assert.equal(response.headers.get('location'), `https://preview.example/${expected}/?campaign=1`);
   assert.equal(response.headers.get('cache-control'), 'private, no-store');
   assert.equal(response.headers.get('vary'), 'Accept-Language, Cookie');
+  assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
+  assert.equal(response.headers.get('x-frame-options'), 'DENY');
 }
 assert.equal(await redirect(new Request('https://preview.example/fr/horses/'), {
   next() { return 'stable'; },

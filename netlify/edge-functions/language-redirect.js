@@ -26,7 +26,13 @@ export default async (request, context) => {
     headers: {
       location: destination.toString(),
       "cache-control": "private, no-store",
+      "content-security-policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "cross-origin-opener-policy": "same-origin",
+      "permissions-policy": "camera=(), geolocation=(), microphone=(), payment=(), usb=()",
+      "referrer-policy": "strict-origin-when-cross-origin",
       vary: "Accept-Language, Cookie",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
     },
   });
 };
