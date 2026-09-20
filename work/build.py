@@ -1,69 +1,255 @@
+#!/usr/bin/env python3
+"""Generate the complete multilingual Prepinson static website."""
+
+from html import escape
 from pathlib import Path
 import json
-OUT=Path('dist')
-IG='https://www.instagram.com/haras_de_prepinson/'
-IG_HOUSE='https://www.instagram.com/prepinson_the_house/'
-CASA='https://www.casapilot.com/en/1091854-holiday-home-in-la-roche-en-ardenne-ardennes-and-eifel-belgium'
-AIR='https://www.airbnb.com/h/ortho25'
-ARROW='<span aria-hidden="true">↗</span>'
-brand='<a class="brand" href="/" aria-label="Prépinson home"><img src="/assets/logo.png" alt=""><span class="wordmark">PRÉPINSON<small>HARAS DE PRÉPINSON</small></span></a>'
-def header(active=''):
- links=[('/#haras','The haras'),('/#expertise','Our expertise'),('/horses/','Horses'),('/#journal','Journal'),('/houses/','Houses')]
- nav=''.join(f'<a href="{u}"'+(' aria-current="page"' if t==active else '')+f'>{t}</a>' for u,t in links)
- return f'<a class="skip-link" href="#main">Skip to content</a><header class="nav">{brand}<nav class="navlinks" aria-label="Main navigation">{nav}<a class="nav-book" href="mailto:haras@prepinson.com">Get in touch <span>↗</span></a></nav><button class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu">Menu ☰</button></header><nav id="mobile-menu" class="mobile-nav" aria-label="Mobile navigation">{nav}<small>ORTHO · BELGIAN ARDENNES</small></nav>'
-def footer():
- return f'''<section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-copy"><p class="eyebrow">A SHARED PASSION STARTS A CONVERSATION.</p><h2>Let’s talk<br><em>horses.</em></h2><p>Tell us about your horse, your plans or the stay you have in mind. We will come back to you personally.</p><div class="contact-direct"><a href="mailto:haras@prepinson.com">haras@prepinson.com ↗</a><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com ↗</a><a href="tel:+32470851310">+32 470 85 13 10</a></div></div><form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="company"><input type="hidden" name="form-name" value="contact"><p class="form-trap"><label>Leave this field empty <input name="company"></label></p><div class="form-grid"><label><span>Your name</span><input type="text" name="name" autocomplete="name" required></label><label><span>Your email</span><input type="email" name="email" autocomplete="email" required></label></div><label><span>I am interested in</span><select name="interest"><option>Horse boarding</option><option>Young horse training</option><option>Breeding</option><option>Horses for sale</option><option>A stay at Prépinson</option><option>Something else</option></select></label><label><span>Your message</span><textarea name="message" rows="5" required></textarea></label><button class="btn dark" type="submit">Send message {ARROW}</button></form></div></section><footer class="footer haras-footer"><div class="container"><div class="newsletter-row"><div><p class="eyebrow">FROM PRÉPINSON, OCCASIONALLY.</p><h3>News from the haras.</h3></div><form class="newsletter-form" name="newsletter" method="POST" data-netlify="true"><input type="hidden" name="form-name" value="newsletter"><label><span class="visually-hidden">Email address</span><input type="email" name="email" autocomplete="email" placeholder="Email address" required></label><button type="submit" aria-label="Subscribe to the mailing list">Subscribe {ARROW}</button></form></div><div class="footer-social"><div><p class="eyebrow">HORSES</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="{IG}" target="_blank" rel="noopener">@haras_de_prepinson ↗</a></div><div><p class="eyebrow">HOUSES</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener">@prepinson_the_house ↗</a></div><div><p class="eyebrow">VISIT</p><p>Ortho 24<br>6983 La Roche-en-Ardenne<br>Belgium</p></div></div><div class="footer-signature">PRÉPINSON</div><div class="footer-bottom"><span>© 2026 HARAS DE PRÉPINSON</span><a href="https://maps.google.com/?q=Prepinson+Ortho+Belgium" target="_blank" rel="noopener">FIND THE HARAS ↗</a></div></div></footer>'''
+import os
+import shutil
+import sys
 
-def team():
- return '''<section id="team" class="team-section"><div class="container"><div class="team-heading"><p class="eyebrow">THE PEOPLE OF PRÉPINSON</p><h2>Experience, instinct<br><em>and daily care.</em></h2><p>Prépinson is shaped by a small, committed team and a shared belief: every horse deserves individual attention, patience and the right environment.</p></div><figure class="team-group-photo"><img src="/assets/prepinson-haras-team.webp" alt="The Haras de Prépinson team together outdoors" loading="lazy"><figcaption>Together, every day, for the horses.</figcaption></figure><div class="team-grid"><article class="team-card"><img src="/assets/eva-schiller.jpg" alt="Eva Schiller, Manager and Founder of Prépinson" loading="lazy"><div><p class="eyebrow">MANAGER & FOUNDER</p><h3>Eva Schiller</h3><a href="mailto:eva.schiller@prepinson.com">eva.schiller@prepinson.com ↗</a><a href="tel:+352691223836">+352 691 22 38 36</a></div></article><article class="team-card"><img src="/assets/nicolas-derouault.jpg" alt="Nicolas Derouault, Site Manager of Prépinson" loading="lazy"><div><p class="eyebrow">SITE MANAGER</p><h3>Nicolas Derouault</h3><a href="mailto:nicolas.derouault@prepinson.com">nicolas.derouault@prepinson.com ↗</a><a href="tel:+32470851310">+32 470 85 13 10</a></div></article></div></div></section>'''
-def dialogs():
- return '''<dialog id="film-dialog" class="dialog" aria-label="A film of Prépinson"><button class="dialog-close" data-close aria-label="Close film">×</button><video controls playsinline preload="none"></video><p class="dialog-caption">Prépinson · Film by Papilio Productions</p></dialog><dialog id="lightbox" class="dialog" aria-label="Photo gallery"><button class="dialog-close" data-close aria-label="Close gallery">×</button><img alt=""><div class="lightbox-controls"><button data-prev aria-label="Previous photograph">←</button><span class="lightbox-label"></span><button data-next aria-label="Next photograph">→</button></div></dialog>'''
-def page(path,title,description,content,active=''):
- route='/' if not path else '/'+path.strip('/')+'/'
- schema={'@context':'https://schema.org','@type':'LocalBusiness','name':'Prépinson','url':'https://www.prepinson.com','description':'Haras de Prépinson in Ortho, Belgian Ardennes. Horse breeding, young horse training, show jumping and horse boarding in Belgium.','email':'haras@prepinson.com','telephone':'+32470851310','address':{'@type':'PostalAddress','streetAddress':'Ortho 24','postalCode':'6983','addressLocality':'La Roche-en-Ardenne','addressCountry':'BE'},'sameAs':[IG,IG_HOUSE]}
- s=f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title}</title><meta name="description" content="{description}"><meta name="theme-color" content="#23372c"><link rel="canonical" href="https://www.prepinson.com{route}"><meta property="og:title" content="{title}"><meta property="og:description" content="{description}"><meta property="og:type" content="website"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">{json.dumps(schema)}</script><script src="/app.js" defer></script></head><body>{header(active)}<main id="main">{content}</main>{footer()}{dialogs()}</body></html>'''
- p=OUT/path/'index.html';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s)
-def image(name,alt,extra=''):
- return f'<img src="/assets/{name}" alt="{alt}" loading="lazy" {extra}>'
-def hero(eyebrow,title,subtitle='',photo='hero.jpg',buttons='',video=False,inner=False):
- media=f'<video class="hero-media" autoplay muted loop playsinline poster="/assets/{photo}" aria-hidden="true"><source src="/assets/estate-film.mp4" type="video/mp4"></video>' if video else f'<img class="hero-media" src="/assets/{photo}" alt="Prépinson in the Belgian Ardennes" fetchpriority="high">'
- return f'''<section class="hero {'inner-hero' if inner else ''}">{media}<div class="hero-shade"></div><div class="hero-content reveal"><p class="eyebrow">{eyebrow}</p><h1>{title}</h1>{f'<p>{subtitle}</p>' if subtitle else ''}{buttons}</div><div class="hero-bottom"><span class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2"/></svg>Ortho, Belgian Ardennes</span><a class="scroll-link" href="#discover">A little closer to nature <span>↓</span></a><div style="display:flex;gap:15px;align-items:center"><button class="film-button" data-film="/assets/estate-film.mp4"><span class="circle" aria-hidden="true">▷</span>Watch the film</button>{'<button data-pause aria-label="Pause background film" class="circle">Ⅱ</button>' if video else ''}</div></div></section>'''
-def moments():
- imgs=[('horse-1.jpg','Life with horses at Prépinson'),('house-3.jpg','The riverside town of La Roche-en-Ardenne'),('estate-2.jpg','The estate from above'),('horse-4.jpg','Daily care for horses at Prépinson')]
- return f'''<section class="moments container"><div class="section-head"><div><p class="eyebrow">The everyday, a little extraordinary</p><h2>Life at Prépinson.</h2></div><a class="text-link" href="{IG}" target="_blank" rel="noopener">Follow along on Instagram {ARROW}</a></div><div class="moments-grid">{''.join(f'<a class="moment" href="{IG}" target="_blank" rel="noopener">'+image(n,a)+'</a>' for n,a in imgs)}</div></section>'''
-home=Path('work/home-haras.html').read_text().replace('<section id="journal"',team()+Path('src/journal.html').read_text()+'<section id="journal"')
-page('', 'Haras de Prépinson — A Life Dedicated to Horses','Haras de Prépinson, Belgium. Professional young horse training, breeding, show jumping and exceptional horse boarding in the Belgian Ardennes.',home)
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from src.site_data import LANGS, LANGUAGE_NAMES, ROUTES, text  # noqa: E402
 
-def gallery(items):
- return '<div class="gallery">'+''.join(f'<button data-gallery aria-label="Enlarge photograph: {a}">'+image(n,a)+'</button>' for n,a in items)+'</div>'
-horses=hero('Haras de Prépinson · Belgium','Great horses.<br><em>Thoughtful beginnings.</em>','Professional care. Patient training. Room to reach their potential.',photo='prepinson-outdoor-jumping-arena.webp',inner=True,buttons=f'<a class="btn light" href="{IG}" target="_blank" rel="noopener">Horses for sale on Instagram {ARROW}</a>')
-horses+='''<section id="discover" class="intro container"><div><p class="eyebrow">Our equestrian world</p><h2>Every horse.<br><em>Every possibility.</em></h2></div><p class="body-copy">At our haras in Belgium, good horsemanship begins with understanding the individual. From foals and young horses to sport horses, our approach combines professional training with daily, attentive care.</p></section><section class="services container"><div class="services-grid"><article id="boarding" class="service"><p class="eyebrow">01 / Care & boarding</p><h3>A place to thrive.</h3><p>Horse pension in a peaceful setting, with daily supervision and space for every stage of life.</p><ul><li>Boarding for young and retired horses</li><li>Broodmare care and foaling supervision</li><li>Shared boxes and time in the fields</li><li>Coordination of hoof care and routine health needs</li></ul><a class="text-link" href="mailto:haras@prepinson.com?subject=Horse%20boarding%20enquiry">Enquire about boarding ↗</a></article><article id="training" class="service"><p class="eyebrow">02 / Training & development</p><h3>Potential, patiently developed.</h3><p>Professional young horse training, from breaking in to confident work in the arena.</p><ul><li>Individual training in show jumping and dressage</li><li>Full-time training and competition preparation</li><li>Professional equestrian facilities</li><li>Lessons with your own horse</li></ul><a class="text-link" href="mailto:haras@prepinson.com?subject=Horse%20training%20enquiry">Talk to us about your horse ↗</a></article></div>'''
-horses+=f'<div class="wide-image">{image("prepinson-daily-horse-care.webp","A calm moment of daily horse care at Prépinson")}<a class="film-button" href="https://www.youtube.com/watch?v=9ogNVCE1DrM" target="_blank" rel="noopener"><span class="circle">▷</span>Explore our facilities</a></div></section>'
-horses+='''<section id="breeding" class="references"><div class="container"><div class="section-head"><div><p class="eyebrow">Bred at Prépinson</p><h2>A few of our stories.</h2></div><p class="small-note">Selected horses from our breeding programme.</p></div><div class="reference-grid"><article class="reference-card"><p class="eyebrow">Born 2019 · Haras de Prépinson</p><h3>Juni de Prépinson</h3><p class="pedigree">Silver Deux de Virton H D C<br>× Firsty de Prépinson</p></article><article class="reference-card"><p class="eyebrow">Born 2018 · Haras de Prépinson</p><h3>Dalton de Prépinson</h3><p class="pedigree">Don Juan de Hus<br>× Samsara de Hus</p></article><article class="reference-card"><p class="eyebrow">Born 2017 · Haras de Prépinson</p><h3>Dakota de Prépinson</h3><p class="pedigree">Don Juan de Hus<br>× Samsara de Hus</p></article></div></div></section>'''
-horses+=f'<section class="instagram-band"><div><p class="eyebrow">Find your next partner</p><h2>Our latest horses. On Instagram.</h2><p>For horses currently for sale, new arrivals and everyday life at the haras.</p></div><a class="btn light" href="{IG}" target="_blank" rel="noopener">@haras_de_prepinson {ARROW}</a></section>'
-horses+='<section class="moments archive-gallery container"><div class="section-head"><div><p class="eyebrow">Around the haras</p><h2>In good company.</h2></div><p class="small-note">A wider look at life, care and training at Prépinson.</p></div>'+gallery([('prepinson-outdoor-arena.webp','The outdoor riding arena at Haras de Prépinson'),('prepinson-stables-flowers.webp','Flowers welcoming visitors to the Prépinson stables'),('prepinson-rider-saddle-detail.webp','A rider preparing in the saddle at Prépinson'),('prepinson-bay-horse-outdoors.webp','A bay horse enjoying the outdoors at Prépinson'),('prepinson-indoor-riding-arena.webp','The bright indoor riding arena at Prépinson'),('prepinson-horse-handler-outdoors.webp','A horse and handler outdoors at Prépinson'),('prepinson-mare-and-foal.webp','A mare and foal at Prépinson'),('prepinson-show-jumping-training.webp','Show jumping training at Prépinson'),('prepinson-horses-green-paddocks.webp','Horses in the green paddocks at Prépinson')])+'</section>'
-horses=horses.replace('<section id="breeding"',Path('src/programmes.html').read_text()+'<section id="breeding"')
-page('horses','Haras de Prépinson — Horse Boarding & Young Horse Training in Belgium','Professional young horse training, show jumping, dressage and horse boarding at Haras de Prépinson in Belgium. Discover our breeding programme and horses for sale on Instagram.',horses.replace('/assets/estate-film.mp4','/assets/haras-film.mp4'),'Horses')
-properties=[{'id':'ortho-24','title':'Ortho 24 – Grange','tag':'Space to gather. Room to unwind.','image':'prepinson-ortho-24-house-pool.webp','beds':4,'baths':4,'platform':'Casapilot','url':CASA,'description':'A generous Ardennes retreat, where stone walls meet contemporary comfort. Gather with family or friends, settle into slow mornings and make the most of the pool and outdoor hot tub.','amenities':['8 guests','4 bedrooms','4 bathrooms','Outdoor pool','Hot tub','Home cinema'],'gallery':[('grange-1.jpg','Ortho 24 Grange — stone exterior'),('grange-3.jpg','Ortho 24 Grange — living space'),('prepinson-ortho-24-bedroom.webp','Ortho 24 Grange — warm double bedroom'),('prepinson-ortho-24-kitchen.webp','Ortho 24 Grange — bright country kitchen'),('prepinson-ortho-24-hot-tub.webp','Ortho 24 Grange — outdoor hot tub'),('prepinson-ortho-24-billiards.webp','Ortho 24 Grange — billiards room')]},{'id':'ortho-25','title':'Ortho 25 – Cottage','tag':'Country character. A cosy escape.','image':'cottage.jpg','beds':3,'baths':3,'platform':'Airbnb','url':AIR,'description':'A welcoming stone cottage in the village of Ortho. With a private garden and space for eight, it is a lovely base for forest walks, unhurried lunches and time together in the Ardennes.','amenities':['8 guests','3 bedrooms','3 bathrooms','Private garden','Kitchen','2 parking spaces'],'gallery':[('cottage.jpg','Ortho 25 Cottage — stone exterior'),('cottage-1.jpg','Ortho 25 Cottage — welcoming living room'),('cottage-2.jpg','Ortho 25 Cottage — dining space'),('cottage-3.jpg','Ortho 25 Cottage — twin bedroom'),('prepinson-ortho-25-garden-terrace.webp','Ortho 25 Cottage — sunny garden terrace'),('prepinson-ortho-25-double-bedroom.webp','Ortho 25 Cottage — double bedroom')]}]
-def property_card(p):
- return f'<article class="property-card"><a class="property-image" href="/houses/{p["id"]}/">{image(p["image"],p["title"])}</a><div class="property-info"><p class="eyebrow">{p["tag"]}</p><h3>{p["title"]}</h3><div class="property-meta"><span>8 guests</span><span>{p["beds"]} bedrooms</span><span>{p["baths"]} bathrooms</span></div><p>{p["description"]}</p><div class="property-links"><a class="btn dark" href="/houses/{p["id"]}/">Explore the house {ARROW}</a><a class="text-link" href="{p["url"]}" target="_blank" rel="noopener">{p["platform"]} {ARROW}</a></div></div></article>'
-houses=hero('Stay at Prépinson','Make room<br><em>for slow living.</em>','Two beautiful homes. Your own corner of the Ardennes.',photo='prepinson-ortho-24-house-pool.webp',inner=True).replace('data-film="/assets/estate-film.mp4"','data-film="/assets/house-film.mp4"')
-houses+='''<section id="discover" class="intro container"><div><p class="eyebrow">Our two houses</p><h2>Come together.<br><em>Feel at home.</em></h2></div><p class="body-copy">A weekend with friends. A few days with family. Choose your farmhouse escape in Belgium, with the countryside on your doorstep and La Roche-en-Ardenne a short drive away.</p></section>'''
-houses+='<section class="property-grid container">'+''.join(property_card(p) for p in properties)+'</section>'
-houses+=f'<section class="estate-section"><div class="estate-grid container"><div class="estate-photo">{image("prepinson-ortho-25-garden-terrace.webp","The sunny garden terrace at Ortho 25 Cottage")}</div><div class="estate-copy"><p class="eyebrow">Outside your door</p><h2>Less rush.<br><em>More Ardennes.</em></h2><p>Walk through the forests, explore La Roche-en-Ardenne or simply find a quiet spot in the garden. The best days here leave a little room for nothing at all.</p><button class="text-link" data-film="/assets/house-film.mp4">Watch life at the estate <span>▷</span></button></div></div></section>'
-houses+=f'<section class="house-instagram"><div class="container"><div><p class="eyebrow">STAY A LITTLE LONGER</p><h2>The houses,<br><em>as they are lived.</em></h2></div><div><p>Seasonal details, new views and everyday moments from Ortho 24 and Ortho 25.</p><a class="editorial-link dark-link" href="{IG_HOUSE}" target="_blank" rel="noopener">@prepinson_the_house {ARROW}</a></div></div></section>'
-page('houses','Prépinson Houses — Holiday Rentals in the Belgian Ardennes','Discover Ortho 24 Grange and Ortho 25 Cottage, two holiday homes for eight guests in Ortho, Belgium. Explore photos and book through Casapilot or Airbnb.',houses,'Houses')
-for p in properties:
- name=p['title'].split(' – ')
- body=hero('Your Ardennes escape',name[0]+'.<br><em>The '+name[1]+'.</em>',p['tag'],photo=p['image'],inner=True,buttons=f'<a class="btn light" href="{p["url"]}" target="_blank" rel="noopener">Check availability on {p["platform"]} {ARROW}</a>').replace('data-film="/assets/estate-film.mp4"','data-film="/assets/house-film.mp4"')
- body+=f'<section id="discover" class="property-detail container"><div class="property-summary"><div><p class="eyebrow">{p["title"]} · Ortho, Belgium</p><h2>Your time.<br><em>Your place.</em></h2><p>{p["description"]}</p><div class="amenities">'+''.join(f'<span>{a}</span>' for a in p['amenities'])+f'</div><p>Near La Roche-en-Ardenne, in the heart of the Belgian Ardennes. Find the full amenities, house rules and current availability on {p["platform"]}.</p></div><aside class="booking-panel"><h3>Start planning your stay.</h3><p>See available dates, current prices and all the practical details on {p["platform"]}.</p><a class="btn dark" href="{p["url"]}" target="_blank" rel="noopener">Book with {p["platform"]} {ARROW}</a><p class="small-note" style="margin-top:20px;margin-bottom:0">A question before you book?<br><a class="text-link" href="mailto:thehouse@prepinson.com">Contact Prépinson {ARROW}</a></p></aside></div>'
- body+=gallery(p['gallery'])+'</section><section class="container" style="padding-bottom:65px"><a class="text-link" href="/houses/">← Explore both houses</a></section>'
- page('houses/'+p['id'],p['title']+' — Prépinson Holiday Home in Belgium',p['description'],body,'Houses')
-OUT.joinpath('robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: https://www.prepinson.com/sitemap.xml\n')
-routes=['','horses/','houses/','houses/ortho-24/','houses/ortho-25/']
-OUT.joinpath('sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>https://www.prepinson.com/'+r+'</loc></url>' for r in routes)+'</urlset>')
-# Property-specific structured data, readable without JavaScript.
-for p in properties:
- f=OUT/'houses'/p['id']/'index.html'
- schema={'@context':'https://schema.org','@type':'VacationRental','name':p['title'],'identifier':'prepinson-'+p['id'],'url':'https://www.prepinson.com/houses/'+p['id']+'/','description':p['description'],'image':['https://www.prepinson.com/assets/'+n for n,a in p['gallery']],'address':{'@type':'PostalAddress','streetAddress':p['id'].replace('ortho-','Ortho '),'postalCode':'6983','addressLocality':'La Roche-en-Ardenne','addressCountry':'BE'},'containsPlace':{'@type':'Accommodation','occupancy':{'@type':'QuantitativeValue','value':8},'numberOfBedrooms':p['beds'],'numberOfBathroomsTotal':p['baths']},'sameAs':[p['url']]}
- f.write_text(f.read_text().replace('</head>','<script type="application/ld+json">'+json.dumps(schema)+'</script></head>'))
+OUT = ROOT / "dist"
+DOMAIN = "https://www.prepinson.com"
+# Preview media must resolve to the new deploy, while canonical URLs stay stable.
+ASSET_DOMAIN = os.environ.get("DEPLOY_PRIME_URL", DOMAIN).rstrip("/") if os.environ.get("PREVIEW_MODE") == "true" else DOMAIN
+IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
+IG_HOUSE = "https://www.instagram.com/prepinson_the_house/"
+MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
+MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
+CASA = "https://www.casapilot.com/en/1091854-holiday-home-in-la-roche-en-ardenne-ardennes-and-eifel-belgium"
+AIRBNB = "https://airbnb.com/h/ortho25"
+
+META = {
+    "": ("home_title", "home_desc"),
+    "horses": ("horses_title", "horses_desc"),
+    "horses/programmes": ("programmes_title", "programmes_desc"),
+    "horses/facilities": ("facilities_title", "facilities_desc"),
+    "horses/for-sale": ("sales_title", "sales_desc"),
+    "horses/references": ("references_title", "references_desc"),
+    "houses": ("houses_title", "houses_desc"),
+    "houses/ortho-24": ("ortho24_title", "ortho24_desc"),
+    "houses/ortho-25": ("ortho25_title", "ortho25_desc"),
+    "activities": ("activities_title", "activities_desc"),
+    "legal": ("legal_title", "legal_desc"),
+    "privacy": ("privacy_title", "privacy_desc"),
+}
+
+NAV = (
+    ("", "nav_home"), ("horses", "nav_horses"),
+    ("horses/programmes", "nav_programmes"),
+    ("horses/facilities", "nav_facilities"),
+    ("horses/for-sale", "nav_sales"), ("houses", "nav_houses"),
+    ("activities", "nav_activities"),
+)
+
+IMAGE_DIMS = {
+    "hero-horses": (2000, 1333), "training": (2000, 1290),
+    "facilities": (2000, 1333), "house-hero": (2000, 1333),
+}
+
+
+def url(lang, route=""):
+    return f"/{lang}/" + (route.strip("/") + "/" if route else "")
+
+
+def responsive_image(stem, alt, hero=False, cls=""):
+    w, h = IMAGE_DIMS[stem]
+    sizes = "100vw" if hero else "(max-width: 760px) 100vw, 50vw"
+    loading = 'fetchpriority="high"' if hero else 'loading="lazy" decoding="async"'
+    return (
+        f'<picture><source type="image/webp" srcset="'
+        + ", ".join(f"/assets/{stem}-{n}.webp {n}w" for n in (480, 768, 1200, 1600, 2000))
+        + f'" sizes="{sizes}"><img class="{cls}" src="/assets/{stem}-1200.webp" '
+          f'width="{w}" height="{h}" alt="{escape(alt)}" {loading}></picture>'
+    )
+
+
+def static_image(name, alt, width=1200, height=800, cls="", hero=False):
+    loading = 'fetchpriority="high"' if hero else 'loading="lazy" decoding="async"'
+    return (f'<img class="{cls}" src="/assets/{name}" width="{width}" height="{height}" '
+            f'alt="{escape(alt)}" {loading}>')
+
+
+def language_links(lang, route):
+    links = []
+    for code in LANGS:
+        current = ' aria-current="true"' if code == lang else ""
+        links.append(f'<a href="{url(code, route)}" lang="{code}" hreflang="{code}" data-language="{code}"{current}>{code.upper()}</a>')
+    return "".join(links)
+
+
+def header(lang, route):
+    links = "".join(
+        f'<a href="{url(lang, target)}"' + (' aria-current="page"' if route == target else "") + f'>{text(label, lang)}</a>'
+        for target, label in NAV
+    )
+    return f'''<a class="skip-link" href="#main">{text("skip", lang)}</a>
+<header class="site-header">
+  <a class="brand" href="{url(lang)}" aria-label="HARAS DE PREPINSON"><img src="/assets/logo-mark.png" width="260" height="260" alt=""><span>HARAS DE PREPINSON</span></a>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav"><span>{text('menu', lang)}</span></button>
+  <nav id="primary-nav" class="primary-nav" aria-label="{text('menu', lang)}">{links}<a class="contact-link" href="#contact">{text('nav_contact', lang)}</a></nav>
+  <nav class="language-nav" aria-label="{text('language', lang)}">{language_links(lang, route)}</nav>
+</header>'''
+
+
+def footer(lang):
+    opts = "".join(f'<option value="{text(k, lang)}">{text(k, lang)}</option>' for k in (
+        "interest_boarding", "interest_training", "interest_sales", "interest_stay", "interest_other"))
+    return f'''<section id="contact" class="contact"><div class="split container"><div><p class="eyebrow">{text('contact_eyebrow', lang)}</p><h2>{text('contact_title', lang)}</h2><p>{text('contact_copy', lang)}</p><p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><br><a href="tel:+32470851310">+32 470 85 13 10</a></p></div>
+<form name="contact-{lang}" method="POST" data-netlify="true" netlify-honeypot="company"><input type="hidden" name="form-name" value="contact-{lang}"><p class="trap"><label>Do not fill <input name="company" tabindex="-1" autocomplete="off"></label></p>
+<label>{text('form_name', lang)}<input name="name" autocomplete="name" required></label><label>{text('form_email', lang)}<input type="email" name="email" autocomplete="email" required></label><label>{text('form_interest', lang)}<select name="interest">{opts}</select></label><label>{text('form_message', lang)}<textarea name="message" rows="5" required></textarea></label><label class="check"><input type="checkbox" name="privacy" required> <span>{text('form_privacy', lang)} <a href="{url(lang, 'privacy')}">{text('footer_privacy', lang)}</a></span></label><button class="button" type="submit">{text('form_send', lang)}</button></form></div></section>
+<footer><div class="container footer-grid"><div><h2>{text('newsletter_title', lang)}</h2><p>{text('newsletter_copy', lang)}</p><button class="button muted" type="button" disabled>{text('newsletter_status', lang)}</button></div><div><strong>HORSES</strong><a href="{IG_HARAS}" rel="noopener noreferrer">Instagram</a><a href="mailto:haras@prepinson.com">haras@prepinson.com</a></div><div><strong>HOUSES</strong><a href="{IG_HOUSE}" rel="noopener noreferrer">Instagram</a><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a></div><div><strong>{text('footer_visit', lang)}</strong><address>Ortho 24<br>6983 La Roche-en-Ardenne<br>Belgium</address><a href="{MAP_HARAS}" rel="noopener noreferrer">{text('footer_maps_haras', lang)}</a><a href="{MAP_HOUSE}" rel="noopener noreferrer">{text('footer_maps_house', lang)}</a></div></div><div class="container footer-bottom"><span>© 2026 HARAS DE PREPINSON</span><a href="{url(lang, 'legal')}">{text('footer_legal', lang)}</a><a href="{url(lang, 'privacy')}">{text('footer_privacy', lang)}</a></div></footer>'''
+
+
+def hero(lang, eyebrow, heading, intro, image="hero-horses"):
+    return f'''<section class="hero">{responsive_image(image, heading, True, 'hero-image')}<div class="hero-overlay"><p class="eyebrow">{eyebrow}</p><h1>{heading}</h1><p>{intro}</p><a class="button light" href="#content">{text('discover', lang)}</a></div></section>'''
+
+
+def cards(items):
+    return '<div class="card-grid">' + "".join(f'<article class="card"><h2>{title}</h2><p>{copy}</p>{link}</article>' for title, copy, link in items) + '</div>'
+
+
+def home(lang):
+    faq = "".join(f'<details><summary>{text(f"faq_{i}_q",lang)}</summary><p>{text(f"faq_{i}_a",lang)}</p></details>' for i in range(1, 5))
+    return hero(lang, text("home_eyebrow",lang), text("home_hero",lang), text("home_tagline",lang)) + f'''
+<section id="content" class="intro container"><h2>{text('home_intro_title',lang)}</h2><p>{text('home_intro',lang)}</p></section>
+<section class="world container">{cards([
+ (text('world_horses',lang), text('world_horses_copy',lang), f'<a href="{url(lang,"horses")}">{text("learn_more",lang)} →</a>'),
+ (text('world_houses',lang), text('world_houses_copy',lang), f'<a href="{url(lang,"houses")}">{text("learn_more",lang)} →</a>')])}</section>
+<section class="stats"><div class="container"><h2>{text('stats_title',lang)}</h2><div class="stat-grid"><div><b>18</b><span>{text('stat_boxes',lang)}</span></div><div><b>27 × 60 m</b><span>{text('stat_indoor',lang)}</span></div><div><b>40 × 75 m</b><span>{text('stat_outdoor',lang)}</span></div><div><b>28 ha</b><span>{text('stat_land',lang)}</span></div></div></div></section>
+<section class="feature split container"><div>{responsive_image('house-hero', text('houses_teaser_title',lang), False)}</div><div><h2>{text('houses_teaser_title',lang)}</h2><p>{text('houses_teaser_copy',lang)}</p><a class="button" href="{url(lang,'houses')}">{text('learn_more',lang)} — {text('world_houses',lang)}</a></div></section>
+<section class="instagram container"><h2>{text('instagram_title',lang)}</h2><p>{text('instagram_copy',lang)}</p><div class="gallery">{static_image('prepinson-mare-and-foal.webp','',960,640)}{static_image('prepinson-show-jumping-training.webp','',960,640)}{static_image('prepinson-stables-flowers.webp','',960,640)}</div><a href="{IG_HARAS}" rel="noopener noreferrer">Instagram →</a></section>
+<section class="faq container"><h2>{text('faq_title',lang)}</h2>{faq}</section>'''
+
+
+def horses(lang):
+    items=[]
+    for r, a, b in (("horses/programmes","service_programmes","service_programmes_copy"),("horses/facilities","service_facilities","service_facilities_copy"),("horses/references","service_references","service_references_copy"),("horses/for-sale","service_sales","service_sales_copy")):
+        items.append((text(a,lang), text(b,lang), f'<a href="{url(lang,r)}">{text("learn_more",lang)} →</a>'))
+    return hero(lang, "HARAS DE PREPINSON · BELGIUM", text("horses_hero",lang), text("horses_intro",lang), "training") + f'<section id="content" class="container">{cards(items)}</section>'
+
+
+def programmes(lang):
+    items=[]
+    for i in range(1,5):
+        items.append((text(f"p{i}_title",lang), f'<strong>{text(f"p{i}_timing",lang)}</strong><br>{text(f"p{i}_copy",lang)}', ""))
+    return hero(lang, text("nav_programmes",lang), text("programmes_hero",lang), text("programmes_intro",lang), "training") + f'<section id="content" class="container">{cards(items)}</section>'
+
+
+def facilities(lang):
+    bullets = ["facility_equipment","facility_club","facility_breeding","facility_trails"]
+    return hero(lang, text("nav_facilities",lang), text("facilities_hero",lang), text("facilities_intro",lang), "facilities") + f'''<section id="content" class="split container"><div><h2>{text('stats_title',lang)}</h2><ul class="large-list"><li>18 {text('stat_boxes',lang)}</li><li>27 × 60 m {text('stat_indoor',lang)} · fibre</li><li>40 × 75 m {text('stat_outdoor',lang)} · ebb &amp; flood</li><li>28 ha {text('stat_land',lang)}</li>{''.join(f'<li>{text(k,lang)}</li>' for k in bullets)}</ul><p>{text('rental_range',lang)}</p><p>{text('availability',lang)}</p></div>{responsive_image('facilities',text('facilities_hero',lang),False)}</section>'''
+
+
+def sales(lang):
+    return hero(lang, text("nav_sales",lang), text("sales_hero",lang), text("sales_intro",lang), "hero-horses") + f'''<section id="content" class="split container"><div><h2>{text('sales_range',lang)}</h2><p>{text('sales_cta',lang)}</p><a class="button" href="#contact">{text('nav_contact',lang)}</a></div>{static_image('prepinson-bay-horse-outdoors.webp','',960,640)}</section>'''
+
+
+def references(lang):
+    stories=[(text('dalton_title',lang),text('dalton_copy',lang)),(text('juni_title',lang),text('juni_copy',lang)),(text('jackson_title',lang),text('jackson_copy',lang))]
+    return hero(lang, text("service_references",lang), text("references_hero",lang), text("reference_photo_note",lang), "hero-horses") + f'<section id="content" class="container">{cards([(a,b,"") for a,b in stories])}</section>'
+
+
+def houses(lang):
+    house_cards=[(text('ortho24_title',lang),text('ortho24_desc',lang),f'<a href="{url(lang,"houses/ortho-24")}">{text("explore_house",lang)} →</a>'),(text('ortho25_title',lang),text('ortho25_desc',lang),f'<a href="{url(lang,"houses/ortho-25")}">{text("explore_house",lang)} →</a>')]
+    return hero(lang, "ORTHO · BELGIAN ARDENNES", text("houses_hero",lang), text("houses_intro",lang), "house-hero") + f'<section id="content" class="container">{cards(house_cards)}</section>'
+
+
+def house(lang, which):
+    is24=which=="ortho-24"; title=text("ortho24_title" if is24 else "ortho25_title",lang); desc=text("ortho24_desc" if is24 else "ortho25_desc",lang); booking=CASA if is24 else AIRBNB
+    photo="house-hero" if is24 else "prepinson-ortho-25-garden-terrace.webp"
+    media=responsive_image(photo,title,True,'hero-image') if is24 else static_image(photo,title,1200,800,'hero-image',hero=True)
+    return f'<section class="hero">{media}<div class="hero-overlay"><p class="eyebrow">ORTHO · BELGIUM</p><h1>{title}</h1><p>{desc}</p></div></section><section id="content" class="split container"><div><h2>{text("house_detail_intro",lang)}</h2><p>{desc}</p><p>8 {text("guests",lang)} · {4 if is24 else 3} {text("bedrooms",lang)} · {4 if is24 else 3} {text("bathrooms",lang)}</p></div><div><a class="button" href="{booking}" rel="noopener noreferrer">{text("book_official",lang)} →</a><p><a href="{MAP_HOUSE}" rel="noopener noreferrer">Google Maps →</a></p></div></section>'
+
+
+ACTIVITIES = (
+    ("act_walk", (("Ortho-Hives Tourisme","https://www.ortho-hives-tourisme.com/randonner"),("Lac et barrage de Nisramont","https://www.la-roche-tourisme.com/le-lac-et-le-barrage-de-nisramont/"),("Le Hérou","https://www.luxembourg-belge.be/diffusio/fr/voir-faire/visiter/patrimoine-naturel/nadrin/le-herou_TFOALD-01-08H9-01.php"),("Le Cheslé","https://www.la-roche-tourisme.com/la-forteresse-celtique-du-chesle/"))),
+    ("act_cycle", (("SoWatt e-bike","https://sowatt.bike/fr"),("Wildtrails","https://www.wildtrails.be/"),("Brandsport","https://www.brandsport.be/"),("Ardenne Aventures","https://ardenneaventures.com/"),("Trott-e-Trail","https://www.trott-e-trail.com/"))),
+    ("act_family", (("Syndicat d’Initiative de La Roche-en-Ardenne","https://www.la-roche-tourisme.com/"),("Château féodal de La Roche-en-Ardenne","https://www.chateaudelaroche.be/"),("Parc à Gibier","https://www.parc-gibier-laroche.be/"),("Grottes de Hotton","https://grottesdehotton.be/"),("Parc Chlorophylle","https://www.parcchlorophylle.com/"),("Houtopia","https://www.houtopia.be/"),("Brasserie d'Achouffe","https://chouffe.com/"))),
+)
+
+
+def activities(lang):
+    groups=""
+    for key, places in ACTIVITIES:
+        groups += f'<section><h2>{text(key,lang)}</h2><div class="link-grid">' + "".join(f'<a class="place" href="{href}" rel="noopener noreferrer"><strong>{name}</strong><span>{text("official_site",lang)} →</span></a>' for name,href in places) + '</div></section>'
+    return hero(lang, text("nav_activities",lang), text("activities_hero",lang), text("activities_intro",lang), "facilities") + f'<div id="content" class="activities container">{groups}<p class="notice">{text("activity_conditions",lang)}</p></div>'
+
+
+def legal(lang):
+    return f'''<section class="text-page container" id="content"><p class="eyebrow">PREPINSON</p><h1>{text('legal_heading',lang)}</h1><h2>{text('legal_company',lang)}</h2><p>Haras de Prepinson<br>Ortho 24, 6983 La Roche-en-Ardenne, Belgium<br>BCE 0699571027 · VAT BE 0699.571.027<br><a href="mailto:haras@prepinson.com">haras@prepinson.com</a> · <a href="tel:+32470851310">+32 470 85 13 10</a></p><p class="notice">{text('legal_pending',lang)}</p><h2>{text('legal_host',lang)}</h2><p>Netlify, Inc. · 44 Montgomery Street, Suite 300, San Francisco, California 94104, USA.</p><h2>{text('legal_ip',lang)}</h2><p>{text('legal_ip_copy',lang)}</p></section>'''
+
+
+def privacy(lang):
+    sections=(("privacy_collect","privacy_collect_copy"),("privacy_basis","privacy_basis_copy"),("privacy_processors","privacy_processors_copy"),("privacy_rights","privacy_rights_copy"))
+    return f'<section class="text-page container" id="content"><p class="eyebrow">PREPINSON</p><h1>{text("privacy_heading",lang)}</h1>' + "".join(f'<h2>{text(a,lang)}</h2><p>{text(b,lang)}</p>' for a,b in sections) + f'<h2>{text("privacy_language",lang)}</h2><p>{text("privacy_language_copy",lang)}</p></section>'
+
+
+BUILDERS={"":home,"horses":horses,"horses/programmes":programmes,"horses/facilities":facilities,"horses/for-sale":sales,"horses/references":references,"houses":houses,"activities":activities,"legal":legal,"privacy":privacy}
+
+
+def breadcrumbs(lang, route):
+    if not route: return ""
+    parts=route.split("/"); items=[f'<a href="{url(lang)}">{text("nav_home",lang)}</a>']; cur=[]
+    label_map={"horses":"nav_horses","programmes":"nav_programmes","facilities":"nav_facilities","for-sale":"nav_sales","references":"service_references","houses":"nav_houses","activities":"nav_activities","legal":"footer_legal","privacy":"footer_privacy"}
+    for p in parts:
+        cur.append(p); label=text(label_map[p],lang) if p in label_map else ("Ortho 24" if p=="ortho-24" else "Ortho 25")
+        items.append(f'<a href="{url(lang,"/".join(cur))}">{label}</a>')
+    return '<nav class="breadcrumbs container" aria-label="Breadcrumb">'+'<span aria-hidden="true">/</span>'.join(items)+'</nav>'
+
+
+def schema(lang, route, title, description):
+    page_url=DOMAIN+url(lang,route)
+    org={"@type":"Organization","@id":DOMAIN+"/#organization","name":"Haras de Prepinson","url":DOMAIN+url(lang),"logo":{"@type":"ImageObject","url":ASSET_DOMAIN+"/assets/logo.png"},"email":"haras@prepinson.com","telephone":"+32470851310","sameAs":[IG_HARAS,IG_HOUSE]}
+    place={"@type":"LocalBusiness","@id":DOMAIN+"/#haras","name":"Haras de Prepinson","url":DOMAIN+url(lang,"horses"),"image":ASSET_DOMAIN+"/assets/og-prepinson.jpg","address":{"@type":"PostalAddress","streetAddress":"Ortho 24","postalCode":"6983","addressLocality":"La Roche-en-Ardenne","addressCountry":"BE"},"geo":{"@type":"GeoCoordinates","latitude":50.1284709,"longitude":5.6128915},"sameAs":[IG_HARAS,MAP_HARAS],"parentOrganization":{"@id":DOMAIN+"/#organization"}}
+    lodging={"@type":"LodgingBusiness","@id":DOMAIN+"/#houses","name":"Prepinson The House","url":DOMAIN+url(lang,"houses"),"image":ASSET_DOMAIN+"/assets/house-hero-1200.webp","email":"thehouse@prepinson.com","address":{"@type":"PostalAddress","streetAddress":"Ortho 24","postalCode":"6983","addressLocality":"La Roche-en-Ardenne","addressCountry":"BE"},"geo":{"@type":"GeoCoordinates","latitude":50.126626,"longitude":5.6133845},"sameAs":[IG_HOUSE,MAP_HOUSE,CASA,AIRBNB],"parentOrganization":{"@id":DOMAIN+"/#organization"}}
+    web={"@type":"WebPage","@id":page_url+"#webpage","url":page_url,"name":title,"description":description,"inLanguage":lang,"isPartOf":{"@id":DOMAIN+"/#website"}}
+    return {"@context":"https://schema.org","@graph":[org,place,lodging,{"@type":"WebSite","@id":DOMAIN+"/#website","url":DOMAIN,"name":"Prepinson","publisher":{"@id":DOMAIN+"/#organization"}},web]}
+
+
+def render(lang, route):
+    title=text(META[route][0],lang); desc=text(META[route][1],lang); canonical=DOMAIN+url(lang,route)
+    alts="".join(f'<link rel="alternate" hreflang="{code}" href="{DOMAIN+url(code,route)}">' for code in LANGS)
+    xdefault=DOMAIN+("/" if not route else url("en",route))
+    if route.startswith("houses/"): content=house(lang,route.rsplit("/",1)[1])
+    else: content=BUILDERS[route](lang)
+    body=header(lang,route)+breadcrumbs(lang,route)+f'<main id="main">{content}</main>'+footer(lang)
+    return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(desc)}"><meta name="theme-color" content="#183b32"><link rel="canonical" href="{canonical}">{alts}<link rel="alternate" hreflang="x-default" href="{xdefault}"><meta property="og:type" content="website"><meta property="og:site_name" content="Prepinson"><meta property="og:locale" content="{lang}"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(desc)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{ASSET_DOMAIN}/assets/og-prepinson.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{escape(title)}"><meta name="twitter:description" content="{escape(desc)}"><meta name="twitter:image" content="{ASSET_DOMAIN}/assets/og-prepinson.jpg"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">{json.dumps(schema(lang,route,title,desc),ensure_ascii=False)}</script><script src="/app.js" defer></script></head><body>{body}</body></html>'''
+
+
+def gateway():
+    links="".join(f'<a href="/{code}/" lang="{code}" hreflang="{code}">{name}</a>' for code,name in LANGUAGE_NAMES.items())
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Prepinson — Choose your language</title><link rel="stylesheet" href="/styles.css"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body class="gateway"><main><img src="/assets/logo-mark.png" width="260" height="260" alt="Haras de Prepinson"><h1>Choose your language</h1><nav aria-label="Language">{links}</nav><p>Your language is selected automatically on the hosted website.</p></main></body></html>'''
+
+
+def build():
+    for child in list(OUT.iterdir()):
+        if child.name in {"assets","styles.css","app.js","favicon.svg"}: continue
+        shutil.rmtree(child) if child.is_dir() else child.unlink()
+    (OUT/"index.html").write_text(gateway(),encoding="utf-8")
+    for lang in LANGS:
+        for route in ROUTES:
+            target=OUT/lang/route/"index.html" if route else OUT/lang/"index.html"
+            target.parent.mkdir(parents=True,exist_ok=True)
+            target.write_text(render(lang,route),encoding="utf-8")
+    entries=[]
+    for route in ROUTES:
+        for lang in LANGS:
+            loc=DOMAIN+url(lang,route)
+            alternates="".join(f'<xhtml:link rel="alternate" hreflang="{code}" href="{DOMAIN+url(code,route)}"/>' for code in LANGS)
+            xdefault=DOMAIN+("/" if not route else url("en",route))
+            entries.append(f'<url><loc>{loc}</loc>{alternates}<xhtml:link rel="alternate" hreflang="x-default" href="{xdefault}"/></url>')
+    (OUT/"sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'+''.join(entries)+'</urlset>',encoding="utf-8")
+    (OUT/"robots.txt").write_text(f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n',encoding="utf-8")
+    (OUT/"_redirects").write_text('/horses /en/horses/ 301\n/horses/* /en/horses/:splat 301\n/houses /en/houses/ 301\n/houses/* /en/houses/:splat 301\n',encoding="utf-8")
+    preview_header = "  X-Robots-Tag: noindex, nofollow, noarchive\n" if os.environ.get("PREVIEW_MODE") == "true" else ""
+    (OUT/"_headers").write_text("/*\n" + preview_header + "  X-Content-Type-Options: nosniff\n", encoding="utf-8")
+    print(f"Generated {len(LANGS)*len(ROUTES)} localized pages plus language gateway")
+
+
+if __name__ == "__main__":
+    build()

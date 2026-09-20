@@ -1,0 +1,4 @@
+/horses /en/horses/ 301
+/horses/* /en/horses/:splat 301
+/houses /en/houses/ 301
+/houses/* /en/houses/:splat 301
