@@ -314,7 +314,7 @@ def gateway():
 
 def confirmation_page(lang, kind):
     content = render_confirmation(lang, kind) if render_confirmation else f'<section class="text-page container"><p class="eyebrow">PREPINSON</p><h1>{tx("newsletter_success" if kind == "newsletter" else "contact_success", lang, "contact_title")}</h1><a class="btn dark" href="{url(lang)}">{tx("nav_home", lang)}</a></section>'
-    return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Prepinson</title><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"></head><body>{header(lang, kind + "/thanks", True)}<main id="main">{content}</main><script src="/app.js?v={ASSET_VERSION}" defer></script></body></html>'
+    return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Prepinson</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"></head><body>{header(lang, kind + "/thanks", True)}<main id="main">{content}</main><script src="/app.js?v={ASSET_VERSION}" defer></script></body></html>'
 
 
 def build():

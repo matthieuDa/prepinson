@@ -64,7 +64,39 @@ La livraison concerne uniquement la branche `codex/prepinson-delivery` et le Dep
 - Revue indépendante : `outputs/v1-restoration/independent-review/REVUE.md` et 15 comparatifs V1/résultat.
 - Responsive : `outputs/v1-restoration/final/layout-report.json`, 504 configurations sans erreur ; captures finales dans le même dossier.
 - Formulaires : suite navigateur réussie dans les six langues, envois simulés uniquement.
-- Scan : fichiers actuels/publics et 506 objets Git historiques examinés ; aucun motif de secret, document privé ou montant public détecté dans le périmètre vérifié. Ce contrôle ne constitue pas une garantie absolue de sécurité.
+- Scan : fichiers actuels/publics et 1 277 objets Git historiques examinés ; aucun motif de secret, document privé ou montant public détecté dans le périmètre vérifié. Ce contrôle ne constitue pas une garantie absolue de sécurité.
 - Build déterministe : deux générations successives produisent la même empreinte des fichiers texte livrés.
 
-La vérification HTTP du Deploy Preview est effectuée après le push ; sa preuve est enregistrée dans le dossier de recette. Le `noindex` du preview reste obligatoire et son impact sur le score SEO est rapporté séparément.
+### Vérification du déploiement — 20 septembre 2026
+
+La [pull request existante](https://github.com/matthieuDa/prepinson/pull/1) reste ouverte, sans fusion en production. Le [Deploy Preview](https://deploy-preview-1--prepinson.netlify.app/fr/) contient la restauration. La recette complète porte sur le commit de code `d865c5f273def289b2dbddd4fc8ed7ae9e9ce133`, déployé sous le [permalien audité](https://6ab033502c006c0009875af6--prepinson.netlify.app/fr/).
+
+- **84 pages HTTP 200**, langues, liens et ancres internes vérifiés ; **343 ressources** répondent correctement.
+- Les empreintes des CSS, JavaScript, robots.txt et sitemap.xml servis correspondent aux fichiers du commit. Le sitemap contient exactement 72 pages et exclut les confirmations.
+- Les redirections linguistiques temporaires et le choix manuel fonctionnent en ligne ; une URL linguistique explicite reste stable.
+- Le `noindex` et les en-têtes de sécurité sont présents sur les pages de prévisualisation.
+- Netlify a traité `newsletter` et les six `contact-{lang}`. **Le stockage d’une véritable soumission n’est pas encore vérifié**, faute de session Netlify authentifiée et d’inspection préalable des notifications.
+- Aucun motif de secret ou prix détecté dans les textes et bundles récupérés ; aucun document privé référencé par les pages contrôlées.
+- La revue indépendante du déploiement a rejoué les cinq parcours principaux en français à 390 et 1440 px : aucune image cassée, aucun débordement, aucune exception JavaScript ni violation CSP. Navigation clavier, galeries, contexte des formulaires et arrêt des vidéos vérifiés.
+- Un dernier correctif ajoute le favicon aux douze confirmations pour éliminer leur requête inutile vers `/favicon.ico`. Cette modification n’altère ni le contenu ni le rendu des 72 pages publiques. La vérification HTTP et la revue navigateur ciblée sont rejouées sur ce correctif final.
+
+| Configuration auditée | Audits | Performance mobile | Performance ordinateur | Accessibilité | Bonnes pratiques | SEO |
+|---|---:|---:|---:|---:|---:|---:|
+| Production locale | 24 | 97–100 | 100 | 100 | 100 | 100 |
+| Deploy Preview Netlify | 24 | 97–100 | 99–100 | 100 | 100 | 69 |
+
+Aucun contrôle Lighthouse n’a été exclu. **La seule cause de perte SEO du preview est `is-crawlable` : la réponse `X-Robots-Tag: noindex` interdit intentionnellement son indexation.** La configuration de production a été auditée séparément ; elle n’a pas été publiée. Les résultats du preview sont dans `outputs/v1-restoration/lighthouse-deployed/summary.md` et les 24 rapports associés. La preuve HTTP et le commit effectivement vérifié sont dans `outputs/v1-restoration/deployment-verification.json`.
+
+### Comparaisons visuelles
+
+Chaque comparatif présente la V1 à gauche et la restauration à droite, aux mêmes dimensions. Les captures intégrales finales se trouvent dans `outputs/v1-restoration/final/`. Les différences prévues sont les photographies naturelles, le logo agrandi, les ajouts factuels et Maisons, les états de formulaires et les corrections d’accessibilité. Aucun nouveau style visuel n’a été introduit.
+
+| Parcours | Mobile 390 px | Tablette 768 px | Ordinateur 1440 px |
+|---|---|---|---|
+| Accueil | [Comparatif](outputs/v1-restoration/independent-review/compare-390-home.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-768-home.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-1440-home.webp) |
+| Chevaux | [Comparatif](outputs/v1-restoration/independent-review/compare-390-horses-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-768-horses-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-1440-horses-.webp) |
+| Maisons | [Comparatif](outputs/v1-restoration/independent-review/compare-390-houses-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-768-houses-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-1440-houses-.webp) |
+| Ortho 24 | [Comparatif](outputs/v1-restoration/independent-review/compare-390-houses-ortho-24-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-768-houses-ortho-24-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-1440-houses-ortho-24-.webp) |
+| Ortho 25 | [Comparatif](outputs/v1-restoration/independent-review/compare-390-houses-ortho-25-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-768-houses-ortho-25-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-1440-houses-ortho-25-.webp) |
+
+Les preuves de la revue indépendante en ligne sont conservées dans `outputs/v1-restoration/independent-review/deployed-report.json` et ses captures. Ces fichiers de recette restent locaux et ne sont pas exposés par le site.
