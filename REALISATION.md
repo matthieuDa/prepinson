@@ -23,7 +23,9 @@
 - Lighthouse local sans exclusion, après corrections : mobile 99 performance, 100 accessibilité, 100 bonnes pratiques et 100 SEO ; desktop 99 performance, 100 accessibilité, 100 bonnes pratiques et 100 SEO.
 - Le scan reproductible du worktree et des 305 objets Git historiques ne trouve aucun identifiant, document privé ou montant public correspondant aux motifs contrôlés.
 - La revue indépendante GPT-6 Astra High a corrigé la négociation `Accept-Language` pour les qualités nulles ou invalides, le chargement du hero Ortho 25 et les URL d’images sociales propres au preview. Les neuf cas de routage de langue passent.
-- L’URL du Deploy Preview et ses résultats Lighthouse sont ajoutés après le contrôle final déployé.
+- Deploy Preview vérifié : `https://deploy-preview-1--prepinson.netlify.app/`.
+- Lighthouse du déploiement immuable Netlify, sans retirer de contrôle : mobile et desktop 100 performance, 100 accessibilité et 100 bonnes pratiques. Le SEO obtient 69 uniquement parce que le seul audit SEO échoué est `is-crawlable`, conséquence directe du `noindex` obligatoire du preview. Le même build en configuration de production, sans cet en-tête, obtient 100 SEO.
+- La barre de collaboration Netlify est injectée uniquement sur l’URL stable du Deploy Preview. Les audits automatisés utilisent le permalien immuable du même déploiement afin de mesurer le site livré sans ce code tiers propre à Netlify.
 
 ## Réglages d’export des images
 
