@@ -7,7 +7,7 @@ from src.presentation_data import ui
 
 
 IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
-IG_HOUSE = "https://www.instagram.com/prepinson_the_house/"
+IG_HOUSE = "https://www.instagram.com/prepinson_houses/"
 MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
 MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
 CONSENT_VERSION = "2026-09-20"
@@ -166,7 +166,7 @@ def render_footer(lang, route):
     </div>
     <div class="footer-social">
       <div><p class="eyebrow">{escape(copy['horses']).upper()}</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="{IG_HARAS}" target="_blank" rel="noopener noreferrer">@haras_de_prepinson {_arrow_icon()}</a></div>
-      <div><p class="eyebrow">{escape(copy['houses']).upper()}</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener noreferrer">@prepinson_the_house {_arrow_icon()}</a></div>
+      <div><p class="eyebrow">{escape(copy['houses']).upper()}</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener noreferrer">@prepinson_houses {_arrow_icon()}</a></div>
       <div><p class="eyebrow">{escape(copy['visit']).upper()}</p><address>Ortho 24<br>6983 La Roche-en-Ardenne<br>{ui("country", lang)}</address><a href="{MAP_HARAS}" target="_blank" rel="noopener noreferrer">{escape(copy['haras_map'])} {_arrow_icon()}</a><a href="{MAP_HOUSE}" target="_blank" rel="noopener noreferrer">{escape(copy['house_map'])} {_arrow_icon()}</a></div>
     </div>
     <div class="footer-signature" aria-hidden="true">PREPINSON</div>

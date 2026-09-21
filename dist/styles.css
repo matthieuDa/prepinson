@@ -82,13 +82,13 @@ em { font-weight: 400; }
 .icon { display: inline-block; width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.45; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; vertical-align: middle; }
 .icon use { pointer-events: none; }
 
-/* Approved V1 navigation, with Eva's 15% larger logo group. */
+/* Approved V1 navigation, with a more prominent Prepinson signature. */
 .nav { position: absolute; inset: 0 0 auto; z-index: 30; width: 100%; height: 110px; padding: 0 5.5%; display: flex; align-items: center; gap: 20px; color: white; border-bottom: 1px solid #ffffff30; }
 .nav.solid-nav { position: relative; background: var(--footer); }
-.brand { display: flex; align-items: center; gap: 7px; flex-shrink: 0; min-width: 235px; }
-.brand img { width: 44px; height: 49px; object-fit: contain; }
-.wordmark { font-family: var(--serif); font-size: 32px; letter-spacing: 2.3px; line-height: 1; white-space: nowrap; }
-.brand small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 8px; letter-spacing: 3.4px; text-align: center; }
+.brand { display: flex; align-items: center; gap: 9px; flex-shrink: 0; min-width: 285px; }
+.brand img { width: 54px; height: 61px; object-fit: contain; }
+.wordmark { font-family: var(--serif); font-size: 39px; letter-spacing: 2.6px; line-height: 1; white-space: nowrap; }
+.brand small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 8.5px; letter-spacing: 3.7px; text-align: center; }
 .navlinks { display: flex; align-items: center; gap: 26px; margin-left: auto; font-size: 14px; }
 .navlinks a { position: relative; white-space: nowrap; }
 .navlinks a:not(.nav-book)::after { content: ''; position: absolute; height: 1px; left: 0; bottom: -7px; width: 0; background: white; transition: width .25s; }
@@ -448,10 +448,10 @@ em { font-weight: 400; }
   .container { width: 88%; }
   .nav { height: 85px; padding: 0 6%; gap: 14px; }
   .mobile-nav { top: 85px; }
-  .brand { min-width: 0; gap: 5px; }
-  .brand img { width: 32px; height: 37px; }
-  .wordmark { display: block; font-size: 24px; letter-spacing: 1.7px; }
-  .brand small { font-size: 6px; letter-spacing: 2.2px; }
+  .brand { min-width: 0; gap: 6px; }
+  .brand img { width: 36px; height: 42px; }
+  .wordmark { display: block; font-size: 27px; letter-spacing: 1.8px; }
+  .brand small { font-size: 6.4px; letter-spacing: 2.3px; }
   .language-switch { margin-left: auto; font-size: 11px; }
   .language-options { right: -54px; min-width: 205px; }
   .menu-toggle { font-size: 0; }
@@ -581,8 +581,8 @@ em { font-weight: 400; }
 }
 
 @media (max-width: 390px) {
-  .brand img { width: 29px; }
-  .wordmark { font-size: 24px; }
+  .brand img { width: 34px; }
+  .wordmark { font-size: 26px; }
   .brand small { letter-spacing: 1.7px; }
   .language-switch { margin-left: auto; }
   .haras-hero h1 { font-size: clamp(49px, 12.4vw, 66px); }

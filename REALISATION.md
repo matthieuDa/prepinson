@@ -139,3 +139,5 @@ Chaque image possède des variantes AVIF et WebP responsives, sans agrandissemen
 - Les liens d’adresse du pied de page indiquent explicitement qu’ils ouvrent le haras ou les maisons dans Google Maps, dans les six langues.
 
 Recette locale V6 : 72 pages publiques et 12 confirmations validées, neuf scénarios linguistiques, formulaires testés dans les six langues, 504 configurations de mise en page sans erreur et interaction exclusive des programmes vérifiée à la souris et au clavier. Les captures dédiées à la page Programmes sont conservées localement dans `outputs/v6-editorial/`.
+
+Le groupe logo de la navigation a ensuite été agrandi sur ordinateur et mobile, avec un ajustement spécifique sous 390 px. Le compte Instagram des maisons utilise désormais `@prepinson_houses` dans le pied de page, la page Maisons et les données structurées. Une validation empêche le retour de l’ancien identifiant dans les pages générées.

@@ -99,6 +99,10 @@ for path in sorted(expected):
 
     if "—" in raw:
         fail(rel, "public copy contains an em dash")
+    if "prepinson_the_house" in raw:
+        fail(rel, "obsolete houses Instagram handle remains in public copy")
+    if "https://www.instagram.com/prepinson_houses/" not in raw or "@prepinson_houses" not in raw:
+        fail(rel, "current houses Instagram link or label is missing")
     for map_label in (FORM_COPY[lang]["haras_map"], FORM_COPY[lang]["house_map"]):
         if map_label not in raw:
             fail(rel, f"footer map link is not explicit: {map_label}")

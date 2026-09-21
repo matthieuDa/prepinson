@@ -37,7 +37,7 @@ DOMAIN = "https://www.prepinson.com"
 PREVIEW_MODE = os.environ.get("PREVIEW_MODE") == "true"
 ASSET_DOMAIN = os.environ.get("DEPLOY_PRIME_URL", DOMAIN).rstrip("/") if PREVIEW_MODE else DOMAIN
 IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
-IG_HOUSE = "https://www.instagram.com/prepinson_the_house/"
+IG_HOUSE = "https://www.instagram.com/prepinson_houses/"
 MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
 MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
 ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/styles.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "work/build.py"))).hexdigest()[:12]
@@ -248,7 +248,7 @@ def property_card(lang, slug):
 
 
 def houses(lang):
-    return inner_hero(lang, ui("houses_label", lang), tx("houses_hero", lang), v1("houses_tagline", lang), "house-hero", title_html=v1("houses_hero", lang)) + f'<section id="discover" class="intro container"><div><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{v1("houses_intro_title", lang)}</h2></div><p class="body-copy">{ui("houses_home_copy", lang)}</p></section><section class="property-grid container">{property_card(lang, "ortho-24")}{property_card(lang, "ortho-25")}</section><section class="estate-section"><div class="estate-grid container"><div class="estate-photo">{image("house-1.jpg", ui("location", lang))}</div><div class="estate-copy"><p class="eyebrow">{tx("nav_activities", lang)}</p><h2>{v1("houses_estate_title", lang)}</h2><p>{v1("houses_estate_copy", lang)}</p>{editorial_link(url(lang, "activities"), ui("activities_cta", lang))}</div></div></section><section class="house-instagram"><div class="container"><div><p class="eyebrow">PREPINSON THE HOUSE</p><h2>{v1("houses_instagram_title", lang)}</h2></div><div><p>{v1("houses_instagram_copy", lang)}</p>{editorial_link(IG_HOUSE, "@prepinson_the_house", target="_blank", rel="noopener noreferrer")}</div></div></section>'
+    return inner_hero(lang, ui("houses_label", lang), tx("houses_hero", lang), v1("houses_tagline", lang), "house-hero", title_html=v1("houses_hero", lang)) + f'<section id="discover" class="intro container"><div><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{v1("houses_intro_title", lang)}</h2></div><p class="body-copy">{ui("houses_home_copy", lang)}</p></section><section class="property-grid container">{property_card(lang, "ortho-24")}{property_card(lang, "ortho-25")}</section><section class="estate-section"><div class="estate-grid container"><div class="estate-photo">{image("house-1.jpg", ui("location", lang))}</div><div class="estate-copy"><p class="eyebrow">{tx("nav_activities", lang)}</p><h2>{v1("houses_estate_title", lang)}</h2><p>{v1("houses_estate_copy", lang)}</p>{editorial_link(url(lang, "activities"), ui("activities_cta", lang))}</div></div></section><section class="house-instagram"><div class="container"><div><p class="eyebrow">PREPINSON HOUSES</p><h2>{v1("houses_instagram_title", lang)}</h2></div><div><p>{v1("houses_instagram_copy", lang)}</p>{editorial_link(IG_HOUSE, "@prepinson_houses", target="_blank", rel="noopener noreferrer")}</div></div></section>'
 
 
 def house(lang, slug):
