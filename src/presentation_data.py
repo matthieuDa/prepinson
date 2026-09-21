@@ -114,6 +114,7 @@ UI = {
     "gallery_title": _l("Inside and outside", "À l’intérieur et à l’extérieur", "Binnen en buiten", "Innen und außen", "Inomhus och utomhus", "Bannen a baussen"),
     "instagram_fallback": _l("View the latest posts on Instagram", "Voir les dernières publications sur Instagram", "Bekijk de nieuwste berichten op Instagram", "Neueste Beiträge auf Instagram ansehen", "Se de senaste inläggen på Instagram", "Déi lescht Bäiträg op Instagram kucken"),
     "read_story": _l("Read the story", "Lire son histoire", "Lees het verhaal", "Geschichte lesen", "Läs berättelsen", "Geschicht liesen"),
+    "dalton_gallery": _l("Dalton at Falsterbo", "Dalton à Falsterbo", "Dalton in Falsterbo", "Dalton in Falsterbo", "Dalton i Falsterbo", "Den Dalton zu Falsterbo"),
 }
 
 
@@ -621,6 +622,9 @@ UI.update({'boarding_copy': {'en': 'Individual attention, daily supervision and 
                 'lb': 'La Grange mat hirem Baussepool'}})
 
 GALLERY_ALT["prepinson-ortho-25-garden-terrace.webp"] = _l("Garden and terrace at Le Cottage", "Jardin et terrasse du Cottage", "Tuin en terras van Le Cottage", "Garten und Terrasse des Cottage", "Trädgård och terrass vid Le Cottage", "Gaart an Terrass vum Cottage")
+GALLERY_ALT["dalton-falsterbo-dressage.webp"] = _l("Dalton de Prepinson competing in dressage at Falsterbo", "Dalton de Prepinson en piste lors d’une épreuve de dressage à Falsterbo", "Dalton de Prepinson tijdens een dressuurproef in Falsterbo", "Dalton de Prepinson bei einer Dressurprüfung in Falsterbo", "Dalton de Prepinson under en dressyrklass i Falsterbo", "Den Dalton de Prepinson bei enger Dressurprüfung zu Falsterbo")
+GALLERY_ALT["dalton-falsterbo-finish.webp"] = _l("Dalton de Prepinson and his rider at the end of their test at Falsterbo", "Dalton de Prepinson et sa cavalière à la fin de leur reprise à Falsterbo", "Dalton de Prepinson en zijn amazone aan het einde van hun proef in Falsterbo", "Dalton de Prepinson und seine Reiterin am Ende ihrer Prüfung in Falsterbo", "Dalton de Prepinson och hans ryttare efter ritten i Falsterbo", "Den Dalton de Prepinson a seng Reiderin nom Enn vun hirer Prüfung zu Falsterbo")
+GALLERY_ALT["dalton-falsterbo-arena-entry.webp"] = _l("Dalton de Prepinson entering the arena at Falsterbo", "Dalton de Prepinson entre en piste à Falsterbo", "Dalton de Prepinson komt de piste in Falsterbo binnen", "Dalton de Prepinson beim Einritt in die Arena in Falsterbo", "Dalton de Prepinson på väg in på banan i Falsterbo", "Den Dalton de Prepinson kënnt zu Falsterbo an d'Pist")
 
 UI.update({'alt_indoor': {'en': 'Interior of the indoor riding arena, with roof lights and a sand surface',
                 'fr': 'Intérieur du manège couvert, avec lumière zénithale et sol en sable',

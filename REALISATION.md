@@ -124,3 +124,9 @@ Le commit V4 `dcbedb27ef62239d67271c6ae68c40f12adb4c56` est vérifié sur le [De
 - Le formulaire de contact a été retiré de la page Activités. La page se termine par une présentation de La Grange et du Cottage, avec accès direct à chaque maison et à la page d’ensemble.
 
 Recette locale V5 : génération et contrôle des 72 pages publiques et 12 confirmations, neuf scénarios linguistiques, formulaires dans les six langues, validation mobile de la newsletter et 504 configurations de mise en page sans débordement. Les captures de contrôle V5 restent locales dans `outputs/v5/`.
+
+## Photographies de Dalton de Prepinson
+
+Trois photographies identifiées et transmises par Eva ont été ajoutées au récit de Dalton sur la page Références : une image en piste, le moment suivant la reprise et l’entrée dans l’arène de Falsterbo. Les vues très proches et le doublon sont volontairement écartés afin de conserver une séquence courte et éditoriale.
+
+Chaque image possède des variantes AVIF et WebP responsives, sans agrandissement, ainsi qu’un texte alternatif propre aux six langues. La galerie s’ouvre au clavier dans la visionneuse accessible existante. Ces photographies ne sont associées ni à Juni ni à Jackson.

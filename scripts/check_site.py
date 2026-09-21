@@ -106,6 +106,10 @@ for path in sorted(expected):
         for house_route in (f"/{lang}/houses/ortho-24/", f"/{lang}/houses/ortho-25/"):
             if house_route not in raw:
                 fail(rel, f"Activities houses feature is missing {house_route}")
+    if route == "horses/references":
+        for asset in ("dalton-falsterbo-dressage.webp", "dalton-falsterbo-finish.webp", "dalton-falsterbo-arena-entry.webp"):
+            if asset not in raw:
+                fail(rel, f"Dalton reference gallery is missing {asset}")
 
     if page.duplicate_ids:
         fail(rel, f"duplicate IDs: {page.duplicate_ids}")

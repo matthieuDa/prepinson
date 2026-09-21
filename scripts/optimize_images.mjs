@@ -1,14 +1,17 @@
 /** Rebuild responsive variants from the approved local photographs, never upscale. */
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {pathToFileURL} from 'node:url';
+import {createRequire} from 'node:module';
 const modulePath=process.env.SHARP_MODULE;
-const imported=await import(modulePath?pathToFileURL(path.join(modulePath,'lib/index.js')).href:'sharp');
-const sharp=imported.default;
+const require=createRequire(import.meta.url);
+const imported=modulePath?require(modulePath):await import('sharp');
+const sharp=imported.default || imported;
 const root=path.resolve(import.meta.dirname,'..');
 const manifest=JSON.parse(await fs.readFile(path.join(root,'src/image-manifest.json'),'utf8'));
 const assetDir=path.join(root,'dist/assets');
-for(const [filename,item] of Object.entries(manifest)){
+const requested=new Set((process.env.IMAGE_FAMILIES || '').split(',').filter(Boolean));
+const entries=Object.entries(manifest).filter(([filename])=>!requested.size || requested.has(filename));
+for(const [filename,item] of entries){
  const original=await fs.readFile(path.join(assetDir,filename));
  for(const variant of item.variants){
   const output=path.join(root,'dist',variant.src);
@@ -28,4 +31,4 @@ for(const [filename,item] of Object.entries(manifest)){
   }
  }
 }
-console.log(`Optimized ${Object.keys(manifest).length} approved image families.`);
+console.log(`Optimized ${entries.length} approved image families.`);

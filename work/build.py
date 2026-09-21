@@ -226,7 +226,15 @@ def sales(lang):
 
 
 def references(lang):
-    rows = "".join(f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><p>{tx(f"{slug}_copy", lang)}</p></article>' for i, slug in enumerate(("dalton", "juni", "jackson"), 1))
+    dalton_photos = ("dalton-falsterbo-dressage.webp", "dalton-falsterbo-finish.webp", "dalton-falsterbo-arena-entry.webp")
+    dalton_gallery = '<div class="reference-media"><p class="eyebrow">' + escape(ui("dalton_gallery", lang)) + '</p><div class="reference-gallery">' + "".join(
+        f'<button type="button" data-lightbox-item="{i}" data-lightbox-src="/assets/{name}?v={ASSET_VERSION}" aria-label="{escape(ui("enlarge", lang) + ": " + GALLERY_ALT[name][lang], quote=True)}">{image(name, GALLERY_ALT[name][lang], sizes="(max-width: 700px) 88vw, 27vw")}</button>'
+        for i, name in enumerate(dalton_photos)
+    ) + '</div></div>'
+    rows = "".join(
+        f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><div class="reference-story-copy"><p>{tx(f"{slug}_copy", lang)}</p></div>{dalton_gallery if slug == "dalton" else ""}</article>'
+        for i, slug in enumerate(("dalton", "juni", "jackson"), 1)
+    )
     return inner_hero(lang, tx("service_references", lang), tx("references_hero", lang), tx("service_references_copy", lang), "hero-horses-2000.webp") + f'<section id="discover" class="reference-stories container">{rows}</section>'
 
 

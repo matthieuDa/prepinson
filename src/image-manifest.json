@@ -1849,5 +1849,35 @@
         "height": 1333
       }
     ]
+  },
+  "dalton-falsterbo-dressage.webp": {
+    "width": 1366,
+    "height": 2048,
+    "variants": [
+      {"src": "/assets/dalton-falsterbo-dressage-480.webp", "width": 480, "height": 720},
+      {"src": "/assets/dalton-falsterbo-dressage-768.webp", "width": 768, "height": 1152},
+      {"src": "/assets/dalton-falsterbo-dressage-1100.webp", "width": 1100, "height": 1649},
+      {"src": "/assets/dalton-falsterbo-dressage.webp", "width": 1366, "height": 2048}
+    ]
+  },
+  "dalton-falsterbo-finish.webp": {
+    "width": 1366,
+    "height": 2048,
+    "variants": [
+      {"src": "/assets/dalton-falsterbo-finish-480.webp", "width": 480, "height": 720},
+      {"src": "/assets/dalton-falsterbo-finish-768.webp", "width": 768, "height": 1152},
+      {"src": "/assets/dalton-falsterbo-finish-1100.webp", "width": 1100, "height": 1649},
+      {"src": "/assets/dalton-falsterbo-finish.webp", "width": 1366, "height": 2048}
+    ]
+  },
+  "dalton-falsterbo-arena-entry.webp": {
+    "width": 1366,
+    "height": 2048,
+    "variants": [
+      {"src": "/assets/dalton-falsterbo-arena-entry-480.webp", "width": 480, "height": 720},
+      {"src": "/assets/dalton-falsterbo-arena-entry-768.webp", "width": 768, "height": 1152},
+      {"src": "/assets/dalton-falsterbo-arena-entry-1100.webp", "width": 1100, "height": 1649},
+      {"src": "/assets/dalton-falsterbo-arena-entry.webp", "width": 1366, "height": 2048}
+    ]
   }
 }
