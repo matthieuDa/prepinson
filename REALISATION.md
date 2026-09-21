@@ -130,3 +130,12 @@ Recette locale V5 : génération et contrôle des 72 pages publiques et 12 confi
 Trois photographies identifiées et transmises par Eva ont été ajoutées au récit de Dalton sur la page Références : une image en piste, le moment suivant la reprise et l’entrée dans l’arène de Falsterbo. Les vues très proches et le doublon sont volontairement écartés afin de conserver une séquence courte et éditoriale.
 
 Chaque image possède des variantes AVIF et WebP responsives, sans agrandissement, ainsi qu’un texte alternatif propre aux six langues. La galerie s’ouvre au clavier dans la visionneuse accessible existante. Ces photographies ne sont associées ni à Juni ni à Jackson.
+
+## V6 — Accordéons et naturel des six langues
+
+- Les quatre programmes forment désormais un accordéon exclusif : l’ouverture d’un panneau referme le précédent. Le comportement utilise le regroupement HTML natif, avec un complément JavaScript générique réutilisable par les futurs groupes similaires.
+- Le slogan traduit littéralement sur la page Chevaux a été remplacé par une formulation propre à chaque langue. Les accroches des chevaux et des maisons, plusieurs appels éditoriaux et les titres de séjour ont également été révisés lorsqu’ils reprenaient trop directement une structure anglaise.
+- Les tirets longs ont été retirés du contenu public, des sujets de formulaire, des titres de maisons, des légendes de visionneuse et des titres de navigateur. Les plages numériques conservent le tiret typographique approprié.
+- Les liens d’adresse du pied de page indiquent explicitement qu’ils ouvrent le haras ou les maisons dans Google Maps, dans les six langues.
+
+Recette locale V6 : 72 pages publiques et 12 confirmations validées, neuf scénarios linguistiques, formulaires testés dans les six langues, 504 configurations de mise en page sans erreur et interaction exclusive des programmes vérifiée à la souris et au clavier. Les captures dédiées à la page Programmes sont conservées localement dans `outputs/v6-editorial/`.

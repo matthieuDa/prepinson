@@ -33,7 +33,23 @@ for(const lang of (process.env.CAPTURE_ONLY ? [] : langs))for(const route of rou
   checks.push({page:current,width,scrollWidth:result.scrollWidth});
  }
 }
-for(const route of ['','horses','houses','houses/ortho-24','houses/ortho-25'])for(const width of [390,768,1440]){
+for(const lang of (process.env.CAPTURE_ONLY ? [] : langs)){
+ current=`/${lang}/horses/programmes/`;
+ await page.setViewportSize({width:390,height:900});
+ await page.goto(base+current,{waitUntil:'load'});
+ const panels=page.locator('.programme-list > details');
+ if(await panels.count()!==4)errors.push({page:current,type:'accordion',message:'Expected four programme panels'});
+ const initialOpen=await panels.evaluateAll(items=>items.filter(item=>item.open).map(item=>items.indexOf(item)));
+ if(initialOpen.length!==1||initialOpen[0]!==0)errors.push({page:current,type:'accordion',message:`Unexpected initial open panels: ${initialOpen}`});
+ await panels.nth(1).locator('summary').click();
+ const secondOpen=await panels.evaluateAll(items=>items.filter(item=>item.open).map(item=>items.indexOf(item)));
+ if(secondOpen.length!==1||secondOpen[0]!==1)errors.push({page:current,type:'accordion',message:`Opening the second panel did not close the first: ${secondOpen}`});
+ await panels.nth(3).locator('summary').focus();
+ await page.keyboard.press('Enter');
+ const keyboardOpen=await panels.evaluateAll(items=>items.filter(item=>item.open).map(item=>items.indexOf(item)));
+ if(keyboardOpen.length!==1||keyboardOpen[0]!==3)errors.push({page:current,type:'accordion',message:`Keyboard opening did not remain exclusive: ${keyboardOpen}`});
+}
+for(const route of ['','horses','horses/programmes','houses','houses/ortho-24','houses/ortho-25'])for(const width of [390,768,1440]){
  await page.setViewportSize({width,height:900});
  await page.goto(base+'/en/'+(route?route+'/':''),{waitUntil:'load'});await page.evaluate(()=>document.fonts.ready);
  await page.evaluate(async()=>{for(const i of document.images){if(!i.closest('dialog'))i.loading='eager';} await Promise.all([...document.images].filter(i=>!i.closest('dialog')).map(i=>i.decode().catch(()=>{})));});

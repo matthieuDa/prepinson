@@ -85,6 +85,18 @@
     });
   });
 
+  document.querySelectorAll('[data-exclusive-details]').forEach((group) => {
+    const items = Array.from(group.querySelectorAll(':scope > details'));
+    items.forEach((details) => {
+      details.addEventListener('toggle', () => {
+        if (!details.open) return;
+        items.forEach((other) => {
+          if (other !== details) other.removeAttribute('open');
+        });
+      });
+    });
+  });
+
   document.addEventListener('click', (event) => {
     languageSwitches.forEach((details) => {
       if (details.open && !details.contains(event.target)) details.removeAttribute('open');
@@ -177,7 +189,7 @@
     lightboxImage.alt = alt;
     if (lightboxCaption) {
       const detail = item.getAttribute('data-lightbox-caption') || alt;
-      lightboxCaption.textContent = `${selectedImage + 1} / ${lightboxItems.length}${detail ? ` — ${detail}` : ''}`;
+      lightboxCaption.textContent = `${selectedImage + 1} / ${lightboxItems.length}${detail ? `: ${detail}` : ''}`;
     }
   };
 

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 sys.path.insert(0, str(ROOT))
+from src.form_data import FORM_COPY  # noqa: E402
 from src.site_data import LANGS, ROUTES  # noqa: E402
 
 DOMAIN = "https://www.prepinson.com"
@@ -95,6 +96,19 @@ for path in sorted(expected):
     lang = rel.parts[0]
     route = "/".join(rel.parts[1:-1])
     canonical = DOMAIN + f"/{lang}/" + (route + "/" if route else "")
+
+    if "—" in raw:
+        fail(rel, "public copy contains an em dash")
+    for map_label in (FORM_COPY[lang]["haras_map"], FORM_COPY[lang]["house_map"]):
+        if map_label not in raw:
+            fail(rel, f"footer map link is not explicit: {map_label}")
+    if route == "horses/programmes":
+        if 'class="programme-list" data-exclusive-details' not in raw:
+            fail(rel, "programme list is not configured as an exclusive details group")
+        if raw.count('name="programmes"') != 4:
+            fail(rel, "programme details do not share the native exclusive group name")
+        if raw.count('name="programmes" open') != 1:
+            fail(rel, "programme list must start with exactly one open panel")
 
     if 'class="updates-form"' not in raw or "newsletter-form" in raw:
         fail(rel, "newsletter must use the content-blocker-resistant footer classes")
@@ -196,6 +210,8 @@ for path in sorted(expected):
                     fail(rel, f"missing responsive asset {path_part}")
 
 gateway = (DIST / "index.html").read_text(encoding="utf-8")
+if "—" in gateway:
+    fail("index.html", "language gateway contains an em dash")
 if 'name="robots" content="noindex,follow"' not in gateway:
     fail("index.html", "root gateway must be non-indexable fallback")
 for lang in LANGS:
@@ -203,6 +219,8 @@ for lang in LANGS:
         fail("index.html", f"missing gateway link for {lang}")
 
 not_found = (DIST / "404.html").read_text(encoding="utf-8")
+if "—" in not_found:
+    fail("404.html", "404 page contains an em dash")
 if 'name="robots" content="noindex,nofollow"' not in not_found or 'data-page="404"' not in not_found:
     fail("404.html", "404 page must be localized by the site script and excluded from indexing")
 if "/* /404.html 404" not in (DIST / "_redirects").read_text(encoding="utf-8"):
