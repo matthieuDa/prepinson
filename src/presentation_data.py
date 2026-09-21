@@ -670,7 +670,7 @@ for _key, _values in UI_UPDATES.items():
 for _key, _values in GALLERY_COPY.items():
     GALLERY_ALT[_key] = dict(zip(LANGS, _values))
 MEDIA.update({
-    "home_hero": "prepinson-sport-horse.webp",
+    "home_hero": "hero-horses-2000.webp",
     "intro": "prepinson-horse-care.webp",
     "team_eva": "eva-schiller-portrait.webp",
     "team_nicolas": "nicolas-derouault-portrait.webp",

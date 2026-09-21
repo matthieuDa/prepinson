@@ -42,10 +42,12 @@ for(const lang of (process.env.CAPTURE_ONLY ? [] : langs)){
  const initialOpen=await panels.evaluateAll(items=>items.filter(item=>item.open).map(item=>items.indexOf(item)));
  if(initialOpen.length!==1||initialOpen[0]!==0)errors.push({page:current,type:'accordion',message:`Unexpected initial open panels: ${initialOpen}`});
  await panels.nth(1).locator('summary').click();
+ await page.waitForFunction(()=>[...document.querySelectorAll('.programme-list details')].every(el=>!el.getAnimations().length));
  const secondOpen=await panels.evaluateAll(items=>items.filter(item=>item.open).map(item=>items.indexOf(item)));
  if(secondOpen.length!==1||secondOpen[0]!==1)errors.push({page:current,type:'accordion',message:`Opening the second panel did not close the first: ${secondOpen}`});
  await panels.nth(3).locator('summary').focus();
  await page.keyboard.press('Enter');
+ await page.waitForFunction(()=>[...document.querySelectorAll('.programme-list details')].every(el=>!el.getAnimations().length));
  const keyboardOpen=await panels.evaluateAll(items=>items.filter(item=>item.open).map(item=>items.indexOf(item)));
  if(keyboardOpen.length!==1||keyboardOpen[0]!==3)errors.push({page:current,type:'accordion',message:`Keyboard opening did not remain exclusive: ${keyboardOpen}`});
 }

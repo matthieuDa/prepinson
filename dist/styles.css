@@ -198,7 +198,11 @@ em { font-weight: 400; }
 .team-gallery-more { margin-top: 26px; border-block: 1px solid var(--line); }
 .team-gallery-more summary { padding: 22px 0; display: flex; justify-content: space-between; gap: 20px; align-items: center; cursor: pointer; list-style: none; }
 .team-gallery-more summary::-webkit-details-marker { display: none; }
+.team-gallery-more summary .icon { transition: transform .28s ease; }
 .team-gallery-more[open] summary .icon { transform: rotate(45deg); }
+.team-gallery-more[data-expanded="false"] summary .icon { transform: none; }
+.horses-team-gallery { padding: 70px 0 100px; }
+.horses-team-gallery .team-album { margin-top: 0; }
 .team-gallery-more .gallery { margin: 0 0 28px; }
 .team-gallery-more .gallery img { object-fit: cover; }
 .reference-pedigree { max-width: 760px; margin: 24px 0; font-size: 16px; line-height: 1.8; }
@@ -258,8 +262,9 @@ em { font-weight: 400; }
 .programme-list summary { list-style: none; cursor: pointer; padding: 25px 0; display: flex; align-items: center; gap: 23px; font-family: var(--serif); font-size: 32px; line-height: 1.15; }
 .programme-list summary::-webkit-details-marker { display: none; }
 .programme-number { font-family: var(--sans); font-size: 11px; color: var(--muted); }
-.programme-toggle { margin-left: auto; display: flex; }
+.programme-toggle { margin-left: auto; display: flex; transition: transform .28s ease; }
 .programme-list details[open] .programme-toggle { transform: rotate(45deg); }
+.programme-list details[data-expanded="false"] .programme-toggle { transform: none; }
 .programme-panel { padding: 0 20px 28px 38px; color: var(--muted); }
 .programme-panel p { line-height: 1.85; }
 
@@ -280,6 +285,7 @@ em { font-weight: 400; }
 .reference-stories { padding: 70px 0 120px; }
 .reference-story { display: grid; grid-template-columns: .35fr .8fr 1fr; gap: 45px; align-items: start; padding: 50px 0; border-bottom: 1px solid var(--line); }
 .reference-story h2 { margin: 0; font-size: 52px; }
+.reference-story-copy { grid-column: 2 / -1; max-width: 76ch; }
 .reference-story-copy p { margin: 0; color: var(--muted); line-height: 1.85; }
 .reference-media { grid-column: 2 / -1; margin-top: 18px; }
 .reference-media > .eyebrow { margin-bottom: 18px; color: var(--muted); }
@@ -535,6 +541,7 @@ em { font-weight: 400; }
   .sales-section { padding: 65px 0; }
   .reference-story { grid-template-columns: 1fr; gap: 12px; padding: 38px 0; }
   .reference-story h2 { font-size: 43px; }
+  .reference-story-copy { grid-column: auto; }
   .reference-media { grid-column: auto; margin-top: 20px; }
   .reference-gallery { grid-template-columns: 1fr 1fr; gap: 10px; }
   .reference-gallery button { height: 285px; }

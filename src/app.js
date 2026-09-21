@@ -85,17 +85,60 @@
     });
   });
 
-  document.querySelectorAll('[data-exclusive-details]').forEach((group) => {
-    const items = Array.from(group.querySelectorAll(':scope > details'));
-    items.forEach((details) => {
-      details.addEventListener('toggle', () => {
-        if (!details.open) return;
-        items.forEach((other) => {
-          if (other !== details) other.removeAttribute('open');
-        });
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const disclosures = new Map();
+  document.querySelectorAll('main details').forEach((details) => {
+    const summary = details.querySelector(':scope > summary');
+    if (!summary) return;
+    const state = { expanded: details.open, animation: null };
+    disclosures.set(details, state);
+    // Native grouping remains in the HTML for visitors without JavaScript.
+    // Enhanced groups allow the outgoing panel to finish its closing motion.
+    if (details.parentElement.matches('[data-exclusive-details]')) details.removeAttribute('name');
+    const finish = () => {
+      const animation = state.animation;
+      state.animation = null;
+      if (animation) { animation.onfinish = null; animation.cancel(); }
+      details.open = state.expanded;
+      details.style.overflow = '';
+    };
+    state.finish = finish;
+    state.setExpanded = (expanded) => {
+      const start = details.getBoundingClientRect().height;
+      if (state.animation) { state.animation.onfinish = null; state.animation.cancel(); }
+      state.animation = null;
+      state.expanded = expanded;
+      summary.setAttribute('aria-expanded', String(expanded));
+      details.dataset.expanded = String(expanded);
+      Array.from(details.children).filter(child => child !== summary).forEach(child => { child.inert = !expanded; });
+      if (reducedMotion.matches || typeof details.animate !== 'function') { finish(); return; }
+      if (expanded) details.open = true;
+      const style = getComputedStyle(details);
+      const borders = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+      const end = expanded ? details.getBoundingClientRect().height : summary.getBoundingClientRect().height + borders;
+      details.style.overflow = 'hidden';
+      state.animation = details.animate({ height: [`${start}px`, `${end}px`] }, {
+        duration: 280, easing: 'cubic-bezier(.22, .61, .36, 1)', fill: 'both',
       });
+      state.animation.onfinish = finish;
+    };
+    summary.addEventListener('click', (event) => {
+      event.preventDefault();
+      const expanded = !state.expanded;
+      const group = details.parentElement;
+      if (expanded && group.matches('[data-exclusive-details]')) {
+        group.querySelectorAll(':scope > details').forEach(other => {
+          const sibling = disclosures.get(other);
+          if (other !== details && sibling?.expanded) sibling.setExpanded(false);
+        });
+      }
+      state.setExpanded(expanded);
     });
   });
+  // Complete pending transitions when their geometry or motion preference changes.
+  const finishDisclosures = () => disclosures.forEach(state => { if (state.animation) state.finish(); });
+  window.addEventListener('resize', finishDisclosures);
+  reducedMotion.addEventListener('change', finishDisclosures);
 
   document.addEventListener('click', (event) => {
     languageSwitches.forEach((details) => {
