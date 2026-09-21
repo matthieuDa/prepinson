@@ -5,6 +5,7 @@ import {createGzip} from 'node:zlib';
 import {resolve, extname, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=resolve(fileURLToPath(new URL('./dist',import.meta.url)));
+const port=Number(process.env.PORT || 3008);
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.avif':'image/avif','.svg':'image/svg+xml','.mp4':'video/mp4','.woff2':'font/woff2','.xml':'application/xml','.txt':'text/plain','.json':'application/json'};
 const server=http.createServer(async(req,res)=>{
  try{
@@ -40,5 +41,5 @@ const server=http.createServer(async(req,res)=>{
   }catch{res.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'});res.end('Page not found');}
  }
 });
-server.on('error',err=>{console.error(err.code==='EADDRINUSE'?'Port 3008 is already in use. Stop the other server and run ./run.sh again.':err.message);process.exit(1)});
-server.listen(3008,'0.0.0.0',()=>console.log('Prepinson is running at http://localhost:3008'));
+server.on('error',err=>{console.error(err.code==='EADDRINUSE'?`Port ${port} is already in use. Choose another PORT or stop the other server.`:err.message);process.exit(1)});
+server.listen(port,'0.0.0.0',()=>console.log(`Prepinson is running at http://localhost:${port}`));

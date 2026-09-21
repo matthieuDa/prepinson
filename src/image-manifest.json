@@ -1854,30 +1854,298 @@
     "width": 1366,
     "height": 2048,
     "variants": [
-      {"src": "/assets/dalton-falsterbo-dressage-480.webp", "width": 480, "height": 720},
-      {"src": "/assets/dalton-falsterbo-dressage-768.webp", "width": 768, "height": 1152},
-      {"src": "/assets/dalton-falsterbo-dressage-1100.webp", "width": 1100, "height": 1649},
-      {"src": "/assets/dalton-falsterbo-dressage.webp", "width": 1366, "height": 2048}
+      {
+        "src": "/assets/dalton-falsterbo-dressage-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/dalton-falsterbo-dressage-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/dalton-falsterbo-dressage-1100.webp",
+        "width": 1100,
+        "height": 1649
+      },
+      {
+        "src": "/assets/dalton-falsterbo-dressage.webp",
+        "width": 1366,
+        "height": 2048
+      }
     ]
   },
   "dalton-falsterbo-finish.webp": {
     "width": 1366,
     "height": 2048,
     "variants": [
-      {"src": "/assets/dalton-falsterbo-finish-480.webp", "width": 480, "height": 720},
-      {"src": "/assets/dalton-falsterbo-finish-768.webp", "width": 768, "height": 1152},
-      {"src": "/assets/dalton-falsterbo-finish-1100.webp", "width": 1100, "height": 1649},
-      {"src": "/assets/dalton-falsterbo-finish.webp", "width": 1366, "height": 2048}
+      {
+        "src": "/assets/dalton-falsterbo-finish-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/dalton-falsterbo-finish-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/dalton-falsterbo-finish-1100.webp",
+        "width": 1100,
+        "height": 1649
+      },
+      {
+        "src": "/assets/dalton-falsterbo-finish.webp",
+        "width": 1366,
+        "height": 2048
+      }
     ]
   },
   "dalton-falsterbo-arena-entry.webp": {
     "width": 1366,
     "height": 2048,
     "variants": [
-      {"src": "/assets/dalton-falsterbo-arena-entry-480.webp", "width": 480, "height": 720},
-      {"src": "/assets/dalton-falsterbo-arena-entry-768.webp", "width": 768, "height": 1152},
-      {"src": "/assets/dalton-falsterbo-arena-entry-1100.webp", "width": 1100, "height": 1649},
-      {"src": "/assets/dalton-falsterbo-arena-entry.webp", "width": 1366, "height": 2048}
+      {
+        "src": "/assets/dalton-falsterbo-arena-entry-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/dalton-falsterbo-arena-entry-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/dalton-falsterbo-arena-entry-1100.webp",
+        "width": 1100,
+        "height": 1649
+      },
+      {
+        "src": "/assets/dalton-falsterbo-arena-entry.webp",
+        "width": 1366,
+        "height": 2048
+      }
+    ]
+  },
+  "prepinson-sport-horse.webp": {
+    "width": 2000,
+    "height": 1333,
+    "variants": [
+      {
+        "src": "/assets/prepinson-sport-horse-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-sport-horse-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-sport-horse-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-sport-horse-2000.webp",
+        "width": 2000,
+        "height": 1333
+      }
+    ],
+    "mobileImage": "prepinson-rider-detail.webp"
+  },
+  "prepinson-horse-care.webp": {
+    "width": 1400,
+    "height": 2100,
+    "variants": [
+      {
+        "src": "/assets/prepinson-horse-care-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/prepinson-horse-care-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/prepinson-horse-care-1200.webp",
+        "width": 1200,
+        "height": 1800
+      },
+      {
+        "src": "/assets/prepinson-horse-care-1400.webp",
+        "width": 1400,
+        "height": 2100
+      }
+    ]
+  },
+  "eva-schiller-portrait.webp": {
+    "width": 960,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/eva-schiller-portrait-480.webp",
+        "width": 480,
+        "height": 600
+      },
+      {
+        "src": "/assets/eva-schiller-portrait-768.webp",
+        "width": 768,
+        "height": 960
+      },
+      {
+        "src": "/assets/eva-schiller-portrait-960.webp",
+        "width": 960,
+        "height": 1200
+      }
+    ]
+  },
+  "nicolas-derouault-portrait.webp": {
+    "width": 960,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/nicolas-derouault-portrait-480.webp",
+        "width": 480,
+        "height": 600
+      },
+      {
+        "src": "/assets/nicolas-derouault-portrait-768.webp",
+        "width": 768,
+        "height": 960
+      },
+      {
+        "src": "/assets/nicolas-derouault-portrait-960.webp",
+        "width": 960,
+        "height": 1200
+      }
+    ]
+  },
+  "prepinson-team-portrait.webp": {
+    "width": 2000,
+    "height": 1544,
+    "variants": [
+      {
+        "src": "/assets/prepinson-team-portrait-480.webp",
+        "width": 480,
+        "height": 371
+      },
+      {
+        "src": "/assets/prepinson-team-portrait-768.webp",
+        "width": 768,
+        "height": 593
+      },
+      {
+        "src": "/assets/prepinson-team-portrait-1200.webp",
+        "width": 1200,
+        "height": 926
+      },
+      {
+        "src": "/assets/prepinson-team-portrait-2000.webp",
+        "width": 2000,
+        "height": 1544
+      }
+    ]
+  },
+  "prepinson-team-arena.webp": {
+    "width": 2000,
+    "height": 1333,
+    "variants": [
+      {
+        "src": "/assets/prepinson-team-arena-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-team-arena-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-team-arena-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-team-arena-2000.webp",
+        "width": 2000,
+        "height": 1333
+      }
+    ]
+  },
+  "prepinson-young-horse.webp": {
+    "width": 1600,
+    "height": 1006,
+    "variants": [
+      {
+        "src": "/assets/prepinson-young-horse-480.webp",
+        "width": 480,
+        "height": 302
+      },
+      {
+        "src": "/assets/prepinson-young-horse-768.webp",
+        "width": 768,
+        "height": 483
+      },
+      {
+        "src": "/assets/prepinson-young-horse-1200.webp",
+        "width": 1200,
+        "height": 755
+      },
+      {
+        "src": "/assets/prepinson-young-horse-1600.webp",
+        "width": 1600,
+        "height": 1006
+      }
+    ]
+  },
+  "prepinson-pastures.webp": {
+    "width": 1600,
+    "height": 1067,
+    "variants": [
+      {
+        "src": "/assets/prepinson-pastures-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/prepinson-pastures-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/prepinson-pastures-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/prepinson-pastures-1600.webp",
+        "width": 1600,
+        "height": 1067
+      }
+    ]
+  },
+  "prepinson-rider-detail.webp": {
+    "width": 1200,
+    "height": 1800,
+    "variants": [
+      {
+        "src": "/assets/prepinson-rider-detail-480.webp",
+        "width": 480,
+        "height": 720
+      },
+      {
+        "src": "/assets/prepinson-rider-detail-768.webp",
+        "width": 768,
+        "height": 1152
+      },
+      {
+        "src": "/assets/prepinson-rider-detail-1200.webp",
+        "width": 1200,
+        "height": 1800
+      }
     ]
   }
 }

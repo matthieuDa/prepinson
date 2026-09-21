@@ -284,6 +284,24 @@
     });
   }
 
+  // FeedPane creates its lightbox link before a post is selected. Give that
+  // link the real profile destination until the widget supplies a permalink.
+  const feedpaneFallback = document.querySelector('.feedpane-fallback a[href]');
+  if (feedpaneFallback) {
+    const initialiseFeedpaneLink = () => {
+      const link = document.querySelector('.fp-lb-link');
+      if (!link) return false;
+      if (!link.getAttribute('href')) link.href = feedpaneFallback.href;
+      return true;
+    };
+    if (!initialiseFeedpaneLink()) {
+      const observer = new MutationObserver(() => {
+        if (initialiseFeedpaneLink()) observer.disconnect();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       languageSwitches.forEach((details) => {

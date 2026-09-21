@@ -141,3 +141,33 @@ Chaque image possède des variantes AVIF et WebP responsives, sans agrandissemen
 Recette locale V6 : 72 pages publiques et 12 confirmations validées, neuf scénarios linguistiques, formulaires testés dans les six langues, 504 configurations de mise en page sans erreur et interaction exclusive des programmes vérifiée à la souris et au clavier. Les captures dédiées à la page Programmes sont conservées localement dans `outputs/v6-editorial/`.
 
 Le groupe logo de la navigation a ensuite été agrandi sur ordinateur et mobile, avec un ajustement spécifique sous 390 px. Le compte Instagram des maisons utilise désormais `@prepinson_houses` dans le pied de page, la page Maisons et les données structurées. Une validation empêche le retour de l’ancien identifiant dans les pages générées.
+
+## V6 finale : retours d’Eva et photographies, 22 septembre 2026
+
+La direction artistique approuvée est conservée. Les derniers faits et textes d’Eva sont regroupés dans `src/client_content.py`, utilisés par le générateur pour les six langues.
+
+- L’accueil présente désormais l’élevage, la formation, la vente et la pension. L’introduction décrit la progression des jeunes chevaux, les concours, les sorties quotidiennes et le travail en forêt.
+- Les capacités sont corrigées partout dans les pages et métadonnées : 19 boxes de sport, 9 boxes de poulinage et jeunes chevaux de 5 × 8 m, domaine de 30 ha. Les pistes conservent leurs dimensions et précisent le sol fibré du manège et la subirrigation de la carrière. « Ebb & floor » dans le mail est traité comme une coquille pour « ebb and flow ».
+- Eva : `3M3A3575`. Nicolas : `3M3A3579`. La photographie d’introduction avec Helena et Dalton est remplacée par `3M3A3500`.
+- Accueil ordinateur : `3M3A3140`, un jeune cheval au travail en liberté dans le manège. Accueil téléphone en portrait : `3M3A3793`, détail du cavalier et du tapis Prepinson, pour éviter de couper le cheval de la photo horizontale. Le troupeau `3M3A2739` reste utilisé ailleurs sur le site.
+- La section Équipe comprend une photographie de groupe (`3M3A3564`) puis une galerie dépliable : équipe devant la carrière (`3M3A3597`), préparation du cheval (`3M3A3500`), jeune cheval gris (`3M3A2995`), paddocks (`3M3A2759`) et détail équestre (`3M3A3793`). La visionneuse existante permet le parcours au clavier et le retour du focus.
+- Neuf originaux ont été optimisés en variantes WebP et AVIF avec Sharp, sans agrandissement ni génération d’image. L’import reproductible est dans `scripts/import_eva_photos.mjs`. Les fichiers photo originaux et leurs métadonnées privées ne sont pas publiés.
+- L’ancien film n’est plus proposé sur l’accueil. Une nouvelle vidéo pourra être intégrée lorsqu’Eva la fournira ; les films des maisons restent disponibles.
+- Les récits de Dalton, Juni et Jackson reprennent les nouvelles informations d’Eva. La légende de Dalton précise son titre à Falsterbo chez les six ans. Le paragraphe dupliqué de Jackson n’est publié qu’une fois.
+- Qurious HS possède son propre récit et son lien depuis l’accueil. Il est explicitement présenté comme acquis avec Grevlunda, et non comme issu de l’élevage. Les intitulés de la section et les métadonnées ont été adaptés en conséquence. L’accueil reste synthétique et renvoie aux récits complets.
+- Les quatre origines sont affichées. Pour Jackson, **Contendro I** est retenu selon la capture de pedigree fournie : Contender y est son grand-père. La page Hippomundo citée dans le mail n’a pas été accessible à l’outil de consultation ; aucune vérification indépendante de ses résultats sportifs n’est revendiquée. Les récits et résultats publiés proviennent du mail d’Eva.
+- FeedPane est conservé, crédit compris. Le contraste du crédit est corrigé et le lien de sa visionneuse possède une destination Instagram valide avant qu’une publication soit sélectionnée.
+
+### Recette V6 finale
+
+- 72 pages publiques, 12 confirmations, liens, ressources, métadonnées, sitemap, données structurées et neuf scénarios de langue : réussite.
+- 504 configurations de mise en page, six langues, de 360 à 1920 px : aucun débordement détecté. Cadrages des portraits et de l’accueil contrôlés visuellement à 390 et 1440 px ; la correction du héros mobile suit cette inspection.
+- Galerie à 390 et 1440 px : ouverture au clavier, photo suivante, fermeture par Échap et retour du focus vérifiés.
+- Formulaires : contrats localisés, validation, erreurs réseau/serveur, succès, double clic et fonctionnement sans JavaScript vérifiés par les tests existants. Aucun nouvel envoi réel ni message externe n’a été effectué.
+- Audit des capacités et des quatre pedigrees dans les six langues : aucune ancienne capacité 18/28 dans les contenus concernés ; portraits et retrait du film vérifiés.
+- Scan des fichiers publics/suivis et de l’historique : aucune correspondance de secret, document privé ou prix numérique. `git diff --check` passe.
+- Lighthouse du 22 septembre 2026, configuration de production locale, contrôles non exclus : accueil, installations et références, mobile et ordinateur. Performance mobile **97–98**, ordinateur **100** ; accessibilité **100**, bonnes pratiques **100**, SEO **100**. Les deux défauts FeedPane identifiés au premier passage ont été corrigés puis l’accueil a été audité de nouveau.
+
+Rapports et captures locaux : `outputs/v6/layout-report.json`, `outputs/v6/hero-fr-390.png`, `outputs/v6/hero-fr-1440.png`, `outputs/v6/team-fr-390.png`, `outputs/v6/team-fr-1440.png`, `outputs/v6/qurious-fr.png`, `outputs/v6/lighthouse/` et `outputs/v6/lighthouse-home-final/`. Les scores locaux ne sont pas présentés comme des scores du preview ; celui-ci conserve son `noindex`.
+
+Publication limitée à la branche et au Deploy Preview de la PR existante. Les dépendances précédemment documentées (relecture native luxembourgeoise et éléments juridiques avant production) subsistent. Aucune photographie n’a été attribuée à Juni, Jackson ou Qurious sans identification fournie.

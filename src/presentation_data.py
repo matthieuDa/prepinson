@@ -658,3 +658,20 @@ UI["transport_access"] = {'de': 'Kontaktieren Sie das Team vor Ihrer Anreise mit
  'lb': 'Kontaktéiert d’Ekipp virun Ärer Arrivée mat engem Päerd, fir den Zougang an den Transport ofzeschwätzen.',
  'nl': 'Neem vóór aankomst met een paard contact op met het team om de toegang en het transport af te stemmen.',
  'sv': 'Kontakta teamet innan du kommer med en häst för att planera tillträde och samordna med din transportör.'}
+
+
+# Final client-approved content and original photographs (V6).
+from src.client_content import V1_UPDATES, UI_UPDATES, GALLERY_COPY
+for _key, _values in V1_UPDATES.items():
+    for _lang, _value in zip(LANGS, _values):
+        V1_COPY[_lang][_key] = _value
+for _key, _values in UI_UPDATES.items():
+    UI[_key] = dict(zip(LANGS, _values))
+for _key, _values in GALLERY_COPY.items():
+    GALLERY_ALT[_key] = dict(zip(LANGS, _values))
+MEDIA.update({
+    "home_hero": "prepinson-sport-horse.webp",
+    "intro": "prepinson-horse-care.webp",
+    "team_eva": "eva-schiller-portrait.webp",
+    "team_nicolas": "nicolas-derouault-portrait.webp",
+})

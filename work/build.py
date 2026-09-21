@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from src.site_data import FACILITY_FACTS, HOUSE_FACTS, LANGS, LANGUAGE_NAMES, ROUTES, TEXT, text  # noqa: E402
+from src.client_content import HORSE_STORIES, PEDIGREES
 from src.presentation_data import MEDIA, PROPERTIES, GALLERY_ALT, ui, v1  # noqa: E402
 
 try:
@@ -40,7 +41,7 @@ IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
 IG_HOUSE = "https://www.instagram.com/prepinson_houses/"
 MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
 MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
-ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/styles.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "work/build.py"))).hexdigest()[:12]
+ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/client_content.py", "src/styles.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "work/build.py"))).hexdigest()[:12]
 
 META = {
     "": ("home_title", "home_desc"),
@@ -87,6 +88,7 @@ def facility_values(lang):
     estate = FACILITY_FACTS["estate"]
     return (
         (str(FACILITY_FACTS["sport_boxes"]), tx("stat_boxes", lang)),
+        (str(FACILITY_FACTS["breeding_boxes"]), tx("stat_breeding", lang)),
         (f'{indoor["width"]} × {indoor["length"]} {indoor["unit"]}', tx("stat_indoor", lang)),
         (f'{outdoor["width"]} × {outdoor["length"]} {outdoor["unit"]}', tx("stat_outdoor", lang)),
         (f'{estate["value"]} {estate["unit"]}', tx("stat_land", lang)),
@@ -128,8 +130,9 @@ def image(name, alt, *, cls="", hero=False, width=None, height=None, position=""
     responsive_sizes = sizes or ("(max-width: 700px) 1000px, 100vw" if hero else "(max-width: 700px) 88vw, 43vw")
     avif_srcset = srcset.replace(".webp", ".avif")
     mobile_sources = ""
-    if hero and manifest.get("mobile"):
-        mobile_webp = ", ".join(f'{item["src"]}?v={ASSET_VERSION} {item["width"]}w' for item in manifest["mobile"])
+    mobile_variants = IMAGE_MANIFEST.get(manifest.get("mobileImage"), {}).get("variants", manifest.get("mobile", ()))
+    if hero and mobile_variants:
+        mobile_webp = ", ".join(f'{item["src"]}?v={ASSET_VERSION} {item["width"]}w' for item in mobile_variants)
         mobile_avif = mobile_webp.replace(".webp", ".avif")
         mobile_sources = f'<source media="(max-width: 600px) and (orientation: portrait)" type="image/avif" srcset="{mobile_avif}" sizes="100vw"><source media="(max-width: 600px) and (orientation: portrait)" type="image/webp" srcset="{mobile_webp}" sizes="100vw">'
     return f'<picture>{mobile_sources}<source type="image/avif" srcset="{avif_srcset}" sizes="{responsive_sizes}"><source type="image/webp" srcset="{srcset}" sizes="{responsive_sizes}">{fallback}</picture>'
@@ -180,20 +183,27 @@ def home(lang):
         ("03", "breeding", ui("breeding_title", lang), ui("breeding_copy", lang), "breeding"),
     )
     cards = "".join(f'<a class="expertise-card" href="{url(lang, "horses")}#{target}"><div class="expertise-image">{image(MEDIA[media], ui("alt_" + media, lang))}<span class="image-index">{number}</span></div><div class="expertise-title"><h3>{title}</h3><span>{icon("arrow-up-right")}</span></div><p>{copy}</p></a>' for number, media, title, copy, target in expert)
-    refs = "".join(f'<a href="{url(lang, "horses/references")}#{slug}"><span class="pedigree-year">0{i}</span><div><h3>{display_title(tx(f"{slug}_title", lang))}</h3><p>{tx(f"{slug}_copy", lang)}</p></div><span class="pedigree-arrow">{icon("arrow-up-right")}</span></a>' for i, slug in enumerate(("dalton", "juni", "jackson"), 1))
+    refs = "".join(f'<a href="{url(lang, "horses/references")}#{slug}"><span class="pedigree-year">0{i}</span><div><h3>{display_title(tx(f"{slug}_title", lang))}</h3></div><span class="pedigree-arrow">{icon("arrow-up-right")}</span></a>' for i, slug in enumerate(HORSE_STORIES, 1))
     people = (("team_eva", "Eva Schiller", ui("eva_role", lang), "eva.schiller@prepinson.com", "+352 691 22 38 36"), ("team_nicolas", "Nicolas Derouault", ui("nicolas_role", lang), "nicolas.derouault@prepinson.com", "+32 470 85 13 10"))
     team = "".join(f'<article class="team-card">{image(MEDIA[media], name)}<div><p class="eyebrow">{role}</p><h3>{name}</h3><a href="mailto:{email}">{email} {icon("arrow-up-right")}</a><a href="tel:{phone.replace(" ", "")}">{phone}</a></div></article>' for media, name, role, email, phone in people)
     return f'''
-<section class="haras-hero">{responsive_image("hero-horses", ui("alt_hero", lang), cls="haras-hero-photo", hero=True, position="center 45%")}
+<section class="haras-hero">{image(MEDIA["home_hero"], ui("alt_sport_hero", lang), cls="haras-hero-photo", hero=True, sizes="100vw")}
 <div class="haras-hero-overlay"></div><div class="hero-editorial"><p class="eyebrow">{v1("home_eyebrow", lang)}</p><h1>{v1("home_hero", lang)}</h1><div class="hero-intro-line"><span>{v1("home_tagline", lang)}</span>{editorial_link("#haras", ui("hero_cta", lang), dark=False)}</div></div>
-<div class="hero-side"><button type="button" data-video-open="/assets/haras-film.mp4" class="film-button"><span class="circle">{icon("play")}</span><span>{v1("hero_film", lang)}</span></button></div><div class="hero-baseline"><span>{ui("location", lang)}</span><span>{v1("home_services_line", lang)}</span><a href="#haras">{ui("scroll", lang)} <span>{icon("arrow-down")}</span></a></div></section>
-<section id="haras" class="haras-intro container"><div class="intro-label"><span class="eyebrow">{ui("intro_label", lang)}</span><span class="tiny-serif">01</span></div><div class="haras-intro-copy"><h2>{v1("home_intro_title", lang)}</h2><p>{v1("home_intro", lang)}</p><p class="quiet-copy">{v1("home_intro_secondary", lang)}</p>{editorial_link(url(lang, "horses"), v1("home_intro_link", lang))}</div><figure class="intro-portrait">{image(MEDIA["intro"], ui("alt_intro", lang), position="45% 50%") }<figcaption>{ui("intro_note", lang)}</figcaption></figure></section>
+<div class="hero-baseline"><span>{ui("location", lang)}</span><span>{v1("home_services_line", lang)}</span><a href="#haras">{ui("scroll", lang)} <span>{icon("arrow-down")}</span></a></div></section>
+<section id="haras" class="haras-intro container"><div class="intro-label"><span class="eyebrow">{ui("intro_label", lang)}</span><span class="tiny-serif">01</span></div><div class="haras-intro-copy"><h2>{v1("home_intro_title", lang)}</h2><p>{v1("home_intro", lang)}</p><p>{v1("home_intro_programmes", lang)}</p><p class="quiet-copy">{v1("home_intro_secondary", lang)}</p>{editorial_link(url(lang, "horses"), v1("home_intro_link", lang))}</div><figure class="intro-portrait">{image(MEDIA["intro"], GALLERY_ALT[MEDIA["intro"]][lang], position="45% 50%") }<figcaption>{ui("intro_note", lang)}</figcaption></figure></section>
 <section id="expertise" class="expertise-section"><div class="container"><div class="expertise-heading"><p class="eyebrow">{ui("expertise_label", lang)}</p><h2>{v1("expertise_title", lang)}</h2><p>{v1("expertise_intro", lang)}</p></div><div class="expertise-grid">{cards}</div></div></section>
 <section class="facilities-home"><div class="haras-landscape">{responsive_image("facilities", ui("alt_facilities", lang), position="center 45%")}<div class="landscape-caption"><span class="eyebrow">{tx("facilities_hero", lang)}</span>{editorial_link(url(lang, "horses/facilities"), ui("facilities_cta", lang), dark=False)}</div></div>{stat_strip(lang)}</section>
 <section class="selected-section container"><div class="selected-heading"><p class="eyebrow">{ui("references_label", lang)}</p><h2>{tx("references_hero", lang)}</h2><p>{tx("service_references_copy", lang)}</p>{editorial_link(url(lang, "horses/references"), tx("service_references", lang))}</div><div class="pedigree-list">{refs}</div></section>
-<section id="team" class="team-section"><div class="container"><div class="team-heading"><p class="eyebrow">{ui("team_label", lang)}</p><h2>{v1("team_title", lang)}</h2><p>{v1("team_intro", lang)}</p></div><div class="team-grid">{team}</div></div></section>
+<section id="team" class="team-section"><div class="container"><div class="team-heading"><p class="eyebrow">{ui("team_label", lang)}</p><h2>{v1("team_title", lang)}</h2><p>{v1("team_intro", lang)}</p></div><div class="team-grid">{team}</div>{team_album(lang)}</div></section>
 <section class="home-houses"><div class="estate-grid container"><div class="estate-photo">{responsive_image("house-hero", ui("alt_houses", lang))}</div><div class="estate-copy"><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{tx("houses_teaser_title", lang)}</h2><p>{ui("houses_home_copy", lang)}</p>{editorial_link(url(lang, "houses"), ui("houses_cta", lang))}</div></div></section>
 <section id="journal" class="journal-stories feedpane-section container"><div class="section-head"><div><p class="eyebrow">{ui("journal_label", lang)}</p><h2>{v1("journal_title", lang)}</h2></div><p class="journal-intro">{v1("journal_intro", lang)}</p></div><div id="feedpane" class="feedpane-shell" aria-label="Instagram · Haras de Prepinson"></div><script src="https://feedpane.com/widget.js" data-key="6c7a542cd3ba470d84f9ce26f775c77c" data-target="#feedpane" data-cols="3" data-mobile-cols="1" data-gap="14" data-radius="0" data-posts="6" data-autoplay="false" defer></script><p class="feedpane-fallback">{editorial_link(IG_HARAS, ui("instagram_fallback", lang), target="_blank", rel="noopener noreferrer")}</p></section>'''
+
+
+def team_album(lang):
+    group = "prepinson-team-portrait.webp"
+    group_alt = GALLERY_ALT[group][lang]
+    photos = tuple((name, GALLERY_ALT[name][lang]) for name in ("prepinson-team-arena.webp", "prepinson-horse-care.webp", "prepinson-young-horse.webp", "prepinson-pastures.webp", "prepinson-rider-detail.webp"))
+    return f'''<div class="team-album"><h3>{ui("team_gallery_title", lang)}</h3><button class="team-group-photo" type="button" data-lightbox-item="0" data-lightbox-src="/assets/{group}?v={ASSET_VERSION}" aria-label="{escape(ui("gallery_label", lang) + ": " + group_alt)}">{image(group, group_alt, sizes="86vw")}</button><details class="team-gallery-more"><summary>{ui("team_gallery_link", lang)} {icon("plus")}</summary>{gallery(photos, lang)}</details></div>'''
 
 
 def horses(lang):
@@ -232,8 +242,8 @@ def references(lang):
         for i, name in enumerate(dalton_photos)
     ) + '</div></div>'
     rows = "".join(
-        f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><div class="reference-story-copy"><p>{tx(f"{slug}_copy", lang)}</p></div>{dalton_gallery if slug == "dalton" else ""}</article>'
-        for i, slug in enumerate(("dalton", "juni", "jackson"), 1)
+        f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><p class="reference-pedigree"><span>{ui("pedigree", lang)}</span>{escape(PEDIGREES[slug])}</p><div class="reference-story-copy"><p>{tx(f"{slug}_copy", lang)}</p></div>{dalton_gallery if slug == "dalton" else ""}</article>'
+        for i, slug in enumerate(HORSE_STORIES, 1)
     )
     return inner_hero(lang, tx("service_references", lang), tx("references_hero", lang), tx("service_references_copy", lang), "hero-horses-2000.webp") + f'<section id="discover" class="reference-stories container">{rows}</section>'
 

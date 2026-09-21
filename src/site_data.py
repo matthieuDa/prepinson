@@ -26,12 +26,13 @@ ROUTES = (
 )
 
 # Facts stay separate from their translated labels so templates never repeat a
-# number or unit (for example, "28 ha hectares" or "8 8 guests").
+# number or unit (for example, "30 ha hectares" or "8 8 guests").
 FACILITY_FACTS = {
-    "sport_boxes": 18,
+    "sport_boxes": 19,
+    "breeding_boxes": 9,
     "indoor": {"width": 27, "length": 60, "unit": "m"},
     "outdoor": {"width": 40, "length": 75, "unit": "m"},
-    "estate": {"value": 28, "unit": "ha"},
+    "estate": {"value": 30, "unit": "ha"},
 }
 
 HOUSE_FACTS = {
@@ -106,7 +107,7 @@ TEXT = {
     "service_programmes": ("Four training programmes", "Quatre programmes de formation", "Vier trainingsprogramma’s", "Vier Ausbildungsprogramme", "Fyra träningsprogram", "Véier Ausbildungsprogrammer"),
     "service_programmes_copy": ("Foal handling, pre-breaking, breaking-in and show jumping training, adapted to the individual horse.", "Manipulation du poulain, pré-débourrage, débourrage et entraînement au saut d’obstacles, adaptés à chaque cheval.", "Veulenbegeleiding, voorbereiding, zadelmak maken en springtraining, aangepast aan het individuele paard.", "Fohlenhandling, Vorbereitung, Anreiten und Springtraining, abgestimmt auf das einzelne Pferd.", "Fölhantering, förberedelse, inridning och hoppträning, anpassat till varje häst.", "Ëmgang mam Fëllen, Virbereedung, Ureiden a Sprangtraining, un all Päerd ugepasst."),
     "service_facilities": ("Professional facilities", "Des installations professionnelles", "Professionele faciliteiten", "Professionelle Anlage", "Professionell anläggning", "Professionell Infrastrukturen"),
-    "service_facilities_copy": ("Indoor and outdoor arenas, preparation areas and 28 hectares of fields and paddocks.", "Manège, carrière, espaces de préparation et 28 hectares de prairies et paddocks.", "Binnen- en buitenpistes, voorbereidingsruimtes en 28 hectare weiden en paddocks.", "Reithalle, Außenplatz, Vorbereitungsbereiche und 28 Hektar Weiden und Paddocks.", "Ridhus, utomhusbana, förberedelseytor och 28 hektar hagar och mark.", "Reithal, Baussebaan, Virbereedungsberäicher an 28 Hektar Wisen a Paddocken."),
+    "service_facilities_copy": ("Indoor and outdoor arenas, preparation areas and 30 hectares of fields and paddocks.", "Manège, carrière, espaces de préparation et 30 hectares de prairies et paddocks.", "Binnen- en buitenpistes, voorbereidingsruimtes en 30 hectare weiden en paddocks.", "Reithalle, Außenplatz, Vorbereitungsbereiche und 30 Hektar Weiden und Paddocks.", "Ridhus, utomhusbana, förberedelseytor och 30 hektar hagar och mark.", "Reithal, Baussebaan, Virbereedungsberäicher an 30 Hektar Wisen a Paddocken."),
     "service_references": ("Horses bred at Prepinson", "Chevaux nés à Prepinson", "Paarden gefokt bij Prepinson", "In Prepinson gezogene Pferde", "Hästar uppfödda på Prepinson", "Päerd, déi zu Prepinson gezu goufen"),
     "service_references_copy": ("Follow Dalton, Juni and Jackson from breeding to sport.", "Découvrez les parcours de Dalton, Juni et Jackson, de l’élevage au sport.", "Volg de weg van Dalton, Juni en Jackson, van fokkerij tot sport.", "Begleiten Sie Dalton, Juni und Jackson von der Zucht bis zum Sport.", "Följ Dalton, Juni och Jackson från avel till sport.", "Entdeckt d'Weeër vum Dalton, Juni a Jackson, vun der Zuucht bis an de Sport."),
     "service_sales": ("Looking for your next horse?", "Vous cherchez votre prochain cheval ?", "Op zoek naar uw volgende paard?", "Suchen Sie Ihr nächstes Pferd?", "Söker du din nästa häst?", "Sicht Dir Äert nächst Päerd?"),
@@ -128,7 +129,7 @@ TEXT = {
     "p4_timing": ("Monthly programme, with 4–5 sessions a week", "Programme mensuel, avec 4 à 5 séances par semaine", "Maandprogramma met 4–5 sessies per week", "Monatsprogramm mit 4–5 Einheiten pro Woche", "Månadsprogram med 4–5 pass i veckan", "Programm iwwer ee Mount, mat 4–5 Sessioune pro Woch"),
     "p4_copy": ("Goals assessment, flatwork, poles, gymnastics, technique, lines and courses, conditioning, recovery and competition preparation. Calendar and level are agreed with the owner.", "Évaluation des objectifs, travail sur le plat, barres, gymnastique, technique, lignes et parcours, condition, récupération et préparation aux concours. Calendrier et niveau sont convenus avec le propriétaire.", "Doelbespreking, werk op het vlakke, balken, gymnastiek, techniek, lijnen en parcoursen, conditie, herstel en wedstrijdvoorbereiding. Kalender en niveau worden met de eigenaar afgesproken.", "Zielklärung, dressurmäßige Arbeit, Stangen, Gymnastik, Technik, Linien und Parcours, Kondition, Regeneration und Turniervorbereitung. Kalender und Niveau werden mit dem Besitzer abgestimmt.", "Målbedömning, markarbete, bommar, gymnastik, teknik, linjer och banor, kondition, återhämtning och tävlingsförberedelse. Kalender och nivå bestäms med ägaren.", "Zilklärung, Aarbecht um Flaachen, Stangen, Gymnastik, Technik, Linnen a Parcoursen, Konditioun, Erhuelung an Turnéiervirbereedung. Kalenner an Niveau gi mam Besëtzer ofgeschwat."),
     "facilities_title": ("Equestrian facilities in Belgium | Haras de Prepinson", "Installations équestres en Belgique | Haras de Prepinson", "Paardenfaciliteiten in België | Haras de Prepinson", "Reitanlage in Belgien | Haras de Prepinson", "Hästanläggning i Belgien | Haras de Prepinson", "Reitinfrastrukturen an der Belsch | Haras de Prepinson"),
-    "facilities_desc": ("Explore the professional indoor and outdoor arenas, 18 sport boxes, preparation areas and 28 hectares at Haras de Prepinson.", "Découvrez le manège, la carrière, 18 boxes sport, les espaces de préparation et les 28 hectares du Haras de Prepinson.", "Ontdek de binnen- en buitenpistes, 18 sportboxen, voorbereidingsruimtes en 28 hectare van Haras de Prepinson.", "Entdecken Sie Reithalle, Außenplatz, 18 Sportboxen, Vorbereitungsbereiche und 28 Hektar im Haras de Prepinson.", "Upptäck ridhus, utomhusbana, 18 sportboxar, förberedelseytor och 28 hektar på Haras de Prepinson.", "Entdeckt d'Reithal, d'Baussebaan, 18 Sportboxen, d'Virbereedungsberäicher an 28 Hektar vum Haras de Prepinson."),
+    "facilities_desc": ("Explore the professional indoor and outdoor arenas, 19 sport boxes, preparation areas and 30 hectares at Haras de Prepinson.", "Découvrez le manège, la carrière, 19 boxes sport, les espaces de préparation et les 30 hectares du Haras de Prepinson.", "Ontdek de binnen- en buitenpistes, 19 sportboxen, voorbereidingsruimtes en 30 hectare van Haras de Prepinson.", "Entdecken Sie Reithalle, Außenplatz, 19 Sportboxen, Vorbereitungsbereiche und 30 Hektar im Haras de Prepinson.", "Upptäck ridhus, utomhusbana, 19 sportboxar, förberedelseytor och 30 hektar på Haras de Prepinson.", "Entdeckt d'Reithal, d'Baussebaan, 19 Sportboxen, d'Virbereedungsberäicher an 30 Hektar vum Haras de Prepinson."),
     "facilities_hero": ("Built for horses. Designed for good work.", "Pensé pour les chevaux. Conçu pour bien travailler.", "Gebouwd voor paarden. Ontworpen voor goed werk.", "Für Pferde gebaut. Für gute Arbeit konzipiert.", "Byggt för hästar. Utformat för bra arbete.", "Fir Päerd gebaut. Fir gutt Aarbecht entworf."),
     "facilities_intro": ("A quiet professional base south of Liège, close to La Roche-en-Ardenne, for breeding and developing young horses.", "Une base professionnelle paisible au sud de Liège, près de La Roche-en-Ardenne, dédiée à l’élevage et à la formation des jeunes chevaux.", "Een rustige professionele basis ten zuiden van Luik, dicht bij La Roche-en-Ardenne, voor fokkerij en ontwikkeling van jonge paarden.", "Eine ruhige professionelle Basis südlich von Lüttich, nahe La Roche-en-Ardenne, für Zucht und Entwicklung junger Pferde.", "En lugn professionell bas söder om Liège, nära La Roche-en-Ardenne, för avel och utveckling av unghästar.", "Eng roueg professionell Basis südlech vu Léck, no bei La Roche-en-Ardenne, fir Zuucht an Entwécklung vu jonke Päerd."),
     "facility_equipment": ("Preparation area, solarium, shower, tack room and horse walker", "Espace de préparation, solarium, douche, sellerie et marcheur", "Poetsplaats, solarium, douche, zadelkamer en stapmolen", "Vorbereitungsplatz, Solarium, Dusche, Sattelkammer und Führanlage", "Förberedelseplats, solarium, dusch, sadelkammare och skrittmaskin", "Virbereedungsplaz, Solarium, Dusch, Suedelraum a Walker"),
@@ -209,3 +210,8 @@ def text(key, lang):
     if len(values) != len(LANGS):
         raise ValueError(f"Translation key {key!r} has {len(values)} values")
     return values[LANGS.index(lang)]
+
+
+# Eva’s final approved facts and stories supersede the earlier editorial copy.
+from src.client_content import TEXT_UPDATES
+TEXT.update(TEXT_UPDATES)
