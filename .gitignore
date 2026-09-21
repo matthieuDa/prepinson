@@ -2,6 +2,9 @@ outputs/
 node_modules/
 .DS_Store
 .openai/
+.netlify/
+__pycache__/
+*.pyc
 
 # Scratch and raw source captures kept out of the public repo.
 work/*

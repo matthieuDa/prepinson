@@ -1,69 +1,408 @@
+#!/usr/bin/env python3
+"""Generate the multilingual Prepinson site with the approved V1 presentation."""
+
+from html import escape
 from pathlib import Path
 import json
-OUT=Path('dist')
-IG='https://www.instagram.com/haras_de_prepinson/'
-IG_HOUSE='https://www.instagram.com/prepinson_the_house/'
-CASA='https://www.casapilot.com/en/1091854-holiday-home-in-la-roche-en-ardenne-ardennes-and-eifel-belgium'
-AIR='https://www.airbnb.com/h/ortho25'
-ARROW='<span aria-hidden="true">↗</span>'
-brand='<a class="brand" href="/" aria-label="Prépinson home"><img src="/assets/logo.png" alt=""><span class="wordmark">PRÉPINSON<small>HARAS DE PRÉPINSON</small></span></a>'
-def header(active=''):
- links=[('/#haras','The haras'),('/#expertise','Our expertise'),('/horses/','Horses'),('/#journal','Journal'),('/houses/','Houses')]
- nav=''.join(f'<a href="{u}"'+(' aria-current="page"' if t==active else '')+f'>{t}</a>' for u,t in links)
- return f'<a class="skip-link" href="#main">Skip to content</a><header class="nav">{brand}<nav class="navlinks" aria-label="Main navigation">{nav}<a class="nav-book" href="mailto:haras@prepinson.com">Get in touch <span>↗</span></a></nav><button class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu">Menu ☰</button></header><nav id="mobile-menu" class="mobile-nav" aria-label="Mobile navigation">{nav}<small>ORTHO · BELGIAN ARDENNES</small></nav>'
-def footer():
- return f'''<section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-copy"><p class="eyebrow">A SHARED PASSION STARTS A CONVERSATION.</p><h2>Let’s talk<br><em>horses.</em></h2><p>Tell us about your horse, your plans or the stay you have in mind. We will come back to you personally.</p><div class="contact-direct"><a href="mailto:haras@prepinson.com">haras@prepinson.com ↗</a><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com ↗</a><a href="tel:+32470851310">+32 470 85 13 10</a></div></div><form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="company"><input type="hidden" name="form-name" value="contact"><p class="form-trap"><label>Leave this field empty <input name="company"></label></p><div class="form-grid"><label><span>Your name</span><input type="text" name="name" autocomplete="name" required></label><label><span>Your email</span><input type="email" name="email" autocomplete="email" required></label></div><label><span>I am interested in</span><select name="interest"><option>Horse boarding</option><option>Young horse training</option><option>Breeding</option><option>Horses for sale</option><option>A stay at Prépinson</option><option>Something else</option></select></label><label><span>Your message</span><textarea name="message" rows="5" required></textarea></label><button class="btn dark" type="submit">Send message {ARROW}</button></form></div></section><footer class="footer haras-footer"><div class="container"><div class="newsletter-row"><div><p class="eyebrow">FROM PRÉPINSON, OCCASIONALLY.</p><h3>News from the haras.</h3></div><form class="newsletter-form" name="newsletter" method="POST" data-netlify="true"><input type="hidden" name="form-name" value="newsletter"><label><span class="visually-hidden">Email address</span><input type="email" name="email" autocomplete="email" placeholder="Email address" required></label><button type="submit" aria-label="Subscribe to the mailing list">Subscribe {ARROW}</button></form></div><div class="footer-social"><div><p class="eyebrow">HORSES</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="{IG}" target="_blank" rel="noopener">@haras_de_prepinson ↗</a></div><div><p class="eyebrow">HOUSES</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener">@prepinson_the_house ↗</a></div><div><p class="eyebrow">VISIT</p><p>Ortho 24<br>6983 La Roche-en-Ardenne<br>Belgium</p></div></div><div class="footer-signature">PRÉPINSON</div><div class="footer-bottom"><span>© 2026 HARAS DE PRÉPINSON</span><a href="https://maps.google.com/?q=Prepinson+Ortho+Belgium" target="_blank" rel="noopener">FIND THE HARAS ↗</a></div></div></footer>'''
+import hashlib
+import re
+import os
+import shutil
+import sys
 
-def team():
- return '''<section id="team" class="team-section"><div class="container"><div class="team-heading"><p class="eyebrow">THE PEOPLE OF PRÉPINSON</p><h2>Experience, instinct<br><em>and daily care.</em></h2><p>Prépinson is shaped by a small, committed team and a shared belief: every horse deserves individual attention, patience and the right environment.</p></div><figure class="team-group-photo"><img src="/assets/prepinson-haras-team.webp" alt="The Haras de Prépinson team together outdoors" loading="lazy"><figcaption>Together, every day, for the horses.</figcaption></figure><div class="team-grid"><article class="team-card"><img src="/assets/eva-schiller.jpg" alt="Eva Schiller, Manager and Founder of Prépinson" loading="lazy"><div><p class="eyebrow">MANAGER & FOUNDER</p><h3>Eva Schiller</h3><a href="mailto:eva.schiller@prepinson.com">eva.schiller@prepinson.com ↗</a><a href="tel:+352691223836">+352 691 22 38 36</a></div></article><article class="team-card"><img src="/assets/nicolas-derouault.jpg" alt="Nicolas Derouault, Site Manager of Prépinson" loading="lazy"><div><p class="eyebrow">SITE MANAGER</p><h3>Nicolas Derouault</h3><a href="mailto:nicolas.derouault@prepinson.com">nicolas.derouault@prepinson.com ↗</a><a href="tel:+32470851310">+32 470 85 13 10</a></div></article></div></div></section>'''
-def dialogs():
- return '''<dialog id="film-dialog" class="dialog" aria-label="A film of Prépinson"><button class="dialog-close" data-close aria-label="Close film">×</button><video controls playsinline preload="none"></video><p class="dialog-caption">Prépinson · Film by Papilio Productions</p></dialog><dialog id="lightbox" class="dialog" aria-label="Photo gallery"><button class="dialog-close" data-close aria-label="Close gallery">×</button><img alt=""><div class="lightbox-controls"><button data-prev aria-label="Previous photograph">←</button><span class="lightbox-label"></span><button data-next aria-label="Next photograph">→</button></div></dialog>'''
-def page(path,title,description,content,active=''):
- route='/' if not path else '/'+path.strip('/')+'/'
- schema={'@context':'https://schema.org','@type':'LocalBusiness','name':'Prépinson','url':'https://www.prepinson.com','description':'Haras de Prépinson in Ortho, Belgian Ardennes. Horse breeding, young horse training, show jumping and horse boarding in Belgium.','email':'haras@prepinson.com','telephone':'+32470851310','address':{'@type':'PostalAddress','streetAddress':'Ortho 24','postalCode':'6983','addressLocality':'La Roche-en-Ardenne','addressCountry':'BE'},'sameAs':[IG,IG_HOUSE]}
- s=f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title}</title><meta name="description" content="{description}"><meta name="theme-color" content="#23372c"><link rel="canonical" href="https://www.prepinson.com{route}"><meta property="og:title" content="{title}"><meta property="og:description" content="{description}"><meta property="og:type" content="website"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">{json.dumps(schema)}</script><script src="/app.js" defer></script></head><body>{header(active)}<main id="main">{content}</main>{footer()}{dialogs()}</body></html>'''
- p=OUT/path/'index.html';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s)
-def image(name,alt,extra=''):
- return f'<img src="/assets/{name}" alt="{alt}" loading="lazy" {extra}>'
-def hero(eyebrow,title,subtitle='',photo='hero.jpg',buttons='',video=False,inner=False):
- media=f'<video class="hero-media" autoplay muted loop playsinline poster="/assets/{photo}" aria-hidden="true"><source src="/assets/estate-film.mp4" type="video/mp4"></video>' if video else f'<img class="hero-media" src="/assets/{photo}" alt="Prépinson in the Belgian Ardennes" fetchpriority="high">'
- return f'''<section class="hero {'inner-hero' if inner else ''}">{media}<div class="hero-shade"></div><div class="hero-content reveal"><p class="eyebrow">{eyebrow}</p><h1>{title}</h1>{f'<p>{subtitle}</p>' if subtitle else ''}{buttons}</div><div class="hero-bottom"><span class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2"/></svg>Ortho, Belgian Ardennes</span><a class="scroll-link" href="#discover">A little closer to nature <span>↓</span></a><div style="display:flex;gap:15px;align-items:center"><button class="film-button" data-film="/assets/estate-film.mp4"><span class="circle" aria-hidden="true">▷</span>Watch the film</button>{'<button data-pause aria-label="Pause background film" class="circle">Ⅱ</button>' if video else ''}</div></div></section>'''
-def moments():
- imgs=[('horse-1.jpg','Life with horses at Prépinson'),('house-3.jpg','The riverside town of La Roche-en-Ardenne'),('estate-2.jpg','The estate from above'),('horse-4.jpg','Daily care for horses at Prépinson')]
- return f'''<section class="moments container"><div class="section-head"><div><p class="eyebrow">The everyday, a little extraordinary</p><h2>Life at Prépinson.</h2></div><a class="text-link" href="{IG}" target="_blank" rel="noopener">Follow along on Instagram {ARROW}</a></div><div class="moments-grid">{''.join(f'<a class="moment" href="{IG}" target="_blank" rel="noopener">'+image(n,a)+'</a>' for n,a in imgs)}</div></section>'''
-home=Path('work/home-haras.html').read_text().replace('<section id="journal"',team()+Path('src/journal.html').read_text()+'<section id="journal"')
-page('', 'Haras de Prépinson — A Life Dedicated to Horses','Haras de Prépinson, Belgium. Professional young horse training, breeding, show jumping and exceptional horse boarding in the Belgian Ardennes.',home)
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 
-def gallery(items):
- return '<div class="gallery">'+''.join(f'<button data-gallery aria-label="Enlarge photograph: {a}">'+image(n,a)+'</button>' for n,a in items)+'</div>'
-horses=hero('Haras de Prépinson · Belgium','Great horses.<br><em>Thoughtful beginnings.</em>','Professional care. Patient training. Room to reach their potential.',photo='prepinson-outdoor-jumping-arena.webp',inner=True,buttons=f'<a class="btn light" href="{IG}" target="_blank" rel="noopener">Horses for sale on Instagram {ARROW}</a>')
-horses+='''<section id="discover" class="intro container"><div><p class="eyebrow">Our equestrian world</p><h2>Every horse.<br><em>Every possibility.</em></h2></div><p class="body-copy">At our haras in Belgium, good horsemanship begins with understanding the individual. From foals and young horses to sport horses, our approach combines professional training with daily, attentive care.</p></section><section class="services container"><div class="services-grid"><article id="boarding" class="service"><p class="eyebrow">01 / Care & boarding</p><h3>A place to thrive.</h3><p>Horse pension in a peaceful setting, with daily supervision and space for every stage of life.</p><ul><li>Boarding for young and retired horses</li><li>Broodmare care and foaling supervision</li><li>Shared boxes and time in the fields</li><li>Coordination of hoof care and routine health needs</li></ul><a class="text-link" href="mailto:haras@prepinson.com?subject=Horse%20boarding%20enquiry">Enquire about boarding ↗</a></article><article id="training" class="service"><p class="eyebrow">02 / Training & development</p><h3>Potential, patiently developed.</h3><p>Professional young horse training, from breaking in to confident work in the arena.</p><ul><li>Individual training in show jumping and dressage</li><li>Full-time training and competition preparation</li><li>Professional equestrian facilities</li><li>Lessons with your own horse</li></ul><a class="text-link" href="mailto:haras@prepinson.com?subject=Horse%20training%20enquiry">Talk to us about your horse ↗</a></article></div>'''
-horses+=f'<div class="wide-image">{image("prepinson-daily-horse-care.webp","A calm moment of daily horse care at Prépinson")}<a class="film-button" href="https://www.youtube.com/watch?v=9ogNVCE1DrM" target="_blank" rel="noopener"><span class="circle">▷</span>Explore our facilities</a></div></section>'
-horses+='''<section id="breeding" class="references"><div class="container"><div class="section-head"><div><p class="eyebrow">Bred at Prépinson</p><h2>A few of our stories.</h2></div><p class="small-note">Selected horses from our breeding programme.</p></div><div class="reference-grid"><article class="reference-card"><p class="eyebrow">Born 2019 · Haras de Prépinson</p><h3>Juni de Prépinson</h3><p class="pedigree">Silver Deux de Virton H D C<br>× Firsty de Prépinson</p></article><article class="reference-card"><p class="eyebrow">Born 2018 · Haras de Prépinson</p><h3>Dalton de Prépinson</h3><p class="pedigree">Don Juan de Hus<br>× Samsara de Hus</p></article><article class="reference-card"><p class="eyebrow">Born 2017 · Haras de Prépinson</p><h3>Dakota de Prépinson</h3><p class="pedigree">Don Juan de Hus<br>× Samsara de Hus</p></article></div></div></section>'''
-horses+=f'<section class="instagram-band"><div><p class="eyebrow">Find your next partner</p><h2>Our latest horses. On Instagram.</h2><p>For horses currently for sale, new arrivals and everyday life at the haras.</p></div><a class="btn light" href="{IG}" target="_blank" rel="noopener">@haras_de_prepinson {ARROW}</a></section>'
-horses+='<section class="moments archive-gallery container"><div class="section-head"><div><p class="eyebrow">Around the haras</p><h2>In good company.</h2></div><p class="small-note">A wider look at life, care and training at Prépinson.</p></div>'+gallery([('prepinson-outdoor-arena.webp','The outdoor riding arena at Haras de Prépinson'),('prepinson-stables-flowers.webp','Flowers welcoming visitors to the Prépinson stables'),('prepinson-rider-saddle-detail.webp','A rider preparing in the saddle at Prépinson'),('prepinson-bay-horse-outdoors.webp','A bay horse enjoying the outdoors at Prépinson'),('prepinson-indoor-riding-arena.webp','The bright indoor riding arena at Prépinson'),('prepinson-horse-handler-outdoors.webp','A horse and handler outdoors at Prépinson'),('prepinson-mare-and-foal.webp','A mare and foal at Prépinson'),('prepinson-show-jumping-training.webp','Show jumping training at Prépinson'),('prepinson-horses-green-paddocks.webp','Horses in the green paddocks at Prépinson')])+'</section>'
-horses=horses.replace('<section id="breeding"',Path('src/programmes.html').read_text()+'<section id="breeding"')
-page('horses','Haras de Prépinson — Horse Boarding & Young Horse Training in Belgium','Professional young horse training, show jumping, dressage and horse boarding at Haras de Prépinson in Belgium. Discover our breeding programme and horses for sale on Instagram.',horses.replace('/assets/estate-film.mp4','/assets/haras-film.mp4'),'Horses')
-properties=[{'id':'ortho-24','title':'Ortho 24 – Grange','tag':'Space to gather. Room to unwind.','image':'prepinson-ortho-24-house-pool.webp','beds':4,'baths':4,'platform':'Casapilot','url':CASA,'description':'A generous Ardennes retreat, where stone walls meet contemporary comfort. Gather with family or friends, settle into slow mornings and make the most of the pool and outdoor hot tub.','amenities':['8 guests','4 bedrooms','4 bathrooms','Outdoor pool','Hot tub','Home cinema'],'gallery':[('grange-1.jpg','Ortho 24 Grange — stone exterior'),('grange-3.jpg','Ortho 24 Grange — living space'),('prepinson-ortho-24-bedroom.webp','Ortho 24 Grange — warm double bedroom'),('prepinson-ortho-24-kitchen.webp','Ortho 24 Grange — bright country kitchen'),('prepinson-ortho-24-hot-tub.webp','Ortho 24 Grange — outdoor hot tub'),('prepinson-ortho-24-billiards.webp','Ortho 24 Grange — billiards room')]},{'id':'ortho-25','title':'Ortho 25 – Cottage','tag':'Country character. A cosy escape.','image':'cottage.jpg','beds':3,'baths':3,'platform':'Airbnb','url':AIR,'description':'A welcoming stone cottage in the village of Ortho. With a private garden and space for eight, it is a lovely base for forest walks, unhurried lunches and time together in the Ardennes.','amenities':['8 guests','3 bedrooms','3 bathrooms','Private garden','Kitchen','2 parking spaces'],'gallery':[('cottage.jpg','Ortho 25 Cottage — stone exterior'),('cottage-1.jpg','Ortho 25 Cottage — welcoming living room'),('cottage-2.jpg','Ortho 25 Cottage — dining space'),('cottage-3.jpg','Ortho 25 Cottage — twin bedroom'),('prepinson-ortho-25-garden-terrace.webp','Ortho 25 Cottage — sunny garden terrace'),('prepinson-ortho-25-double-bedroom.webp','Ortho 25 Cottage — double bedroom')]}]
-def property_card(p):
- return f'<article class="property-card"><a class="property-image" href="/houses/{p["id"]}/">{image(p["image"],p["title"])}</a><div class="property-info"><p class="eyebrow">{p["tag"]}</p><h3>{p["title"]}</h3><div class="property-meta"><span>8 guests</span><span>{p["beds"]} bedrooms</span><span>{p["baths"]} bathrooms</span></div><p>{p["description"]}</p><div class="property-links"><a class="btn dark" href="/houses/{p["id"]}/">Explore the house {ARROW}</a><a class="text-link" href="{p["url"]}" target="_blank" rel="noopener">{p["platform"]} {ARROW}</a></div></div></article>'
-houses=hero('Stay at Prépinson','Make room<br><em>for slow living.</em>','Two beautiful homes. Your own corner of the Ardennes.',photo='prepinson-ortho-24-house-pool.webp',inner=True).replace('data-film="/assets/estate-film.mp4"','data-film="/assets/house-film.mp4"')
-houses+='''<section id="discover" class="intro container"><div><p class="eyebrow">Our two houses</p><h2>Come together.<br><em>Feel at home.</em></h2></div><p class="body-copy">A weekend with friends. A few days with family. Choose your farmhouse escape in Belgium, with the countryside on your doorstep and La Roche-en-Ardenne a short drive away.</p></section>'''
-houses+='<section class="property-grid container">'+''.join(property_card(p) for p in properties)+'</section>'
-houses+=f'<section class="estate-section"><div class="estate-grid container"><div class="estate-photo">{image("prepinson-ortho-25-garden-terrace.webp","The sunny garden terrace at Ortho 25 Cottage")}</div><div class="estate-copy"><p class="eyebrow">Outside your door</p><h2>Less rush.<br><em>More Ardennes.</em></h2><p>Walk through the forests, explore La Roche-en-Ardenne or simply find a quiet spot in the garden. The best days here leave a little room for nothing at all.</p><button class="text-link" data-film="/assets/house-film.mp4">Watch life at the estate <span>▷</span></button></div></div></section>'
-houses+=f'<section class="house-instagram"><div class="container"><div><p class="eyebrow">STAY A LITTLE LONGER</p><h2>The houses,<br><em>as they are lived.</em></h2></div><div><p>Seasonal details, new views and everyday moments from Ortho 24 and Ortho 25.</p><a class="editorial-link dark-link" href="{IG_HOUSE}" target="_blank" rel="noopener">@prepinson_the_house {ARROW}</a></div></div></section>'
-page('houses','Prépinson Houses — Holiday Rentals in the Belgian Ardennes','Discover Ortho 24 Grange and Ortho 25 Cottage, two holiday homes for eight guests in Ortho, Belgium. Explore photos and book through Casapilot or Airbnb.',houses,'Houses')
-for p in properties:
- name=p['title'].split(' – ')
- body=hero('Your Ardennes escape',name[0]+'.<br><em>The '+name[1]+'.</em>',p['tag'],photo=p['image'],inner=True,buttons=f'<a class="btn light" href="{p["url"]}" target="_blank" rel="noopener">Check availability on {p["platform"]} {ARROW}</a>').replace('data-film="/assets/estate-film.mp4"','data-film="/assets/house-film.mp4"')
- body+=f'<section id="discover" class="property-detail container"><div class="property-summary"><div><p class="eyebrow">{p["title"]} · Ortho, Belgium</p><h2>Your time.<br><em>Your place.</em></h2><p>{p["description"]}</p><div class="amenities">'+''.join(f'<span>{a}</span>' for a in p['amenities'])+f'</div><p>Near La Roche-en-Ardenne, in the heart of the Belgian Ardennes. Find the full amenities, house rules and current availability on {p["platform"]}.</p></div><aside class="booking-panel"><h3>Start planning your stay.</h3><p>See available dates, current prices and all the practical details on {p["platform"]}.</p><a class="btn dark" href="{p["url"]}" target="_blank" rel="noopener">Book with {p["platform"]} {ARROW}</a><p class="small-note" style="margin-top:20px;margin-bottom:0">A question before you book?<br><a class="text-link" href="mailto:thehouse@prepinson.com">Contact Prépinson {ARROW}</a></p></aside></div>'
- body+=gallery(p['gallery'])+'</section><section class="container" style="padding-bottom:65px"><a class="text-link" href="/houses/">← Explore both houses</a></section>'
- page('houses/'+p['id'],p['title']+' — Prépinson Holiday Home in Belgium',p['description'],body,'Houses')
-OUT.joinpath('robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: https://www.prepinson.com/sitemap.xml\n')
-routes=['','horses/','houses/','houses/ortho-24/','houses/ortho-25/']
-OUT.joinpath('sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>https://www.prepinson.com/'+r+'</loc></url>' for r in routes)+'</urlset>')
-# Property-specific structured data, readable without JavaScript.
-for p in properties:
- f=OUT/'houses'/p['id']/'index.html'
- schema={'@context':'https://schema.org','@type':'VacationRental','name':p['title'],'identifier':'prepinson-'+p['id'],'url':'https://www.prepinson.com/houses/'+p['id']+'/','description':p['description'],'image':['https://www.prepinson.com/assets/'+n for n,a in p['gallery']],'address':{'@type':'PostalAddress','streetAddress':p['id'].replace('ortho-','Ortho '),'postalCode':'6983','addressLocality':'La Roche-en-Ardenne','addressCountry':'BE'},'containsPlace':{'@type':'Accommodation','occupancy':{'@type':'QuantitativeValue','value':8},'numberOfBedrooms':p['beds'],'numberOfBathroomsTotal':p['baths']},'sameAs':[p['url']]}
- f.write_text(f.read_text().replace('</head>','<script type="application/ld+json">'+json.dumps(schema)+'</script></head>'))
+from src.site_data import FACILITY_FACTS, HOUSE_FACTS, LANGS, LANGUAGE_NAMES, ROUTES, TEXT, text  # noqa: E402
+from src.client_content import HORSE_STORIES, PEDIGREES
+from src.presentation_data import MEDIA, PROPERTIES, GALLERY_ALT, ui, v1  # noqa: E402
+
+try:
+    from src.forms import render_confirmation, render_contact, render_dialogs as forms_dialogs, render_footer  # type: ignore  # noqa: E402
+except ImportError:
+    render_confirmation = render_contact = render_footer = None
+    forms_dialogs = None
+
+try:
+    from src.activity_data import ACTIVITY_GROUPS, ACTIVITIES, activity_copy  # type: ignore  # noqa: E402
+except ImportError:
+    from src.presentation_data import ACTIVITIES as _ACTIVITIES  # noqa: E402
+    ACTIVITY_GROUPS = tuple((key.removeprefix("act_"), key) for key, _ in _ACTIVITIES)
+    ACTIVITIES = {key: tuple({"name": name, "url": link} for name, link in values) for key, values in _ACTIVITIES}
+    def activity_copy(item, lang):
+        return ""
+
+
+OUT = ROOT / "dist"
+DOMAIN = "https://www.prepinson.com"
+PREVIEW_MODE = os.environ.get("PREVIEW_MODE") == "true"
+ASSET_DOMAIN = os.environ.get("DEPLOY_PRIME_URL", DOMAIN).rstrip("/") if PREVIEW_MODE else DOMAIN
+IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
+IG_HOUSE = "https://www.instagram.com/prepinson_houses/"
+MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
+MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
+ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/client_content.py", "src/styles.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "work/build.py"))).hexdigest()[:12]
+
+META = {
+    "": ("home_title", "home_desc"),
+    "horses": ("horses_title", "horses_desc"),
+    "horses/programmes": ("programmes_title", "programmes_desc"),
+    "horses/facilities": ("facilities_title", "facilities_desc"),
+    "horses/for-sale": ("sales_title", "sales_desc"),
+    "horses/references": ("references_title", "references_desc"),
+    "houses": ("houses_title", "houses_desc"),
+    "houses/ortho-24": ("ortho24_title", "ortho24_desc"),
+    "houses/ortho-25": ("ortho25_title", "ortho25_desc"),
+    "activities": ("activities_title", "activities_desc"),
+    "legal": ("legal_title", "legal_desc"),
+    "privacy": ("privacy_title", "privacy_desc"),
+}
+
+IMAGE_DIMS = {
+    "hero-horses-2000.webp": (2000, 1333), "training-2000.webp": (2000, 1290),
+    "facilities-2000.webp": (2000, 1333), "house-hero-2000.webp": (2000, 1333),
+    "prepinson-horse-handler-outdoors.webp": (960, 640), "prepinson-stables-flowers.webp": (960, 640),
+    "prepinson-show-jumping-training.webp": (960, 640), "prepinson-mare-and-foal.webp": (960, 640),
+    "prepinson-ortho-25-garden-terrace.webp": (1200, 800), "eva-schiller.jpg": (960, 1200),
+    "nicolas-derouault.jpg": (960, 1200),
+}
+IMAGE_MANIFEST_PATH = ROOT / "src/image-manifest.json"
+IMAGE_MANIFEST = json.loads(IMAGE_MANIFEST_PATH.read_text(encoding="utf-8")) if IMAGE_MANIFEST_PATH.exists() else {}
+
+
+def tx(key, lang, fallback=None):
+    if key in TEXT:
+        return text(key, lang)
+    if fallback and fallback in TEXT:
+        return text(fallback, lang)
+    return fallback or key.replace("_", " ").capitalize()
+
+
+def url(lang, route=""):
+    return f"/{lang}/" + (route.strip("/") + "/" if route else "")
+
+
+def facility_values(lang):
+    indoor = FACILITY_FACTS["indoor"]
+    outdoor = FACILITY_FACTS["outdoor"]
+    estate = FACILITY_FACTS["estate"]
+    return (
+        (str(FACILITY_FACTS["sport_boxes"]), tx("stat_boxes", lang)),
+        (str(FACILITY_FACTS["breeding_boxes"]), tx("stat_breeding", lang)),
+        (f'{indoor["width"]} × {indoor["length"]} {indoor["unit"]}', tx("stat_indoor", lang)),
+        (f'{outdoor["width"]} × {outdoor["length"]} {outdoor["unit"]}', tx("stat_outdoor", lang)),
+        (f'{estate["value"]} {estate["unit"]}', tx("stat_land", lang)),
+    )
+
+
+def stat_strip(lang, light=False):
+    return '<div class="stat-strip' + (' light' if light else '') + '">' + ''.join(
+        f'<div><b>{value}</b><span>{label}</span></div>' for value, label in facility_values(lang)
+    ) + '</div>'
+
+
+def icon(name):
+    return f'<svg class="icon icon-{name}" aria-hidden="true" focusable="false"><use href="/icons.svg#{name}"></use></svg>'
+
+
+def headline(value):
+    """Apply the V1 italic accent to the last word without changing its text."""
+    words = value.rsplit(" ", 1)
+    return escape(value) if len(words) == 1 else f'{escape(words[0])} <em>{escape(words[1])}</em>'
+
+
+def display_title(value):
+    """Render an editorial title using a clear line break instead of punctuation."""
+    first, separator, second = value.partition("\n")
+    return escape(first) + (f'<br><em>{escape(second)}</em>' if separator else "")
+
+
+def image(name, alt, *, cls="", hero=False, width=None, height=None, position="", sizes=None):
+    manifest = IMAGE_MANIFEST.get(name, {})
+    width = manifest.get("width", IMAGE_DIMS.get(name, (width or 1200, height or 800))[0])
+    height = manifest.get("height", IMAGE_DIMS.get(name, (width or 1200, height or 800))[1])
+    loading = 'fetchpriority="high"' if hero else 'loading="lazy" decoding="async"'
+    fallback = f'<img class="{cls}" src="/assets/{name}?v={ASSET_VERSION}" width="{width}" height="{height}" alt="{escape(re.sub(r"<[^>]+>", " ", alt))}" {loading}>'
+    variants = manifest.get("variants", ())
+    if not variants:
+        return fallback
+    srcset = ", ".join(f'{variant["src"]}?v={ASSET_VERSION} {variant["width"]}w' for variant in variants)
+    responsive_sizes = sizes or ("(max-width: 700px) 1000px, 100vw" if hero else "(max-width: 700px) 88vw, 43vw")
+    avif_srcset = srcset.replace(".webp", ".avif")
+    mobile_sources = ""
+    mobile_variants = IMAGE_MANIFEST.get(manifest.get("mobileImage"), {}).get("variants", manifest.get("mobile", ()))
+    if hero and mobile_variants:
+        mobile_webp = ", ".join(f'{item["src"]}?v={ASSET_VERSION} {item["width"]}w' for item in mobile_variants)
+        mobile_avif = mobile_webp.replace(".webp", ".avif")
+        mobile_sources = f'<source media="(max-width: 600px) and (orientation: portrait)" type="image/avif" srcset="{mobile_avif}" sizes="100vw"><source media="(max-width: 600px) and (orientation: portrait)" type="image/webp" srcset="{mobile_webp}" sizes="100vw">'
+    return f'<picture>{mobile_sources}<source type="image/avif" srcset="{avif_srcset}" sizes="{responsive_sizes}"><source type="image/webp" srcset="{srcset}" sizes="{responsive_sizes}">{fallback}</picture>'
+
+
+def responsive_image(stem, alt, *, cls="", hero=False, sizes=None, position=""):
+    cover_sizes = sizes or ("(max-width: 700px) 1350px, 100vw" if stem == "hero-horses" and hero else "(max-width: 700px) 1000px, 100vw" if hero else "100vw")
+    return image(f"{stem}-2000.webp", alt, cls=cls, hero=hero, sizes=cover_sizes, position=position)
+
+
+def language_switch(lang, route):
+    options = "".join(
+        f'<a href="{url(code, route)}" lang="{code}" hreflang="{code}" data-language="{code}"' +
+        (' aria-current="true"' if code == lang else "") + f'><span>{code.upper()}</span>{LANGUAGE_NAMES[code]}</a>'
+        for code in LANGS
+    )
+    return f'<details class="language-switch"><summary aria-label="{escape(tx("language", lang))}: {escape(LANGUAGE_NAMES[lang])}"><span>{lang.upper()}</span>{icon("chevron-down")}</summary><nav aria-label="{escape(tx("language", lang))}" class="language-options">{options}</nav></details>'
+
+
+def header(lang, route, solid=False):
+    home = url(lang)
+    contact_href = home + "#contact" if route in {"activities", "legal", "privacy", "contact/thanks", "newsletter/thanks"} else "#contact"
+    nav = ((home + "#haras", ui("nav_haras", lang)), (home + "#expertise", ui("nav_expertise", lang)), (url(lang, "horses"), tx("nav_horses", lang)), (home + "#journal", ui("nav_journal", lang)), (url(lang, "houses"), tx("nav_houses", lang)))
+    links = "".join(f'<a href="{href}"' + (' aria-current="page"' if route == href.strip("/").removeprefix(lang + "/") else "") + f'>{label}</a>' for href, label in nav)
+    cls = "nav solid-nav" if solid else "nav"
+    brand = f'<a class="brand" href="{home}"><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt=""><span class="wordmark">PREPINSON <small>HARAS DE PREPINSON</small></span></a>'
+    return f'<a class="skip-link" href="#main">{tx("skip", lang)}</a><header class="{cls}">{brand}<nav class="navlinks" aria-label="{tx("menu", lang)}">{links}<a class="nav-book" href="{contact_href}">{tx("nav_contact", lang)} <span>{icon("arrow-up-right")}</span></a></nav>{language_switch(lang, route)}<button class="menu-toggle" data-menu-toggle type="button" aria-expanded="false" aria-controls="mobile-menu"><span>{tx("menu", lang)}</span>{icon("menu")}</button></header><nav id="mobile-menu" class="mobile-nav" aria-label="{tx("menu", lang)}">{links}<a href="{contact_href}">{tx("nav_contact", lang)}</a><small>ORTHO · ARDENNES</small></nav>'
+
+
+def editorial_link(href, label, dark=True, **attrs):
+    extras = " ".join(f'{key.replace("_", "-")}="{escape(str(value))}"' for key, value in attrs.items())
+    cls = "editorial-link dark-link" if dark else "editorial-link"
+    return f'<a class="{cls}" href="{href}" {extras}>{label}<span>{icon("arrow-up-right")}</span></a>'
+
+
+def inner_hero(lang, eyebrow, title, intro, media, *, booking=None, position="center", title_html=None):
+    alt = ui({"training": "alt_training", "facilities": "alt_facilities", "house-hero": "alt_houses", "hero-horses-2000.webp": "alt_hero"}.get(media, "alt_houses"), lang)
+    if media in GALLERY_ALT: alt = GALLERY_ALT[media][lang]
+    visual = responsive_image(media, alt, cls="hero-media", hero=True, position=position) if media in {"training", "facilities", "house-hero"} else image(media, alt, cls="hero-media", hero=True, position=position)
+    action = f'<a class="btn light" href="{booking}" target="_blank" rel="noopener noreferrer">{ui("check_availability", lang)} {icon("arrow-up-right")}</a>' if booking else ""
+    return f'<section class="hero inner-hero">{visual}<div class="hero-shade"></div><div class="hero-content reveal"><p class="eyebrow">{eyebrow}</p><h1>{title_html or escape(title)}</h1><p>{intro}</p>{action}</div><div class="hero-bottom"><span class="location">{ui("location", lang)}</span><a class="scroll-link" href="#discover">{ui("scroll", lang)} <span>{icon("arrow-down")}</span></a></div></section>'
+
+
+def home(lang):
+    expert = (
+        ("01", "boarding", ui("boarding_title", lang), ui("boarding_copy", lang), "boarding"),
+        ("02", "training", ui("training_title", lang), ui("training_copy", lang), "training"),
+        ("03", "breeding", ui("breeding_title", lang), ui("breeding_copy", lang), "breeding"),
+    )
+    cards = "".join(f'<a class="expertise-card" href="{url(lang, "horses")}#{target}"><div class="expertise-image">{image(MEDIA[media], ui("alt_" + media, lang))}<span class="image-index">{number}</span></div><div class="expertise-title"><h3>{title}</h3><span>{icon("arrow-up-right")}</span></div><p>{copy}</p></a>' for number, media, title, copy, target in expert)
+    refs = "".join(f'<a href="{url(lang, "horses/references")}#{slug}"><span class="pedigree-year">0{i}</span><div><h3>{display_title(tx(f"{slug}_title", lang))}</h3></div><span class="pedigree-arrow">{icon("arrow-up-right")}</span></a>' for i, slug in enumerate(HORSE_STORIES, 1))
+    people = (("team_eva", "Eva Schiller", ui("eva_role", lang), "eva.schiller@prepinson.com", "+352 691 22 38 36"), ("team_nicolas", "Nicolas Derouault", ui("nicolas_role", lang), "nicolas.derouault@prepinson.com", "+32 470 85 13 10"))
+    team = "".join(f'<article class="team-card">{image(MEDIA[media], name)}<div><p class="eyebrow">{role}</p><h3>{name}</h3><a href="mailto:{email}">{email} {icon("arrow-up-right")}</a><a href="tel:{phone.replace(" ", "")}">{phone}</a></div></article>' for media, name, role, email, phone in people)
+    return f'''
+<section class="haras-hero">{responsive_image("hero-horses", ui("alt_hero", lang), cls="haras-hero-photo", hero=True, position="center 45%")}
+<div class="haras-hero-overlay"></div><div class="hero-editorial"><p class="eyebrow">{v1("home_eyebrow", lang)}</p><h1>{v1("home_hero", lang)}</h1><div class="hero-intro-line"><span>{v1("home_tagline", lang)}</span>{editorial_link("#haras", ui("hero_cta", lang), dark=False)}</div></div>
+<div class="hero-baseline"><span>{ui("location", lang)}</span><span>{v1("home_services_line", lang)}</span><a href="#haras">{ui("scroll", lang)} <span>{icon("arrow-down")}</span></a></div></section>
+<section id="haras" class="haras-intro container"><div class="intro-label"><span class="eyebrow">{ui("intro_label", lang)}</span><span class="tiny-serif">01</span></div><div class="haras-intro-copy"><h2>{v1("home_intro_title", lang)}</h2><p>{v1("home_intro", lang)}</p><p>{v1("home_intro_programmes", lang)}</p><p class="quiet-copy">{v1("home_intro_secondary", lang)}</p>{editorial_link(url(lang, "horses"), v1("home_intro_link", lang))}</div><figure class="intro-portrait">{image(MEDIA["intro"], GALLERY_ALT[MEDIA["intro"]][lang], position="45% 50%") }<figcaption>{ui("intro_note", lang)}</figcaption></figure></section>
+<section id="expertise" class="expertise-section"><div class="container"><div class="expertise-heading"><p class="eyebrow">{ui("expertise_label", lang)}</p><h2>{v1("expertise_title", lang)}</h2><p>{v1("expertise_intro", lang)}</p></div><div class="expertise-grid">{cards}</div></div></section>
+<section class="facilities-home"><div class="haras-landscape">{responsive_image("facilities", ui("alt_facilities", lang), position="center 45%")}<div class="landscape-caption"><span class="eyebrow">{tx("facilities_hero", lang)}</span>{editorial_link(url(lang, "horses/facilities"), ui("facilities_cta", lang), dark=False)}</div></div>{stat_strip(lang)}</section>
+<section class="selected-section container"><div class="selected-heading"><p class="eyebrow">{ui("references_label", lang)}</p><h2>{tx("references_hero", lang)}</h2><p>{tx("service_references_copy", lang)}</p>{editorial_link(url(lang, "horses/references"), tx("service_references", lang))}</div><div class="pedigree-list">{refs}</div></section>
+<section id="team" class="team-section"><div class="container"><div class="team-heading"><p class="eyebrow">{ui("team_label", lang)}</p><h2>{v1("team_title", lang)}</h2><p>{v1("team_intro", lang)}</p></div><div class="team-grid">{team}</div></div></section>
+<section class="home-houses"><div class="estate-grid container"><div class="estate-photo">{responsive_image("house-hero", ui("alt_houses", lang))}</div><div class="estate-copy"><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{tx("houses_teaser_title", lang)}</h2><p>{ui("houses_home_copy", lang)}</p>{editorial_link(url(lang, "houses"), ui("houses_cta", lang))}</div></div></section>
+<section id="journal" class="journal-stories feedpane-section container"><div class="section-head"><div><p class="eyebrow">{ui("journal_label", lang)}</p><h2>{v1("journal_title", lang)}</h2></div><p class="journal-intro">{v1("journal_intro", lang)}</p></div><div id="feedpane" class="feedpane-shell" aria-label="Instagram · Haras de Prepinson"></div><script src="https://feedpane.com/widget.js" data-key="6c7a542cd3ba470d84f9ce26f775c77c" data-target="#feedpane" data-cols="3" data-mobile-cols="1" data-gap="14" data-radius="0" data-posts="6" data-autoplay="false" defer></script><p class="feedpane-fallback">{editorial_link(IG_HARAS, ui("instagram_fallback", lang), target="_blank", rel="noopener noreferrer")}</p></section>'''
+
+
+def team_album(lang):
+    group = "prepinson-team-portrait.webp"
+    group_alt = GALLERY_ALT[group][lang]
+    photos = tuple((name, GALLERY_ALT[name][lang]) for name in ("prepinson-team-arena.webp", "prepinson-horse-care.webp", "prepinson-young-horse.webp", "prepinson-pastures.webp", "prepinson-rider-detail.webp"))
+    return f'''<div class="team-album"><h3>{ui("team_gallery_title", lang)}</h3><button class="team-group-photo" type="button" data-lightbox-item="0" data-lightbox-src="/assets/{group}?v={ASSET_VERSION}" aria-label="{escape(ui("gallery_label", lang) + ": " + group_alt)}">{image(group, group_alt, sizes="86vw")}</button><details class="team-gallery-more"><summary>{ui("team_gallery_link", lang)} {icon("plus")}</summary>{gallery(photos, lang)}</details></div>'''
+
+
+def horses(lang):
+    sections = (("boarding", "01", ui("boarding_title", lang), ui("boarding_copy", lang), MEDIA["boarding"], "horses/facilities", tx("nav_facilities", lang)), ("training", "02", ui("training_title", lang), ui("training_copy", lang), MEDIA["training"], "horses/programmes", tx("nav_programmes", lang)), ("breeding", "03", ui("breeding_title", lang), ui("breeding_copy", lang), MEDIA["breeding"], "horses/references", tx("service_references", lang)))
+    body = inner_hero(lang, v1("home_eyebrow", lang), tx("horses_hero", lang), v1("horses_tagline", lang), "training", title_html=v1("horses_hero", lang)) + f'<section id="discover" class="intro container"><div><p class="eyebrow">{tx("world_horses", lang)}</p><h2>{ui("horses_intro_first", lang)}<br><em>{ui("horses_intro_second", lang)}</em></h2></div><p class="body-copy">{tx("horses_intro", lang)}</p></section><section class="service-stories container">'
+    for anchor, number, title, copy, media, route, cta in sections:
+        body += f'<article id="{anchor}" class="service-story"><div class="service-story-image">{image(media, ui("alt_" + anchor, lang))}</div><div><p class="eyebrow">{number} / {title}</p><h2>{title}</h2><p>{copy}</p>{editorial_link(url(lang, route), cta)}</div></article>'
+    return body + f'</section><section class="instagram-band"><div><p class="eyebrow">{tx("nav_sales", lang)}</p><h2>{tx("sales_range", lang)}</h2><p>{tx("sales_intro", lang)}</p></div><a class="btn light" href="{url(lang, "horses/for-sale")}">{tx("nav_sales", lang)} {icon("arrow-up-right")}</a></section><section class="horses-team-gallery container" id="team-gallery">{team_album(lang)}</section>'
+
+
+def programmes(lang):
+    subjects = ("programme-foal", "programme-pre-breaking", "programme-breaking", "programme-jumping")
+    panels = "".join(f'<details name="programmes"' + (' open' if i == 1 else '') + f'><summary><span class="programme-number">0{i}</span><span>{tx(f"p{i}_title", lang)}</span><span class="programme-toggle">{icon("plus")}</span></summary><div class="programme-panel"><p><strong>{tx(f"p{i}_timing", lang)}</strong></p><p>{tx(f"p{i}_copy", lang)}</p><a class="text-link" href="#contact" data-contact-subject="{subjects[i - 1]}">{ui("programme_cta", lang)} {icon("arrow-up-right")}</a></div></details>' for i in range(1, 5))
+    return inner_hero(lang, tx("nav_programmes", lang), tx("programmes_hero", lang), tx("programmes_intro", lang), "training") + f'<section id="discover" class="programmes-section container"><div class="programmes-heading"><p class="eyebrow">{tx("nav_programmes", lang)}</p><h2>{ui("programmes_list_title", lang)}</h2></div><div class="programme-list" data-exclusive-details>{panels}</div></section>'
+
+
+def gallery(items, lang):
+    buttons = "".join(f'<button type="button" data-lightbox-item="{i}" data-lightbox-src="/assets/{name}?v={ASSET_VERSION}" aria-label="{escape(ui("gallery_label", lang))}: {escape(alt)}">{image(name, alt, sizes="(max-width: 700px) 43vw, 28vw")}</button>' for i, (name, alt) in enumerate(items))
+    return f'<div class="gallery" aria-label="{escape(ui("gallery_label", lang))}">{buttons}</div>'
+
+
+def facilities(lang):
+    gallery_items = (("prepinson-indoor-riding-arena.webp", ui("alt_indoor", lang)), ("prepinson-outdoor-jumping-arena.webp", ui("alt_training", lang)), ("prepinson-outdoor-arena.webp", ui("alt_outdoor", lang)), ("prepinson-horses-green-paddocks.webp", ui("alt_paddocks", lang)), ("prepinson-rider-saddle-detail.webp", ui("alt_saddle", lang)), ("prepinson-stables-flowers.webp", ui("alt_boarding", lang)))
+    items = "".join(f'<li>{tx(key, lang)}</li>' for key in ("facility_equipment", "facility_club", "facility_breeding", "facility_trails"))
+    return inner_hero(lang, tx("nav_facilities", lang), tx("facilities_hero", lang), tx("facilities_intro", lang), "facilities") + f'<section id="discover" class="facilities-detail container"><div class="section-head"><div><p class="eyebrow">{tx("stats_title", lang)}</p><h2>{ui("facilities_detail_title", lang)}</h2></div></div>{stat_strip(lang, light=True)}<div class="facilities-copy"><ul class="large-list">{items}</ul><div><p>Ortho 24<br>6983 La Roche-en-Ardenne<br>{ui("country", lang)}</p><p>{ui("transport_access", lang)}</p>{editorial_link("#contact", tx("nav_contact", lang))}{editorial_link(MAP_HARAS, tx("footer_maps_haras", lang), target="_blank", rel="noopener noreferrer")}</div></div>{gallery(gallery_items, lang)}</section>'
+
+
+def sales(lang):
+    return inner_hero(lang, tx("nav_sales", lang), tx("sales_hero", lang), tx("sales_intro", lang), "hero-horses-2000.webp") + f'<section id="discover" class="sales-section container"><div><p class="eyebrow">{tx("nav_sales", lang)}</p><h2>{tx("sales_range", lang)}</h2><p>{tx("sales_cta", lang)}</p><a class="btn dark" href="#contact" data-contact-subject="horse-search">{ui("sales_cta", lang)} {icon("arrow-up-right")}</a></div>{image("prepinson-bay-horse-outdoors.webp", tx("sales_range", lang))}</section>'
+
+
+def references(lang):
+    dalton_photos = ("dalton-falsterbo-dressage.webp", "dalton-falsterbo-finish.webp", "dalton-falsterbo-arena-entry.webp")
+    dalton_gallery = '<div class="reference-media"><p class="eyebrow">' + escape(ui("dalton_gallery", lang)) + '</p><div class="reference-gallery">' + "".join(
+        f'<button type="button" data-lightbox-item="{i}" data-lightbox-src="/assets/{name}?v={ASSET_VERSION}" aria-label="{escape(ui("enlarge", lang) + ": " + GALLERY_ALT[name][lang], quote=True)}">{image(name, GALLERY_ALT[name][lang], sizes="(max-width: 700px) 88vw, 27vw")}</button>'
+        for i, name in enumerate(dalton_photos)
+    ) + '</div></div>'
+    rows = "".join(
+        f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><p class="reference-pedigree"><span>{ui("pedigree", lang)}</span>{escape(PEDIGREES[slug])}</p><div class="reference-story-copy"><p>{tx(f"{slug}_copy", lang)}</p></div>{dalton_gallery if slug == "dalton" else ""}</article>'
+        for i, slug in enumerate(HORSE_STORIES, 1)
+    )
+    return inner_hero(lang, tx("service_references", lang), tx("references_hero", lang), tx("service_references_copy", lang), "hero-horses-2000.webp") + f'<section id="discover" class="reference-stories container">{rows}</section>'
+
+
+def property_card(lang, slug):
+    prop = PROPERTIES[slug]
+    facts = HOUSE_FACTS[slug]
+    title = tx("ortho24_display_title" if slug == "ortho-24" else "ortho25_display_title", lang, "ortho24_title" if slug == "ortho-24" else "ortho25_title")
+    description = v1("ortho24_copy" if slug == "ortho-24" else "ortho25_copy", lang)
+    booking_label = ui("book_casapilot" if slug == "ortho-24" else "book_airbnb", lang)
+    return f'<article class="property-card"><a class="property-image" href="{url(lang, "houses/" + slug)}">{image(prop["image"], title.replace(chr(10), " "))}</a><div class="property-info"><p class="eyebrow">ORTHO · ARDENNES</p><h3>{display_title(title)}</h3><div class="property-meta"><span>{facts["guests"]} {tx("guests", lang)}</span><span>{facts["bedrooms"]} {tx("bedrooms", lang)}</span><span>{facts["bathrooms"]} {tx("bathrooms", lang)}</span></div><p>{description}</p><div class="property-links"><a class="btn dark" href="{url(lang, "houses/" + slug)}">{tx("explore_house", lang)} {icon("arrow-up-right")}</a><a class="text-link" href="{prop["booking"]}" target="_blank" rel="noopener noreferrer">{booking_label} {icon("arrow-up-right")}</a></div></div></article>'
+
+
+def houses(lang):
+    return inner_hero(lang, ui("houses_label", lang), tx("houses_hero", lang), v1("houses_tagline", lang), "house-hero", title_html=v1("houses_hero", lang)) + f'<section id="discover" class="intro container"><div><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{v1("houses_intro_title", lang)}</h2></div><p class="body-copy">{ui("houses_home_copy", lang)}</p></section><section class="property-grid container">{property_card(lang, "ortho-24")}{property_card(lang, "ortho-25")}</section><section class="estate-section"><div class="estate-grid container"><div class="estate-photo">{image("house-1.jpg", ui("location", lang))}</div><div class="estate-copy"><p class="eyebrow">{tx("nav_activities", lang)}</p><h2>{v1("houses_estate_title", lang)}</h2><p>{v1("houses_estate_copy", lang)}</p>{editorial_link(url(lang, "activities"), ui("activities_cta", lang))}</div></div></section><section class="house-instagram"><div class="container"><div><p class="eyebrow">PREPINSON HOUSES</p><h2>{v1("houses_instagram_title", lang)}</h2></div><div><p>{v1("houses_instagram_copy", lang)}</p>{editorial_link(IG_HOUSE, "@prepinson_houses", target="_blank", rel="noopener noreferrer")}</div></div></section>'
+
+
+def house(lang, slug):
+    prop = PROPERTIES[slug]; is24 = slug == "ortho-24"
+    facts = HOUSE_FACTS[slug]
+    title = tx("ortho24_display_title" if is24 else "ortho25_display_title", lang, "ortho24_title" if is24 else "ortho25_title")
+    description = v1("ortho24_copy" if is24 else "ortho25_copy", lang); other = "ortho-25" if is24 else "ortho-24"
+    amenities = f'<span>{facts["guests"]} {tx("guests", lang)}</span><span>{facts["bedrooms"]} {tx("bedrooms", lang)}</span><span>{facts["bathrooms"]} {tx("bathrooms", lang)}</span>'
+    amenities += "".join(f'<span>{ui(key, lang)}</span>' for key in (("pool", "hot_tub", "cinema") if is24 else ("garden", "kitchen", "parking")))
+    film = f'<button type="button" data-video-open="/assets/house-film.mp4" class="film-button dark-film"><span class="circle">{icon("play")}</span>{ui("watch_film", lang)}</button>' if is24 else ""
+    localized_gallery = tuple((name, GALLERY_ALT[name][lang]) for name, _ in prop["gallery"])
+    booking_label = ui("book_casapilot" if is24 else "book_airbnb", lang)
+    return inner_hero(lang, "ORTHO · " + ui("country", lang).upper(), title.replace("\n", " "), ui("ortho24_tag" if is24 else "ortho25_tag", lang), prop["image"], booking=prop["booking"], title_html=display_title(title)) + f'<section id="discover" class="property-detail container"><div class="property-summary"><div><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{v1("house_detail_intro", lang)}</h2><p>{description}</p><div class="amenities">{amenities}</div></div><aside class="booking-panel"><h3>{ui("booking_title", lang)}</h3><p>{booking_label}</p><a class="btn dark" href="{prop["booking"]}" target="_blank" rel="noopener noreferrer">{booking_label} {icon("arrow-up-right")}</a><a class="text-link" href="#contact" data-contact-subject="{slug}">{tx("nav_contact", lang)} {icon("arrow-up-right")}</a></aside></div><div class="property-gallery-heading"><p class="eyebrow">{ui("gallery_label", lang)}</p><h2>{ui("gallery_title", lang)}</h2></div>{gallery(localized_gallery, lang)}</section><section class="property-film"><div class="container">{film}{editorial_link(url(lang, "activities"), ui("activities_cta", lang))}</div></section><section class="other-property container"><p class="eyebrow">{ui("other_house", lang)}</p>{property_card(lang, other)}</section>'
+
+
+def activities(lang):
+    groups = ""
+    index_links = ""
+    for group, label_key in ACTIVITY_GROUPS:
+        items = ACTIVITIES[group] if isinstance(ACTIVITIES, dict) else [item for item in ACTIVITIES if item.get("group") == group]
+        label = tx(label_key, lang)
+        index_links += f'<a href="#activity-{group}">{escape(label)}</a>'
+        cards = ""
+        for item in items:
+            name = item.get("name") or item.get("title"); href = item.get("url") or item.get("href"); copy = activity_copy(item, lang)
+            cards += f'<article class="activity-source"><h3>{escape(name)}</h3>{f"<p>{escape(copy)}</p>" if copy else ""}<a class="text-link" href="{escape(href, quote=True)}" target="_blank" rel="noopener noreferrer">{ui("official_link", lang)} {icon("arrow-up-right")}</a></article>'
+        groups += f'<section id="activity-{group}" class="activity-chapter"><div class="activity-chapter-heading"><p class="eyebrow">{escape(ui("activities_guide_label", lang))}</p><h2>{escape(label)}</h2><p>{escape(ui("activity_" + group + "_intro", lang))}</p></div><div class="activity-source-list">{cards}</div></section>'
+
+    house_cards = ""
+    for slug, title_key in (("ortho-24", "ortho24_display_title"), ("ortho-25", "ortho25_display_title")):
+        title = tx(title_key, lang, "ortho24_title" if slug == "ortho-24" else "ortho25_title")
+        house_cards += f'<a class="activities-stay-card" href="{url(lang, "houses/" + slug)}">{image(PROPERTIES[slug]["image"], title.replace(chr(10), " "), sizes="(max-width: 700px) 44vw, 28vw")}<span>{display_title(title)} {icon("arrow-up-right")}</span></a>'
+
+    guide = f'''<article id="discover" class="activities-guide container">
+  <header class="activities-guide-intro">
+    <div><p class="eyebrow">{escape(ui("activities_guide_label", lang))}</p><h2>{escape(ui("activities_guide_title", lang))}</h2></div>
+    <div class="activities-guide-intro-copy"><p>{escape(ui("activities_guide_intro", lang))}</p><nav class="activity-index" aria-label="{escape(ui('activities_guide_label', lang), quote=True)}">{index_links}</nav></div>
+  </header>
+  {groups}
+  <p class="notice">{escape(tx("activity_conditions", lang))}</p>
+</article>'''
+    stay = f'''<section class="activities-stay" aria-labelledby="activities-stay-title">
+  <div class="activities-stay-grid container">
+    <div class="activities-stay-copy"><p class="eyebrow">{escape(ui("houses_label", lang))}</p><h2 id="activities-stay-title">{escape(ui("activities_stay_title", lang))}</h2><p>{escape(ui("activities_stay_copy", lang))}</p>{editorial_link(url(lang, "houses"), ui("houses_cta", lang), dark=False)}</div>
+    <div class="activities-stay-images">{house_cards}</div>
+  </div>
+</section>'''
+    return inner_hero(lang, tx("nav_activities", lang), tx("activities_hero", lang), tx("activities_intro", lang), "facilities") + guide + stay
+
+
+def legal(lang):
+    return f'<section class="text-page container" id="content"><p class="eyebrow">PREPINSON</p><h1>{tx("legal_heading", lang)}</h1><h2>{tx("legal_company", lang)}</h2><p>Ortho 24, 6983 La Roche-en-Ardenne, {ui("country", lang)}<br><a href="mailto:haras@prepinson.com">haras@prepinson.com</a> · <a href="tel:+32470851310">+32 470 85 13 10</a></p><h2>{tx("legal_host", lang)}</h2><p>Netlify, Inc. · 44 Montgomery Street, Suite 300, San Francisco, California 94104, USA.</p><h2>{tx("legal_ip", lang)}</h2><p>{tx("legal_ip_copy", lang)}</p></section>'
+
+
+def privacy(lang):
+    sections = (("privacy_collect", "privacy_collect_copy"), ("privacy_basis", "privacy_basis_copy"), ("privacy_processors", "privacy_processors_copy"), ("privacy_newsletter", "privacy_newsletter_copy"), ("privacy_rights", "privacy_rights_copy"), ("privacy_language", "privacy_language_copy"))
+    return f'<section class="text-page container" id="content"><p class="eyebrow">PREPINSON</p><h1>{tx("privacy_heading", lang)}</h1>' + "".join(f'<h2>{tx(a, lang)}</h2><p>{tx(b, lang)}</p>' for a, b in sections if a in TEXT) + '</section>'
+
+
+BUILDERS = {"": home, "horses": horses, "horses/programmes": programmes, "horses/facilities": facilities, "horses/for-sale": sales, "horses/references": references, "houses": houses, "activities": activities, "legal": legal, "privacy": privacy}
+
+
+def dialogs(lang):
+    return f'<dialog class="dialog video-dialog" data-video-modal aria-label="{escape(ui("watch_film", lang))}"><button class="dialog-close" type="button" data-dialog-close aria-label="{escape(tx("close", lang))}">{icon("close")}</button><video controls playsinline preload="none"></video></dialog><dialog class="dialog lightbox" data-lightbox aria-label="{escape(ui("gallery_label", lang))}"><button class="dialog-close" type="button" data-dialog-close aria-label="{escape(ui("close_gallery", lang))}">{icon("close")}</button><img alt=""><div class="lightbox-controls"><button type="button" data-lightbox-prev aria-label="{escape(ui("previous", lang))}">{icon("arrow-left")}</button><span data-lightbox-label></span><button type="button" data-lightbox-next aria-label="{escape(ui("next", lang))}">{icon("arrow-right")}</button></div></dialog>'
+
+
+def fallback_contact(lang, route):
+    return f'<section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-copy"><p class="eyebrow">{tx("contact_eyebrow", lang)}</p><h2>{tx("contact_title", lang)}</h2><p>{tx("contact_copy", lang)}</p></div><form class="contact-form" name="contact-{lang}" method="POST" data-netlify="true"><input type="hidden" name="form-name" value="contact-{lang}"><label><span>{tx("form_name", lang)}</span><input name="name" required></label><label><span>{tx("form_email", lang)}</span><input type="email" name="email" required></label><label><span>{tx("form_message", lang)}</span><textarea name="message" required></textarea></label><button class="btn dark" type="submit">{tx("form_send", lang)}</button></form></div></section>'
+
+
+def fallback_footer(lang, route):
+    return f'<footer class="footer haras-footer"><div class="container"><div class="footer-invitation"><div><p class="eyebrow">PREPINSON</p><h2>{tx("newsletter_title", lang)}</h2></div><div class="footer-contact"><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><p>Ortho 24<br>6983 La Roche-en-Ardenne<br>Belgium</p></div></div><div class="footer-signature">PREPINSON</div><div class="footer-bottom"><span>© 2026 HARAS DE PREPINSON</span><a href="{url(lang, "legal")}">{tx("footer_legal", lang)}</a><a href="{url(lang, "privacy")}">{tx("footer_privacy", lang)}</a></div></div></footer>'
+
+
+def schema(lang, route, title, description):
+    page_url = DOMAIN + url(lang, route)
+    org = {"@type": "Organization", "@id": DOMAIN + "/#organization", "name": "Haras de Prepinson", "url": DOMAIN + url(lang), "logo": {"@type": "ImageObject", "url": ASSET_DOMAIN + "/assets/logo.png"}, "email": "haras@prepinson.com", "telephone": "+32470851310", "sameAs": [IG_HARAS, IG_HOUSE]}
+    place = {"@type": "LocalBusiness", "@id": DOMAIN + "/#haras", "name": "Haras de Prepinson", "url": DOMAIN + url(lang, "horses"), "image": ASSET_DOMAIN + "/assets/og-prepinson.jpg", "address": {"@type": "PostalAddress", "streetAddress": "Ortho 24", "postalCode": "6983", "addressLocality": "La Roche-en-Ardenne", "addressCountry": "BE"}, "geo": {"@type": "GeoCoordinates", "latitude": 50.1284709, "longitude": 5.6128915}, "sameAs": [IG_HARAS, MAP_HARAS], "parentOrganization": {"@id": DOMAIN + "/#organization"}}
+    lodging = {"@type": "LodgingBusiness", "@id": DOMAIN + "/#houses", "name": "Prepinson The House", "url": DOMAIN + url(lang, "houses"), "image": ASSET_DOMAIN + "/assets/og-houses.jpg", "email": "thehouse@prepinson.com", "address": {"@type": "PostalAddress", "streetAddress": "Ortho 24", "postalCode": "6983", "addressLocality": "La Roche-en-Ardenne", "addressCountry": "BE"}, "geo": {"@type": "GeoCoordinates", "latitude": 50.126626, "longitude": 5.6133845}, "sameAs": [IG_HOUSE, MAP_HOUSE]}
+    web = {"@type": "WebPage", "@id": page_url + "#webpage", "url": page_url, "name": title, "description": description, "inLanguage": lang, "isPartOf": {"@id": DOMAIN + "/#website"}}
+    graph = [org, place, lodging, {"@type": "WebSite", "@id": DOMAIN + "/#website", "url": DOMAIN, "name": "Prepinson", "publisher": {"@id": DOMAIN + "/#organization"}}, web]
+    if route == "activities":
+        graph.append({"@type": "Article", "@id": page_url + "#guide", "headline": title, "description": description, "inLanguage": lang, "mainEntityOfPage": {"@id": page_url + "#webpage"}, "publisher": {"@id": DOMAIN + "/#organization"}, "image": ASSET_DOMAIN + "/assets/og-houses.jpg"})
+    if route.startswith("houses/"):
+        prop = PROPERTIES[route.rsplit("/", 1)[1]]
+        graph.append({"@type": "VacationRental", "name": prop["short"], "url": page_url, "description": description, "image": [ASSET_DOMAIN + "/assets/" + item[0] for item in prop["gallery"]], "containsPlace": {"@type": "Accommodation", "occupancy": {"@type": "QuantitativeValue", "value": 8}, "numberOfBedrooms": prop["bedrooms"], "numberOfBathroomsTotal": prop["bathrooms"]}, "sameAs": [prop["booking"]]})
+    return {"@context": "https://schema.org", "@graph": graph}
+
+
+def render(lang, route):
+    title, description = tx(META[route][0], lang), tx(META[route][1], lang); canonical = DOMAIN + url(lang, route)
+    alternates = "".join(f'<link rel="alternate" hreflang="{code}" href="{DOMAIN + url(code, route)}">' for code in LANGS); xdefault = DOMAIN + ("/" if not route else url("en", route))
+    content = house(lang, route.rsplit("/", 1)[1]) if route.startswith("houses/") else BUILDERS[route](lang)
+    contact = render_contact(lang, route) if render_contact else fallback_contact(lang, route); footer = render_footer(lang, route) if render_footer else fallback_footer(lang, route)
+    body = header(lang, route, route in {"legal", "privacy"}) + f'<main id="main">{content}</main>' + contact + footer + (forms_dialogs(lang) if forms_dialogs else dialogs(lang))
+    og_image = "og-houses.jpg" if route.startswith("houses") else "og-prepinson.jpg"
+    ui_strings = json.dumps({"menu": tx("menu", lang), "close": tx("close", lang), "language": tx("language", lang)}, ensure_ascii=False)
+    preview_class = ' class="is-preview"' if PREVIEW_MODE else ""
+    return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(description)}"><meta name="theme-color" content="#21382d"><link rel="canonical" href="{canonical}">{alternates}<link rel="alternate" hreflang="x-default" href="{xdefault}"><meta property="og:type" content="website"><meta property="og:site_name" content="Prepinson"><meta property="og:locale" content="{lang}"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(description)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{ASSET_DOMAIN}/assets/{og_image}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{escape(title)}"><meta name="twitter:description" content="{escape(description)}"><meta name="twitter:image" content="{ASSET_DOMAIN}/assets/{og_image}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><script type="application/ld+json">{json.dumps(schema(lang, route, title, description), ensure_ascii=False)}</script><script type="application/json" id="ui-strings">{ui_strings}</script><script src="/app.js?v={ASSET_VERSION}" defer></script></head><body{preview_class} data-language="{lang}" data-route="{route}">{body}</body></html>'
+
+
+def gateway():
+    links = "".join(f'<a href="/{code}/" lang="{code}" hreflang="{code}">{name}</a>' for code, name in LANGUAGE_NAMES.items())
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Welcome to Prepinson | Choose your language</title><meta name="description" content="Choose your language to discover Haras de Prepinson and its holiday homes in the Belgian Ardennes."><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body class="gateway"><main><div class="gateway-visual">{responsive_image("hero-horses", "Horses and foals in the fields at Haras de Prepinson", cls="gateway-photo", hero=True)}</div><section class="gateway-panel"><a class="gateway-brand" href="/en/"><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt=""><span>PREPINSON<small>HARAS DE PREPINSON</small></span></a><p class="eyebrow">ORTHO · BELGIAN ARDENNES</p><h1>Welcome to Prepinson.<br><em>Bienvenue à Prepinson.</em></h1><p>Choose the language in which you would like to continue.</p><nav aria-label="Language">{links}</nav></section></main></body></html>'
+
+
+def not_found():
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Page not found | Prepinson</title><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script src="/app.js?v={ASSET_VERSION}" defer></script></head><body class="not-found" data-page="404"><main><div class="not-found-visual">{image("prepinson-horse-handler-outdoors.webp", "Horse and handler at Haras de Prepinson", cls="not-found-photo", hero=True)}</div><section class="not-found-panel"><a class="gateway-brand" href="/en/" data-404-home><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt=""><span>PREPINSON<small>HARAS DE PREPINSON</small></span></a><p class="eyebrow">404</p><h1 data-404-title>This path seems to have wandered off.</h1><p data-404-copy>Even the horses take the wrong trail sometimes. Let us take you back to Prepinson.</p><a class="btn dark" href="/en/" data-404-action>Return to Prepinson {icon("arrow-up-right")}</a></section></main></body></html>'
+
+
+def confirmation_page(lang, kind):
+    content = render_confirmation(lang, kind) if render_confirmation else f'<section class="text-page container"><p class="eyebrow">PREPINSON</p><h1>{tx("newsletter_success" if kind == "newsletter" else "contact_success", lang, "contact_title")}</h1><a class="btn dark" href="{url(lang)}">{tx("nav_home", lang)}</a></section>'
+    preview_class = ' class="is-preview"' if PREVIEW_MODE else ""
+    return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Prepinson</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"></head><body{preview_class}>{header(lang, kind + "/thanks", True)}<main id="main">{content}</main><script src="/app.js?v={ASSET_VERSION}" defer></script></body></html>'
+
+
+def build():
+    OUT.mkdir(exist_ok=True)
+    if (ROOT / "src/styles.css").exists():
+        fonts = (ROOT / "src/fonts.css").read_text(encoding="utf-8") if (ROOT / "src/fonts.css").exists() else ""
+        styles = (ROOT / "src/styles.css").read_text(encoding="utf-8")
+        (OUT / "styles.css").write_text(fonts + "\n" + styles, encoding="utf-8")
+    if (ROOT / "src/app.js").exists(): shutil.copy2(ROOT / "src/app.js", OUT / "app.js")
+    if (ROOT / "src/icons.svg").exists(): shutil.copy2(ROOT / "src/icons.svg", OUT / "icons.svg")
+    for child in list(OUT.iterdir()):
+        if child.name in {"assets", "styles.css", "app.js", "favicon.svg", "icons.svg"}: continue
+        shutil.rmtree(child) if child.is_dir() else child.unlink()
+    (OUT / "index.html").write_text(gateway(), encoding="utf-8")
+    (OUT / "404.html").write_text(not_found(), encoding="utf-8")
+    for lang in LANGS:
+        for route in ROUTES:
+            target = OUT / lang / route / "index.html" if route else OUT / lang / "index.html"; target.parent.mkdir(parents=True, exist_ok=True); target.write_text(render(lang, route), encoding="utf-8")
+        for kind in ("contact", "newsletter"):
+            target = OUT / lang / kind / "thanks" / "index.html"; target.parent.mkdir(parents=True, exist_ok=True); target.write_text(confirmation_page(lang, kind), encoding="utf-8")
+    entries = []
+    for route in ROUTES:
+        for lang in LANGS:
+            loc = DOMAIN + url(lang, route); alternates = "".join(f'<xhtml:link rel="alternate" hreflang="{code}" href="{DOMAIN + url(code, route)}"/>' for code in LANGS); xdefault = DOMAIN + ("/" if not route else url("en", route)); entries.append(f'<url><loc>{loc}</loc>{alternates}<xhtml:link rel="alternate" hreflang="x-default" href="{xdefault}"/></url>')
+    (OUT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' + ''.join(entries) + '</urlset>', encoding="utf-8")
+    (OUT / "robots.txt").write_text(f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n', encoding="utf-8")
+    (OUT / "_redirects").write_text('/horses /en/horses/ 301\n/horses/* /en/horses/:splat 301\n/houses /en/houses/ 301\n/houses/* /en/houses/:splat 301\n/* /404.html 404\n', encoding="utf-8")
+    preview_header = "  X-Robots-Tag: noindex, nofollow, noarchive\n" if PREVIEW_MODE else ""
+    (OUT / "_headers").write_text("/*\n" + preview_header + "  X-Content-Type-Options: nosniff\n", encoding="utf-8")
+    print(f"Generated {len(LANGS) * len(ROUTES)} public pages, 12 confirmations, language gateway, and 404 page")
+
+
+if __name__ == "__main__": build()
