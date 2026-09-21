@@ -151,7 +151,7 @@ def language_switch(lang, route):
 
 def header(lang, route, solid=False):
     home = url(lang)
-    contact_href = home + "#contact" if route in {"legal", "privacy", "contact/thanks", "newsletter/thanks"} else "#contact"
+    contact_href = home + "#contact" if route in {"activities", "legal", "privacy", "contact/thanks", "newsletter/thanks"} else "#contact"
     nav = ((home + "#haras", ui("nav_haras", lang)), (home + "#expertise", ui("nav_expertise", lang)), (url(lang, "horses"), tx("nav_horses", lang)), (home + "#journal", ui("nav_journal", lang)), (url(lang, "houses"), tx("nav_houses", lang)))
     links = "".join(f'<a href="{href}"' + (' aria-current="page"' if route == href.strip("/").removeprefix(lang + "/") else "") + f'>{label}</a>' for href, label in nav)
     cls = "nav solid-nav" if solid else "nav"
@@ -258,14 +258,37 @@ def house(lang, slug):
 
 def activities(lang):
     groups = ""
+    index_links = ""
     for group, label_key in ACTIVITY_GROUPS:
         items = ACTIVITIES[group] if isinstance(ACTIVITIES, dict) else [item for item in ACTIVITIES if item.get("group") == group]
+        label = tx(label_key, lang)
+        index_links += f'<a href="#activity-{group}">{escape(label)}</a>'
         cards = ""
         for item in items:
             name = item.get("name") or item.get("title"); href = item.get("url") or item.get("href"); copy = activity_copy(item, lang)
-            cards += f'<a class="place" href="{href}" target="_blank" rel="noopener noreferrer"><strong>{name}</strong>{f"<p>{copy}</p>" if copy else ""}<span>{ui("official_link", lang)} {icon("arrow-up-right")}</span></a>'
-        groups += f'<section><h2>{tx(label_key, lang)}</h2><div class="link-grid">{cards}</div></section>'
-    return inner_hero(lang, tx("nav_activities", lang), tx("activities_hero", lang), tx("activities_intro", lang), "facilities") + f'<div id="discover" class="activities container">{groups}<p class="notice">{tx("activity_conditions", lang)}</p></div>'
+            cards += f'<article class="activity-source"><h3>{escape(name)}</h3>{f"<p>{escape(copy)}</p>" if copy else ""}<a class="text-link" href="{escape(href, quote=True)}" target="_blank" rel="noopener noreferrer">{ui("official_link", lang)} {icon("arrow-up-right")}</a></article>'
+        groups += f'<section id="activity-{group}" class="activity-chapter"><div class="activity-chapter-heading"><p class="eyebrow">{escape(ui("activities_guide_label", lang))}</p><h2>{escape(label)}</h2><p>{escape(ui("activity_" + group + "_intro", lang))}</p></div><div class="activity-source-list">{cards}</div></section>'
+
+    house_cards = ""
+    for slug, title_key in (("ortho-24", "ortho24_display_title"), ("ortho-25", "ortho25_display_title")):
+        title = tx(title_key, lang, "ortho24_title" if slug == "ortho-24" else "ortho25_title")
+        house_cards += f'<a class="activities-stay-card" href="{url(lang, "houses/" + slug)}">{image(PROPERTIES[slug]["image"], title, sizes="(max-width: 700px) 44vw, 28vw")}<span>{escape(title)} {icon("arrow-up-right")}</span></a>'
+
+    guide = f'''<article id="discover" class="activities-guide container">
+  <header class="activities-guide-intro">
+    <div><p class="eyebrow">{escape(ui("activities_guide_label", lang))}</p><h2>{escape(ui("activities_guide_title", lang))}</h2></div>
+    <div class="activities-guide-intro-copy"><p>{escape(ui("activities_guide_intro", lang))}</p><nav class="activity-index" aria-label="{escape(ui('activities_guide_label', lang), quote=True)}">{index_links}</nav></div>
+  </header>
+  {groups}
+  <p class="notice">{escape(tx("activity_conditions", lang))}</p>
+</article>'''
+    stay = f'''<section class="activities-stay" aria-labelledby="activities-stay-title">
+  <div class="activities-stay-grid container">
+    <div class="activities-stay-copy"><p class="eyebrow">{escape(ui("houses_label", lang))}</p><h2 id="activities-stay-title">{escape(ui("activities_stay_title", lang))}</h2><p>{escape(ui("activities_stay_copy", lang))}</p>{editorial_link(url(lang, "houses"), ui("houses_cta", lang), dark=False)}</div>
+    <div class="activities-stay-images">{house_cards}</div>
+  </div>
+</section>'''
+    return inner_hero(lang, tx("nav_activities", lang), tx("activities_hero", lang), tx("activities_intro", lang), "facilities") + guide + stay
 
 
 def legal(lang):
@@ -299,6 +322,8 @@ def schema(lang, route, title, description):
     lodging = {"@type": "LodgingBusiness", "@id": DOMAIN + "/#houses", "name": "Prepinson The House", "url": DOMAIN + url(lang, "houses"), "image": ASSET_DOMAIN + "/assets/og-houses.jpg", "email": "thehouse@prepinson.com", "address": {"@type": "PostalAddress", "streetAddress": "Ortho 24", "postalCode": "6983", "addressLocality": "La Roche-en-Ardenne", "addressCountry": "BE"}, "geo": {"@type": "GeoCoordinates", "latitude": 50.126626, "longitude": 5.6133845}, "sameAs": [IG_HOUSE, MAP_HOUSE]}
     web = {"@type": "WebPage", "@id": page_url + "#webpage", "url": page_url, "name": title, "description": description, "inLanguage": lang, "isPartOf": {"@id": DOMAIN + "/#website"}}
     graph = [org, place, lodging, {"@type": "WebSite", "@id": DOMAIN + "/#website", "url": DOMAIN, "name": "Prepinson", "publisher": {"@id": DOMAIN + "/#organization"}}, web]
+    if route == "activities":
+        graph.append({"@type": "Article", "@id": page_url + "#guide", "headline": title, "description": description, "inLanguage": lang, "mainEntityOfPage": {"@id": page_url + "#webpage"}, "publisher": {"@id": DOMAIN + "/#organization"}, "image": ASSET_DOMAIN + "/assets/og-houses.jpg"})
     if route.startswith("houses/"):
         prop = PROPERTIES[route.rsplit("/", 1)[1]]
         graph.append({"@type": "VacationRental", "name": prop["short"], "url": page_url, "description": description, "image": [ASSET_DOMAIN + "/assets/" + item[0] for item in prop["gallery"]], "containsPlace": {"@type": "Accommodation", "occupancy": {"@type": "QuantitativeValue", "value": 8}, "numberOfBedrooms": prop["bedrooms"], "numberOfBathroomsTotal": prop["bathrooms"]}, "sameAs": [prop["booking"]]})

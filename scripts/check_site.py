@@ -96,6 +96,17 @@ for path in sorted(expected):
     route = "/".join(rel.parts[1:-1])
     canonical = DOMAIN + f"/{lang}/" + (route + "/" if route else "")
 
+    if 'class="updates-form"' not in raw or "newsletter-form" in raw:
+        fail(rel, "newsletter must use the content-blocker-resistant footer classes")
+    if route == "activities":
+        if 'class="contact-section"' in raw:
+            fail(rel, "Activities must end with the houses feature, without a contact form")
+        if raw.count('class="activity-chapter"') != 5:
+            fail(rel, "Activities must contain the five editorial guide chapters")
+        for house_route in (f"/{lang}/houses/ortho-24/", f"/{lang}/houses/ortho-25/"):
+            if house_route not in raw:
+                fail(rel, f"Activities houses feature is missing {house_route}")
+
     if page.duplicate_ids:
         fail(rel, f"duplicate IDs: {page.duplicate_ids}")
     if page.lang != lang:
@@ -225,7 +236,7 @@ for path, page in pages.items():
     lang = path.relative_to(DIST).parts[0]
     route = "/".join(path.relative_to(DIST).parts[1:-1])
     forms = {form["attrs"].get("name"): form for form in page.forms}
-    required_forms = ["newsletter"] + ([] if route in {"legal", "privacy"} else ["contact-" + lang])
+    required_forms = ["newsletter"] + ([] if route in {"activities", "legal", "privacy"} else ["contact-" + lang])
     for name in required_forms:
         if name not in forms:
             fail(path, f"missing expected form {name}")

@@ -37,7 +37,7 @@ def _context(route):
         return "houses", "ortho-24", "ortho-24"
     if clean == "houses/ortho-25":
         return "houses", "ortho-25", "ortho-25"
-    if clean == "houses" or clean == "activities":
+    if clean == "houses":
         return "houses", "", "stay"
     if clean == "horses/for-sale":
         return "horses", "", "horse-search"
@@ -73,12 +73,12 @@ def _newsletter_state_attributes(copy):
 def render_contact(lang, route):
     """Return the contextual contact section for a public page.
 
-    Legal, privacy and confirmation pages intentionally omit the repeated
-    contact form. All other pages keep the six historic Netlify form names.
+    Activities, legal, privacy and confirmation pages intentionally omit the
+    repeated contact form. Other pages keep the six historic Netlify names.
     """
     lang = lang if lang in LANGS else "en"
     clean = _route(route)
-    if clean in {"legal", "privacy", "contact/thanks", "newsletter/thanks"}:
+    if clean in {"activities", "legal", "privacy", "contact/thanks", "newsletter/thanks"}:
         return ""
 
     copy = _copy(lang)
@@ -147,20 +147,20 @@ def render_footer(lang, route):
 
     return f'''<footer class="footer haras-footer">
   <div class="container">
-    <div class="newsletter-row">
+    <div class="updates-row">
       <div><p class="eyebrow">PREPINSON</p><h2>{escape(copy['newsletter_title'])}</h2><p>{escape(copy['newsletter_copy'])}</p></div>
-      <form class="newsletter-form" name="newsletter" method="POST" action="{action}" data-netlify="true" netlify-honeypot="company" data-progressive-form {_newsletter_state_attributes(copy)}>
+      <form class="updates-form" id="prepinson-updates" name="newsletter" method="POST" action="{action}" data-netlify="true" netlify-honeypot="company" data-progressive-form {_newsletter_state_attributes(copy)}>
         <input type="hidden" name="form-name" value="newsletter">
         <input type="hidden" name="language" value="{lang}">
         <input type="hidden" name="consent_version" value="{CONSENT_VERSION}">
         <input type="hidden" name="source_page" value="{escape(source_page, quote=True)}">
         <p class="form-trap" aria-hidden="true"><label>{escape(copy['trap'])}<input name="company" tabindex="-1" autocomplete="off"></label></p>
-        <div class="newsletter-fields">
-          <label class="newsletter-email"><span class="visually-hidden">{escape(copy['newsletter_email'])}</span><input type="email" name="email" autocomplete="email" placeholder="{escape(copy['newsletter_email'], quote=True)}" required></label>
+        <div class="updates-fields">
+          <label class="updates-email"><span class="visually-hidden">{escape(copy['newsletter_email'])}</span><input type="email" name="email" autocomplete="email" placeholder="{escape(copy['newsletter_email'], quote=True)}" required></label>
           <button type="submit"><span data-submit-label>{escape(copy['newsletter_submit'])}</span>{_arrow_icon()}</button>
         </div>
-        <label class="newsletter-consent"><input type="checkbox" name="consent" value="yes" required><span>{escape(copy['newsletter_consent'])}</span></label>
-        <p class="newsletter-note">{escape(copy['newsletter_note'])} <a href="/{lang}/privacy/">{escape(copy['privacy_link'])}</a></p>
+        <label class="updates-consent"><input type="checkbox" name="consent" value="yes" required><span>{escape(copy['newsletter_consent'])}</span></label>
+        <p class="updates-note">{escape(copy['newsletter_note'])} <a href="/{lang}/privacy/">{escape(copy['privacy_link'])}</a></p>
         <p class="form-status" data-form-status role="status" aria-live="polite" hidden></p>
       </form>
     </div>

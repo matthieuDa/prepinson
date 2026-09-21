@@ -115,3 +115,12 @@ Les preuves de la revue indépendante en ligne sont conservées dans `outputs/v1
 Recette locale V4 : 72 pages, 12 confirmations, passerelle et 404 validées ; 504 couples page/largeur sans débordement ; formulaires testés dans les six langues ; FeedPane charge effectivement ses publications sans requête échouée. Les captures V4 restent locales dans `outputs/v4/`.
 
 Le commit V4 `dcbedb27ef62239d67271c6ae68c40f12adb4c56` est vérifié sur le [Deploy Preview stable](https://deploy-preview-1--prepinson.netlify.app/en/) et son [permalien](https://6ab081f4781e0a0008b5a91d--prepinson.netlify.app/en/). Sur téléphone, les deux liens légaux ont été activés jusqu’à leur page cible, le widget expose six publications, la newsletter et son action sont visibles, le formulaire utilise le SVG attendu, et la 404 personnalisée répond avec le statut HTTP 404. Aucun échec réseau FeedPane/Instagram ni erreur JavaScript du site n’a été observé. Les seules violations de console proviennent de Netlify Drawer, que la CSP du site empêche volontairement d’être chargé dans une iframe.
+
+## V5 — Newsletter mobile et guide des Ardennes
+
+- Le formulaire d’inscription conserve son nom Netlify `newsletter` et ses six parcours localisés, mais ses classes visibles ont été renommées pour éviter les filtres cosmétiques des bloqueurs de contenu mobiles. L’e-mail, le consentement et l’action restent utilisables à 390 px, avec ou sans JavaScript.
+- La page Activités est désormais un guide éditorial structuré en cinq chapitres : promenades, vélo, eau, culture et famille. Chaque chapitre apporte un contexte local utile et renvoie ensuite vers les sources officielles pour les conditions à jour.
+- Les six versions possèdent leurs propres introductions et un balisage `Article` relié au site dans les données structurées. Les liens internes et les titres de sections renforcent le parcours éditorial sans créer de faux articles ni d’informations pratiques non vérifiées.
+- Le formulaire de contact a été retiré de la page Activités. La page se termine par une présentation de La Grange et du Cottage, avec accès direct à chaque maison et à la page d’ensemble.
+
+Recette locale V5 : génération et contrôle des 72 pages publiques et 12 confirmations, neuf scénarios linguistiques, formulaires dans les six langues, validation mobile de la newsletter et 504 configurations de mise en page sans débordement. Les captures de contrôle V5 restent locales dans `outputs/v5/`.

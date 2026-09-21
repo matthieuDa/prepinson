@@ -73,21 +73,21 @@ async function fillContact(page) {
 }
 
 async function fillNewsletter(page) {
-  const form = page.locator('form.newsletter-form');
+  const form = page.locator('form.updates-form');
   await form.locator('[name="email"]').fill('newsletter-test@example.com');
   await form.locator('[name="consent"]').check();
   return form;
 }
 
 async function checkMarkup(browser) {
-  const context = await browser.newContext();
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
   const assertNoPageErrors = watchPage(page);
   for (const lang of LANGUAGES) {
     await page.goto(`${BASE_URL}/${lang}/`, { waitUntil: 'domcontentloaded' });
     const contract = await page.evaluate(() => {
       const contact = document.querySelector('form.contact-form');
-      const newsletter = document.querySelector('form.newsletter-form');
+      const newsletter = document.querySelector('form.updates-form');
       return {
         contactName: contact?.getAttribute('name'),
         contactAction: contact?.getAttribute('action'),
@@ -99,6 +99,8 @@ async function checkMarkup(browser) {
         emailRequired: newsletter?.elements.email.required,
         consentRequired: newsletter?.elements.consent.required,
         honeypotTabIndex: newsletter?.elements.company.tabIndex,
+        newsletterVisible: newsletter ? getComputedStyle(newsletter).display !== 'none' && getComputedStyle(newsletter).visibility !== 'hidden' : false,
+        blockerProneClasses: Array.from(document.querySelectorAll('[class]')).flatMap((element) => Array.from(element.classList)).filter((name) => name.startsWith('newsletter-')),
       };
     });
     assert(contract.contactName === `contact-${lang}`, `${lang}: historic contact form name changed`);
@@ -112,6 +114,8 @@ async function checkMarkup(browser) {
     }
     assert(contract.emailRequired && contract.consentRequired, `${lang}: newsletter email and consent must be required`);
     assert(contract.honeypotTabIndex === -1, `${lang}: honeypot must stay outside keyboard order`);
+    assert(contract.newsletterVisible, `${lang}: newsletter form is hidden at mobile width`);
+    assert(contract.blockerProneClasses.length === 0, `${lang}: blocker-prone newsletter classes remain: ${contract.blockerProneClasses.join(', ')}`);
   }
   assertNoPageErrors();
   await context.close();
@@ -194,7 +198,7 @@ async function checkNativeValidation(browser) {
   const assertNoPageErrors = watchPage(page);
   await page.goto(`${BASE_URL}/fr/`, { waitUntil: 'domcontentloaded' });
 
-  const newsletter = page.locator('form.newsletter-form');
+  const newsletter = page.locator('form.updates-form');
   await newsletter.locator('button[type="submit"]').click();
   assert(await newsletter.locator('[name="email"]').evaluate((field) => field.matches(':invalid')), 'Empty newsletter email was accepted');
   await newsletter.locator('[name="email"]').fill('not-an-email');
@@ -325,7 +329,7 @@ async function checkWithoutJavaScript(browser) {
   });
   const page = await context.newPage();
   await page.goto(`${BASE_URL}/fr/`, { waitUntil: 'domcontentloaded' });
-  const form = page.locator('form.newsletter-form');
+  const form = page.locator('form.updates-form');
   await form.locator('[name="email"]').fill('no-js-test@example.com');
   await form.locator('[name="consent"]').check({ force: true });
   await Promise.all([
