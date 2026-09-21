@@ -26,7 +26,7 @@ ACTIVITIES = (
             "Des promenades balisées autour d’Ortho et des informations pratiques sur l’état des sentiers.",
             "Gemarkeerde wandelingen rond Ortho en praktische informatie over de toestand van de paden.",
             "Markierte Wanderungen rund um Ortho und praktische Hinweise zum Zustand der Wege.",
-            "Markerade vandringar runt Ortho och praktisk information om ledarnas skick.",
+            "Markerade vandringsleder runt Ortho och information om vandringsledernas skick.",
             "Markéiert Wanderunge ronderëm Ortho a praktesch Informatiounen iwwer den Zoustand vun de Weeër.",
         ),
     },

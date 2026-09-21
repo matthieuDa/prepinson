@@ -13,6 +13,11 @@ MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
 CONSENT_VERSION = "2026-09-20"
 
 
+def _arrow_icon():
+    """Return the same typographic SVG arrow on every platform."""
+    return '<svg class="icon icon-arrow" aria-hidden="true" viewBox="0 0 16 16"><path d="M4 12 12 4M6 4h6v6"/></svg>'
+
+
 def _copy(lang):
     return FORM_COPY[lang if lang in LANGS else "en"]
 
@@ -82,13 +87,21 @@ def render_contact(lang, route):
     form_name = f"contact-{lang}"
     action = f"/{lang}/contact/thanks/"
     direct = (
-        '<a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com <span aria-hidden="true">↗</span></a>'
+        f'<a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com {_arrow_icon()}</a>'
         if area == "houses"
-        else '<a href="mailto:haras@prepinson.com">haras@prepinson.com <span aria-hidden="true">↗</span></a>'
+        else f'<a href="mailto:haras@prepinson.com">haras@prepinson.com {_arrow_icon()}</a>'
     )
     if area == "general":
-        direct += '<a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com <span aria-hidden="true">↗</span></a>'
-    context_copy = copy["contact_houses_copy"] if area == "houses" else copy["contact_horses_copy"] if area == "horses" else copy["contact_copy"]
+        direct += f'<a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com {_arrow_icon()}</a>'
+    context_copy = (
+        copy["contact_houses_copy"]
+        if area == "houses"
+        else copy["contact_sales_copy"]
+        if clean == "horses/for-sale"
+        else copy["contact_horses_copy"]
+        if area == "horses"
+        else copy["contact_copy"]
+    )
     options = "".join(
         f'<option value="{escape(key, quote=True)}"' + (" selected" if key == selected else "") + f'>{escape(label)}</option>'
         for key, label in SUBJECTS[lang]
@@ -118,7 +131,7 @@ def render_contact(lang, route):
       <label class="form-consent"><input type="checkbox" name="privacy_acknowledged" value="yes" required><span>{escape(copy['privacy'])} <a href="/{lang}/privacy/">{escape(copy['privacy_link'])}</a></span></label>
       <p class="form-required">{escape(copy['required_note'])}</p>
       <p class="form-status" data-form-status role="status" aria-live="polite" hidden></p>
-      <button class="btn dark" type="submit"><span data-submit-label>{escape(copy['send'])}</span><span aria-hidden="true">↗</span></button>
+      <button class="btn dark" type="submit"><span data-submit-label>{escape(copy['send'])}</span>{_arrow_icon()}</button>
     </form>
   </div>
 </section>'''
@@ -144,7 +157,7 @@ def render_footer(lang, route):
         <p class="form-trap" aria-hidden="true"><label>{escape(copy['trap'])}<input name="company" tabindex="-1" autocomplete="off"></label></p>
         <div class="newsletter-fields">
           <label class="newsletter-email"><span class="visually-hidden">{escape(copy['newsletter_email'])}</span><input type="email" name="email" autocomplete="email" placeholder="{escape(copy['newsletter_email'], quote=True)}" required></label>
-          <button type="submit"><span data-submit-label>{escape(copy['newsletter_submit'])}</span><span aria-hidden="true">↗</span></button>
+          <button type="submit"><span data-submit-label>{escape(copy['newsletter_submit'])}</span>{_arrow_icon()}</button>
         </div>
         <label class="newsletter-consent"><input type="checkbox" name="consent" value="yes" required><span>{escape(copy['newsletter_consent'])}</span></label>
         <p class="newsletter-note">{escape(copy['newsletter_note'])} <a href="/{lang}/privacy/">{escape(copy['privacy_link'])}</a></p>
@@ -152,9 +165,9 @@ def render_footer(lang, route):
       </form>
     </div>
     <div class="footer-social">
-      <div><p class="eyebrow">{escape(copy['horses']).upper()}</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="{IG_HARAS}" target="_blank" rel="noopener noreferrer">@haras_de_prepinson <span aria-hidden="true">↗</span></a></div>
-      <div><p class="eyebrow">{escape(copy['houses']).upper()}</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener noreferrer">@prepinson_the_house <span aria-hidden="true">↗</span></a></div>
-      <div><p class="eyebrow">{escape(copy['visit']).upper()}</p><address>Ortho 24<br>6983 La Roche-en-Ardenne<br>{ui("country", lang)}</address><a href="{MAP_HARAS}" target="_blank" rel="noopener noreferrer">{escape(copy['haras_map'])} <span aria-hidden="true">↗</span></a><a href="{MAP_HOUSE}" target="_blank" rel="noopener noreferrer">{escape(copy['house_map'])} <span aria-hidden="true">↗</span></a></div>
+      <div><p class="eyebrow">{escape(copy['horses']).upper()}</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="{IG_HARAS}" target="_blank" rel="noopener noreferrer">@haras_de_prepinson {_arrow_icon()}</a></div>
+      <div><p class="eyebrow">{escape(copy['houses']).upper()}</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener noreferrer">@prepinson_the_house {_arrow_icon()}</a></div>
+      <div><p class="eyebrow">{escape(copy['visit']).upper()}</p><address>Ortho 24<br>6983 La Roche-en-Ardenne<br>{ui("country", lang)}</address><a href="{MAP_HARAS}" target="_blank" rel="noopener noreferrer">{escape(copy['haras_map'])} {_arrow_icon()}</a><a href="{MAP_HOUSE}" target="_blank" rel="noopener noreferrer">{escape(copy['house_map'])} {_arrow_icon()}</a></div>
     </div>
     <div class="footer-signature" aria-hidden="true">PREPINSON</div>
     <div class="footer-bottom"><span>© 2026 HARAS DE PREPINSON</span><div class="footer-legal"><a href="/{lang}/legal/">{escape(copy['legal'])}</a><a href="/{lang}/privacy/">{escape(copy['privacy_link'])}</a></div></div>
@@ -174,7 +187,7 @@ def render_confirmation(lang, kind):
   <p class="eyebrow">PREPINSON</p>
   <h1>{escape(title)}</h1>
   <p>{escape(body)}</p>
-  <a class="btn dark" href="/{lang}/">{escape(copy['back'])} <span aria-hidden="true">↗</span></a>
+  <a class="btn dark" href="/{lang}/">{escape(copy['back'])} {_arrow_icon()}</a>
 </section>'''
 
 

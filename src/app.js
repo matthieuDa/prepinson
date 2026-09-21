@@ -8,6 +8,28 @@
   const pageMain = document.querySelector('main');
   const pageFooter = document.querySelector('footer');
 
+  if (body.dataset.page === '404') {
+    const supported = ['en', 'fr', 'nl', 'de', 'sv', 'lb'];
+    const browserLanguage = (navigator.languages?.[0] || navigator.language || 'en').toLowerCase();
+    const language = supported.find((code) => browserLanguage === code || browserLanguage.startsWith(`${code}-`)) || 'en';
+    const copy = {
+      en: ['This path seems to have wandered off.', 'Even the horses take the wrong trail sometimes. Let us take you back to Prepinson.', 'Return to Prepinson'],
+      fr: ['Cette page semble s’être égarée.', 'Même les chevaux se trompent parfois de chemin. Revenons ensemble à Prepinson.', 'Revenir à Prepinson'],
+      nl: ['Deze pagina lijkt verdwaald.', 'Ook paarden nemen soms het verkeerde pad. We brengen u terug naar Prepinson.', 'Terug naar Prepinson'],
+      de: ['Diese Seite scheint sich verirrt zu haben.', 'Auch Pferde nehmen manchmal den falschen Weg. Zurück nach Prepinson.', 'Zurück zu Prepinson'],
+      sv: ['Den här sidan verkar ha gått vilse.', 'Även hästar tar ibland fel väg. Vi tar dig tillbaka till Prepinson.', 'Tillbaka till Prepinson'],
+      lb: ['Dës Säit schéngt sech verirrt ze hunn.', 'Och Päerd huelen heiansdo de falsche Wee. Zeréck op Prepinson.', 'Zeréck op Prepinson'],
+    };
+    document.documentElement.lang = language;
+    const home = `/${language}/`;
+    document.querySelector('[data-404-title]').textContent = copy[language][0];
+    document.querySelector('[data-404-copy]').textContent = copy[language][1];
+    const action = document.querySelector('[data-404-action]');
+    action.firstChild.textContent = `${copy[language][2]} `;
+    action.href = home;
+    document.querySelector('[data-404-home]').href = home;
+  }
+
   const openDialogs = () => Array.from(document.querySelectorAll('dialog[open]'));
   const syncScrollLock = () => {
     const menuOpen = Boolean(mobileMenu?.classList.contains('open'));

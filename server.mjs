@@ -30,7 +30,15 @@ const server=http.createServer(async(req,res)=>{
   res.writeHead(status,headers);
   if(req.method==='HEAD')return res.end();
   const stream=createReadStream(file,{start,end});stream.on('error',()=>res.destroy());res.on('close',()=>stream.destroy());if(compress)stream.pipe(createGzip()).pipe(res);else stream.pipe(res);
- }catch{res.writeHead(404,{'Content-Type':'text/html; charset=utf-8'});res.end('<h1>Page not found</h1><a href="/">Return to Prepinson</a>');}
+ }catch{
+  const fallback=resolve(root,'404.html');
+  try{
+   const info=await stat(fallback);
+   res.writeHead(404,{'Content-Type':'text/html; charset=utf-8','Content-Length':info.size,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'});
+   if(req.method==='HEAD')return res.end();
+   createReadStream(fallback).pipe(res);
+  }catch{res.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'});res.end('Page not found');}
+ }
 });
 server.on('error',err=>{console.error(err.code==='EADDRINUSE'?'Port 3008 is already in use. Stop the other server and run ./run.sh again.':err.message);process.exit(1)});
 server.listen(3008,'0.0.0.0',()=>console.log('Prepinson is running at http://localhost:3008'));

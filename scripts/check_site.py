@@ -145,7 +145,13 @@ for path in sorted(expected):
         if tag == "iframe":
             fail(rel, "third-party iframe present")
         if tag == "script" and attrs.get("src", "").startswith(("http://", "https://")):
-            fail(rel, "third-party script present")
+            feedpane_allowed = (
+                route == ""
+                and attrs.get("src") == "https://feedpane.com/widget.js"
+                and attrs.get("data-key") == "6c7a542cd3ba470d84f9ce26f775c77c"
+            )
+            if not feedpane_allowed:
+                fail(rel, "unapproved third-party script present")
         if tag == "img":
             if "hero-image" in attrs.get("class", "").split() and (attrs.get("loading") == "lazy" or attrs.get("fetchpriority") != "high"):
                 fail(rel, "hero image must load with high priority, without lazy loading")
@@ -180,6 +186,12 @@ if 'name="robots" content="noindex,follow"' not in gateway:
 for lang in LANGS:
     if f'href="/{lang}/"' not in gateway:
         fail("index.html", f"missing gateway link for {lang}")
+
+not_found = (DIST / "404.html").read_text(encoding="utf-8")
+if 'name="robots" content="noindex,nofollow"' not in not_found or 'data-page="404"' not in not_found:
+    fail("404.html", "404 page must be localized by the site script and excluded from indexing")
+if "/* /404.html 404" not in (DIST / "_redirects").read_text(encoding="utf-8"):
+    fail("_redirects", "missing Netlify 404 fallback")
 
 ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9", "x": "http://www.w3.org/1999/xhtml"}
 tree = ET.parse(DIST / "sitemap.xml")

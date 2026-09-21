@@ -100,3 +100,16 @@ Chaque comparatif présente la V1 à gauche et la restauration à droite, aux m�
 | Ortho 25 | [Comparatif](outputs/v1-restoration/independent-review/compare-390-houses-ortho-25-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-768-houses-ortho-25-.webp) | [Comparatif](outputs/v1-restoration/independent-review/compare-1440-houses-ortho-25-.webp) |
 
 Les preuves de la revue indépendante en ligne sont conservées dans `outputs/v1-restoration/independent-review/deployed-report.json` et ses captures. Ces fichiers de recette restent locaux et ne sont pas exposés par le site.
+
+## V4 — Instagram, mobile et révision linguistique
+
+- Le Journal de l’accueil utilise le widget FeedPane fourni pour `@haras_de_prepinson`, avec six publications, une colonne sur téléphone, un lien de repli vers Instagram et aucune lecture vidéo automatique. La politique de confidentialité et la CSP décrivent et limitent les échanges nécessaires avec FeedPane et les médias Instagram.
+- La newsletter mobile possède désormais un encadrement clair, des champs et une action tactiles, ainsi qu’une typographie lisible. Les liens légaux du pied de page disposent d’une zone d’action de 44 px et le Deploy Preview réserve l’espace occupé par Netlify Drawer afin qu’il ne les recouvre plus.
+- Les flèches des formulaires et du pied de page sont des SVG de l’interface ; aucun caractère susceptible d’être transformé en emoji n’est utilisé.
+- Ortho 25 utilise à nouveau la vue extérieure en pierre de la V1 pour la carte et le héros. Les actions de réservation nomment explicitement Casapilot ou Airbnb.
+- Les répétitions des introductions Programmes, Installations et galeries des maisons ont été supprimées. Les titres de Dalton, Juni et Jackson utilisent une hiérarchie sur deux lignes au lieu d’un tiret long.
+- L’échelle typographique a été rééquilibrée aux endroits où les textes secondaires étaient trop petits, sans modifier les proportions V1 qui restaient cohérentes.
+- La racine non indexable présente une entrée chaleureuse et les six langues. Une page 404 non indexable, localisée selon la langue du navigateur, ramène vers la bonne version du site avec un trait d’humour discret.
+- La révision éditoriale corrige les erreurs prioritaires en allemand, luxembourgeois, suédois et néerlandais. Les programmes expliquent les apprentissages, la vente s’adresse à l’acheteur, et les noms communs du haras et des maisons sont harmonisés. Le luxembourgeois reste à faire relire par un locuteur natif avant la production.
+
+Recette locale V4 : 72 pages, 12 confirmations, passerelle et 404 validées ; 504 couples page/largeur sans débordement ; formulaires testés dans les six langues ; FeedPane charge effectivement ses publications sans requête échouée. Les captures V4 restent locales dans `outputs/v4/`.

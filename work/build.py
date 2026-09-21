@@ -34,12 +34,13 @@ except ImportError:
 
 OUT = ROOT / "dist"
 DOMAIN = "https://www.prepinson.com"
-ASSET_DOMAIN = os.environ.get("DEPLOY_PRIME_URL", DOMAIN).rstrip("/") if os.environ.get("PREVIEW_MODE") == "true" else DOMAIN
+PREVIEW_MODE = os.environ.get("PREVIEW_MODE") == "true"
+ASSET_DOMAIN = os.environ.get("DEPLOY_PRIME_URL", DOMAIN).rstrip("/") if PREVIEW_MODE else DOMAIN
 IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
 IG_HOUSE = "https://www.instagram.com/prepinson_the_house/"
 MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
 MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
-ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/styles.css", "src/fonts.css", "src/app.js", "src/presentation_data.py", "src/forms.py", "src/image-manifest.json", "work/build.py"))).hexdigest()[:12]
+ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/styles.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "work/build.py"))).hexdigest()[:12]
 
 META = {
     "": ("home_title", "home_desc"),
@@ -108,6 +109,12 @@ def headline(value):
     return escape(value) if len(words) == 1 else f'{escape(words[0])} <em>{escape(words[1])}</em>'
 
 
+def display_title(value):
+    """Render an editorial title using a clear line break instead of punctuation."""
+    first, separator, second = value.partition("\n")
+    return escape(first) + (f'<br><em>{escape(second)}</em>' if separator else "")
+
+
 def image(name, alt, *, cls="", hero=False, width=None, height=None, position="", sizes=None):
     manifest = IMAGE_MANIFEST.get(name, {})
     width = manifest.get("width", IMAGE_DIMS.get(name, (width or 1200, height or 800))[0])
@@ -173,7 +180,7 @@ def home(lang):
         ("03", "breeding", ui("breeding_title", lang), ui("breeding_copy", lang), "breeding"),
     )
     cards = "".join(f'<a class="expertise-card" href="{url(lang, "horses")}#{target}"><div class="expertise-image">{image(MEDIA[media], ui("alt_" + media, lang))}<span class="image-index">{number}</span></div><div class="expertise-title"><h3>{title}</h3><span>{icon("arrow-up-right")}</span></div><p>{copy}</p></a>' for number, media, title, copy, target in expert)
-    refs = "".join(f'<a href="{url(lang, "horses/references")}#{slug}"><span class="pedigree-year">0{i}</span><div><h3>{tx(f"{slug}_title", lang)}</h3><p>{tx(f"{slug}_copy", lang)}</p></div><span class="pedigree-arrow">{icon("arrow-up-right")}</span></a>' for i, slug in enumerate(("dalton", "juni", "jackson"), 1))
+    refs = "".join(f'<a href="{url(lang, "horses/references")}#{slug}"><span class="pedigree-year">0{i}</span><div><h3>{display_title(tx(f"{slug}_title", lang))}</h3><p>{tx(f"{slug}_copy", lang)}</p></div><span class="pedigree-arrow">{icon("arrow-up-right")}</span></a>' for i, slug in enumerate(("dalton", "juni", "jackson"), 1))
     people = (("team_eva", "Eva Schiller", ui("eva_role", lang), "eva.schiller@prepinson.com", "+352 691 22 38 36"), ("team_nicolas", "Nicolas Derouault", ui("nicolas_role", lang), "nicolas.derouault@prepinson.com", "+32 470 85 13 10"))
     team = "".join(f'<article class="team-card">{image(MEDIA[media], name)}<div><p class="eyebrow">{role}</p><h3>{name}</h3><a href="mailto:{email}">{email} {icon("arrow-up-right")}</a><a href="tel:{phone.replace(" ", "")}">{phone}</a></div></article>' for media, name, role, email, phone in people)
     return f'''
@@ -186,7 +193,7 @@ def home(lang):
 <section class="selected-section container"><div class="selected-heading"><p class="eyebrow">{ui("references_label", lang)}</p><h2>{tx("references_hero", lang)}</h2><p>{tx("service_references_copy", lang)}</p>{editorial_link(url(lang, "horses/references"), tx("service_references", lang))}</div><div class="pedigree-list">{refs}</div></section>
 <section id="team" class="team-section"><div class="container"><div class="team-heading"><p class="eyebrow">{ui("team_label", lang)}</p><h2>{v1("team_title", lang)}</h2><p>{v1("team_intro", lang)}</p></div><div class="team-grid">{team}</div></div></section>
 <section class="home-houses"><div class="estate-grid container"><div class="estate-photo">{responsive_image("house-hero", ui("alt_houses", lang))}</div><div class="estate-copy"><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{tx("houses_teaser_title", lang)}</h2><p>{ui("houses_home_copy", lang)}</p>{editorial_link(url(lang, "houses"), ui("houses_cta", lang))}</div></div></section>
-<section id="journal" class="journal-stories container"><div class="section-head"><div><p class="eyebrow">{ui("journal_label", lang)}</p><h2>{v1("journal_title", lang)}</h2></div><p class="journal-intro">{v1("journal_intro", lang)}</p></div><div class="journal-grid"><article><a href="https://www.instagram.com/p/DdJgK95CPEn/" target="_blank" rel="noopener noreferrer">{image(MEDIA["training"], tx("interest_training", lang))}<p class="eyebrow">{tx("interest_training", lang)}</p><h3>{tx("p3_title", lang)}</h3><span class="text-link">Instagram {icon("arrow-up-right")}</span></a></article><article><a href="https://www.instagram.com/p/Dc_CsCqiNez/" target="_blank" rel="noopener noreferrer">{image(MEDIA["breeding"], tx("facility_breeding", lang))}<p class="eyebrow">{tx("facility_breeding", lang)}</p><h3>{tx("p1_title", lang)}</h3><span class="text-link">Instagram {icon("arrow-up-right")}</span></a></article><article><a href="{IG_HARAS}" target="_blank" rel="noopener noreferrer">{image("prepinson-daily-horse-care.webp", tx("world_horses", lang))}<p class="eyebrow">HARAS DE PREPINSON</p><h3>{tx("home_intro_title", lang)}</h3><span class="text-link">Instagram {icon("arrow-up-right")}</span></a></article></div></section>'''
+<section id="journal" class="journal-stories feedpane-section container"><div class="section-head"><div><p class="eyebrow">{ui("journal_label", lang)}</p><h2>{v1("journal_title", lang)}</h2></div><p class="journal-intro">{v1("journal_intro", lang)}</p></div><div id="feedpane" class="feedpane-shell" aria-label="Instagram · Haras de Prepinson"></div><script src="https://feedpane.com/widget.js" data-key="6c7a542cd3ba470d84f9ce26f775c77c" data-target="#feedpane" data-cols="3" data-mobile-cols="1" data-gap="14" data-radius="0" data-posts="6" data-autoplay="false" defer></script><p class="feedpane-fallback">{editorial_link(IG_HARAS, ui("instagram_fallback", lang), target="_blank", rel="noopener noreferrer")}</p></section>'''
 
 
 def horses(lang):
@@ -200,7 +207,7 @@ def horses(lang):
 def programmes(lang):
     subjects = ("programme-foal", "programme-pre-breaking", "programme-breaking", "programme-jumping")
     panels = "".join(f'<details' + (' open' if i == 1 else '') + f'><summary><span class="programme-number">0{i}</span><span>{tx(f"p{i}_title", lang)}</span><span class="programme-toggle">{icon("plus")}</span></summary><div class="programme-panel"><p><strong>{tx(f"p{i}_timing", lang)}</strong></p><p>{tx(f"p{i}_copy", lang)}</p><a class="text-link" href="#contact" data-contact-subject="{subjects[i - 1]}">{ui("programme_cta", lang)} {icon("arrow-up-right")}</a></div></details>' for i in range(1, 5))
-    return inner_hero(lang, tx("nav_programmes", lang), tx("programmes_hero", lang), tx("programmes_intro", lang), "training") + f'<section id="discover" class="programmes-section container"><div class="programmes-heading"><p class="eyebrow">{tx("nav_programmes", lang)}</p><h2>{tx("programmes_hero", lang)}</h2><p>{tx("programmes_intro", lang)}</p></div><div class="programme-list">{panels}</div></section>'
+    return inner_hero(lang, tx("nav_programmes", lang), tx("programmes_hero", lang), tx("programmes_intro", lang), "training") + f'<section id="discover" class="programmes-section container"><div class="programmes-heading"><p class="eyebrow">{tx("nav_programmes", lang)}</p><h2>{ui("programmes_list_title", lang)}</h2></div><div class="programme-list">{panels}</div></section>'
 
 
 def gallery(items, lang):
@@ -211,7 +218,7 @@ def gallery(items, lang):
 def facilities(lang):
     gallery_items = (("prepinson-indoor-riding-arena.webp", ui("alt_indoor", lang)), ("prepinson-outdoor-jumping-arena.webp", ui("alt_training", lang)), ("prepinson-outdoor-arena.webp", ui("alt_outdoor", lang)), ("prepinson-horses-green-paddocks.webp", ui("alt_paddocks", lang)), ("prepinson-rider-saddle-detail.webp", ui("alt_saddle", lang)), ("prepinson-stables-flowers.webp", ui("alt_boarding", lang)))
     items = "".join(f'<li>{tx(key, lang)}</li>' for key in ("facility_equipment", "facility_club", "facility_breeding", "facility_trails"))
-    return inner_hero(lang, tx("nav_facilities", lang), tx("facilities_hero", lang), tx("facilities_intro", lang), "facilities") + f'<section id="discover" class="facilities-detail container"><div class="section-head"><div><p class="eyebrow">{tx("stats_title", lang)}</p><h2>{tx("facilities_hero", lang)}</h2></div><p>{tx("facilities_intro", lang)}</p></div>{stat_strip(lang, light=True)}<div class="facilities-copy"><ul class="large-list">{items}</ul><div><p>Ortho 24<br>6983 La Roche-en-Ardenne<br>{ui("country", lang)}</p><p>{ui("transport_access", lang)}</p>{editorial_link("#contact", tx("nav_contact", lang))}{editorial_link(MAP_HARAS, tx("footer_maps_haras", lang), target="_blank", rel="noopener noreferrer")}</div></div>{gallery(gallery_items, lang)}</section>'
+    return inner_hero(lang, tx("nav_facilities", lang), tx("facilities_hero", lang), tx("facilities_intro", lang), "facilities") + f'<section id="discover" class="facilities-detail container"><div class="section-head"><div><p class="eyebrow">{tx("stats_title", lang)}</p><h2>{ui("facilities_detail_title", lang)}</h2></div></div>{stat_strip(lang, light=True)}<div class="facilities-copy"><ul class="large-list">{items}</ul><div><p>Ortho 24<br>6983 La Roche-en-Ardenne<br>{ui("country", lang)}</p><p>{ui("transport_access", lang)}</p>{editorial_link("#contact", tx("nav_contact", lang))}{editorial_link(MAP_HARAS, tx("footer_maps_haras", lang), target="_blank", rel="noopener noreferrer")}</div></div>{gallery(gallery_items, lang)}</section>'
 
 
 def sales(lang):
@@ -219,7 +226,7 @@ def sales(lang):
 
 
 def references(lang):
-    rows = "".join(f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{tx(f"{slug}_title", lang)}</h2><p>{tx(f"{slug}_copy", lang)}</p></article>' for i, slug in enumerate(("dalton", "juni", "jackson"), 1))
+    rows = "".join(f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><p>{tx(f"{slug}_copy", lang)}</p></article>' for i, slug in enumerate(("dalton", "juni", "jackson"), 1))
     return inner_hero(lang, tx("service_references", lang), tx("references_hero", lang), tx("service_references_copy", lang), "hero-horses-2000.webp") + f'<section id="discover" class="reference-stories container">{rows}</section>'
 
 
@@ -228,7 +235,8 @@ def property_card(lang, slug):
     facts = HOUSE_FACTS[slug]
     title = tx("ortho24_display_title" if slug == "ortho-24" else "ortho25_display_title", lang, "ortho24_title" if slug == "ortho-24" else "ortho25_title")
     description = v1("ortho24_copy" if slug == "ortho-24" else "ortho25_copy", lang)
-    return f'<article class="property-card"><a class="property-image" href="{url(lang, "houses/" + slug)}">{image(prop["image"], title)}</a><div class="property-info"><p class="eyebrow">ORTHO · ARDENNES</p><h3>{title}</h3><div class="property-meta"><span>{facts["guests"]} {tx("guests", lang)}</span><span>{facts["bedrooms"]} {tx("bedrooms", lang)}</span><span>{facts["bathrooms"]} {tx("bathrooms", lang)}</span></div><p>{description}</p><div class="property-links"><a class="btn dark" href="{url(lang, "houses/" + slug)}">{tx("explore_house", lang)} {icon("arrow-up-right")}</a><a class="text-link" href="{prop["booking"]}" target="_blank" rel="noopener noreferrer">{ui("check_availability", lang)} {icon("arrow-up-right")}</a></div></div></article>'
+    booking_label = ui("book_casapilot" if slug == "ortho-24" else "book_airbnb", lang)
+    return f'<article class="property-card"><a class="property-image" href="{url(lang, "houses/" + slug)}">{image(prop["image"], title)}</a><div class="property-info"><p class="eyebrow">ORTHO · ARDENNES</p><h3>{title}</h3><div class="property-meta"><span>{facts["guests"]} {tx("guests", lang)}</span><span>{facts["bedrooms"]} {tx("bedrooms", lang)}</span><span>{facts["bathrooms"]} {tx("bathrooms", lang)}</span></div><p>{description}</p><div class="property-links"><a class="btn dark" href="{url(lang, "houses/" + slug)}">{tx("explore_house", lang)} {icon("arrow-up-right")}</a><a class="text-link" href="{prop["booking"]}" target="_blank" rel="noopener noreferrer">{booking_label} {icon("arrow-up-right")}</a></div></div></article>'
 
 
 def houses(lang):
@@ -244,7 +252,8 @@ def house(lang, slug):
     amenities += "".join(f'<span>{ui(key, lang)}</span>' for key in (("pool", "hot_tub", "cinema") if is24 else ("garden", "kitchen", "parking")))
     film = f'<button type="button" data-video-open="/assets/house-film.mp4" class="film-button dark-film"><span class="circle">{icon("play")}</span>{ui("watch_film", lang)}</button>' if is24 else ""
     localized_gallery = tuple((name, GALLERY_ALT[name][lang]) for name, _ in prop["gallery"])
-    return inner_hero(lang, "ORTHO · " + ui("country", lang).upper(), title, ui("ortho24_tag" if is24 else "ortho25_tag", lang), prop["image"], booking=prop["booking"], title_html=escape(title.split(" — ")[0]) + ' —<br><em>' + escape(title.split(" — ")[1]) + '</em>') + f'<section id="discover" class="property-detail container"><div class="property-summary"><div><p class="eyebrow">{title}</p><h2>{v1("house_detail_intro", lang)}</h2><p>{description}</p><div class="amenities">{amenities}</div><p>{tx("houses_intro", lang)}</p></div><aside class="booking-panel"><h3>{ui("booking_title", lang)}</h3><p>{tx("book_official", lang)}</p><a class="btn dark" href="{prop["booking"]}" target="_blank" rel="noopener noreferrer">{ui("check_availability", lang)} {icon("arrow-up-right")}</a><a class="text-link" href="#contact" data-contact-subject="{slug}">{tx("nav_contact", lang)} {icon("arrow-up-right")}</a></aside></div><div class="property-gallery-heading"><p class="eyebrow">{ui("gallery_label", lang)}</p><h2>{title}</h2></div>{gallery(localized_gallery, lang)}</section><section class="property-film"><div class="container">{film}{editorial_link(url(lang, "activities"), ui("activities_cta", lang))}</div></section><section class="other-property container"><p class="eyebrow">{ui("other_house", lang)}</p>{property_card(lang, other)}</section>'
+    booking_label = ui("book_casapilot" if is24 else "book_airbnb", lang)
+    return inner_hero(lang, "ORTHO · " + ui("country", lang).upper(), title, ui("ortho24_tag" if is24 else "ortho25_tag", lang), prop["image"], booking=prop["booking"], title_html=escape(title.split(" — ")[0]) + ' —<br><em>' + escape(title.split(" — ")[1]) + '</em>') + f'<section id="discover" class="property-detail container"><div class="property-summary"><div><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{v1("house_detail_intro", lang)}</h2><p>{description}</p><div class="amenities">{amenities}</div></div><aside class="booking-panel"><h3>{ui("booking_title", lang)}</h3><p>{booking_label}</p><a class="btn dark" href="{prop["booking"]}" target="_blank" rel="noopener noreferrer">{booking_label} {icon("arrow-up-right")}</a><a class="text-link" href="#contact" data-contact-subject="{slug}">{tx("nav_contact", lang)} {icon("arrow-up-right")}</a></aside></div><div class="property-gallery-heading"><p class="eyebrow">{ui("gallery_label", lang)}</p><h2>{ui("gallery_title", lang)}</h2></div>{gallery(localized_gallery, lang)}</section><section class="property-film"><div class="container">{film}{editorial_link(url(lang, "activities"), ui("activities_cta", lang))}</div></section><section class="other-property container"><p class="eyebrow">{ui("other_house", lang)}</p>{property_card(lang, other)}</section>'
 
 
 def activities(lang):
@@ -304,17 +313,23 @@ def render(lang, route):
     body = header(lang, route, route in {"legal", "privacy"}) + f'<main id="main">{content}</main>' + contact + footer + (forms_dialogs(lang) if forms_dialogs else dialogs(lang))
     og_image = "og-houses.jpg" if route.startswith("houses") else "og-prepinson.jpg"
     ui_strings = json.dumps({"menu": tx("menu", lang), "close": tx("close", lang), "language": tx("language", lang)}, ensure_ascii=False)
-    return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(description)}"><meta name="theme-color" content="#21382d"><link rel="canonical" href="{canonical}">{alternates}<link rel="alternate" hreflang="x-default" href="{xdefault}"><meta property="og:type" content="website"><meta property="og:site_name" content="Prepinson"><meta property="og:locale" content="{lang}"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(description)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{ASSET_DOMAIN}/assets/{og_image}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{escape(title)}"><meta name="twitter:description" content="{escape(description)}"><meta name="twitter:image" content="{ASSET_DOMAIN}/assets/{og_image}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><script type="application/ld+json">{json.dumps(schema(lang, route, title, description), ensure_ascii=False)}</script><script type="application/json" id="ui-strings">{ui_strings}</script><script src="/app.js?v={ASSET_VERSION}" defer></script></head><body data-language="{lang}" data-route="{route}">{body}</body></html>'
+    preview_class = ' class="is-preview"' if PREVIEW_MODE else ""
+    return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(description)}"><meta name="theme-color" content="#21382d"><link rel="canonical" href="{canonical}">{alternates}<link rel="alternate" hreflang="x-default" href="{xdefault}"><meta property="og:type" content="website"><meta property="og:site_name" content="Prepinson"><meta property="og:locale" content="{lang}"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(description)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{ASSET_DOMAIN}/assets/{og_image}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{escape(title)}"><meta name="twitter:description" content="{escape(description)}"><meta name="twitter:image" content="{ASSET_DOMAIN}/assets/{og_image}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><script type="application/ld+json">{json.dumps(schema(lang, route, title, description), ensure_ascii=False)}</script><script type="application/json" id="ui-strings">{ui_strings}</script><script src="/app.js?v={ASSET_VERSION}" defer></script></head><body{preview_class} data-language="{lang}" data-route="{route}">{body}</body></html>'
 
 
 def gateway():
     links = "".join(f'<a href="/{code}/" lang="{code}" hreflang="{code}">{name}</a>' for code, name in LANGUAGE_NAMES.items())
-    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Prepinson — Choose your language</title><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body class="gateway"><main><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt="Haras de Prepinson"><h1>Choose your language</h1><nav aria-label="Language">{links}</nav></main></body></html>'
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Welcome to Prepinson — Choose your language</title><meta name="description" content="Choose your language to discover Haras de Prepinson and its holiday homes in the Belgian Ardennes."><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body class="gateway"><main><div class="gateway-visual">{responsive_image("hero-horses", "Horses and foals in the fields at Haras de Prepinson", cls="gateway-photo", hero=True)}</div><section class="gateway-panel"><a class="gateway-brand" href="/en/"><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt=""><span>PREPINSON<small>HARAS DE PREPINSON</small></span></a><p class="eyebrow">ORTHO · BELGIAN ARDENNES</p><h1>Welcome to Prepinson.<br><em>Bienvenue à Prepinson.</em></h1><p>Choose the language in which you would like to continue.</p><nav aria-label="Language">{links}</nav></section></main></body></html>'
+
+
+def not_found():
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Page not found — Prepinson</title><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script src="/app.js?v={ASSET_VERSION}" defer></script></head><body class="not-found" data-page="404"><main><div class="not-found-visual">{image("prepinson-horse-handler-outdoors.webp", "Horse and handler at Haras de Prepinson", cls="not-found-photo", hero=True)}</div><section class="not-found-panel"><a class="gateway-brand" href="/en/" data-404-home><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt=""><span>PREPINSON<small>HARAS DE PREPINSON</small></span></a><p class="eyebrow">404</p><h1 data-404-title>This path seems to have wandered off.</h1><p data-404-copy>Even the horses take the wrong trail sometimes. Let us take you back to Prepinson.</p><a class="btn dark" href="/en/" data-404-action>Return to Prepinson {icon("arrow-up-right")}</a></section></main></body></html>'
 
 
 def confirmation_page(lang, kind):
     content = render_confirmation(lang, kind) if render_confirmation else f'<section class="text-page container"><p class="eyebrow">PREPINSON</p><h1>{tx("newsletter_success" if kind == "newsletter" else "contact_success", lang, "contact_title")}</h1><a class="btn dark" href="{url(lang)}">{tx("nav_home", lang)}</a></section>'
-    return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Prepinson</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"></head><body>{header(lang, kind + "/thanks", True)}<main id="main">{content}</main><script src="/app.js?v={ASSET_VERSION}" defer></script></body></html>'
+    preview_class = ' class="is-preview"' if PREVIEW_MODE else ""
+    return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Prepinson</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"></head><body{preview_class}>{header(lang, kind + "/thanks", True)}<main id="main">{content}</main><script src="/app.js?v={ASSET_VERSION}" defer></script></body></html>'
 
 
 def build():
@@ -329,6 +344,7 @@ def build():
         if child.name in {"assets", "styles.css", "app.js", "favicon.svg", "icons.svg"}: continue
         shutil.rmtree(child) if child.is_dir() else child.unlink()
     (OUT / "index.html").write_text(gateway(), encoding="utf-8")
+    (OUT / "404.html").write_text(not_found(), encoding="utf-8")
     for lang in LANGS:
         for route in ROUTES:
             target = OUT / lang / route / "index.html" if route else OUT / lang / "index.html"; target.parent.mkdir(parents=True, exist_ok=True); target.write_text(render(lang, route), encoding="utf-8")
@@ -340,10 +356,10 @@ def build():
             loc = DOMAIN + url(lang, route); alternates = "".join(f'<xhtml:link rel="alternate" hreflang="{code}" href="{DOMAIN + url(code, route)}"/>' for code in LANGS); xdefault = DOMAIN + ("/" if not route else url("en", route)); entries.append(f'<url><loc>{loc}</loc>{alternates}<xhtml:link rel="alternate" hreflang="x-default" href="{xdefault}"/></url>')
     (OUT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' + ''.join(entries) + '</urlset>', encoding="utf-8")
     (OUT / "robots.txt").write_text(f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n', encoding="utf-8")
-    (OUT / "_redirects").write_text('/horses /en/horses/ 301\n/horses/* /en/horses/:splat 301\n/houses /en/houses/ 301\n/houses/* /en/houses/:splat 301\n', encoding="utf-8")
-    preview_header = "  X-Robots-Tag: noindex, nofollow, noarchive\n" if os.environ.get("PREVIEW_MODE") == "true" else ""
+    (OUT / "_redirects").write_text('/horses /en/horses/ 301\n/horses/* /en/horses/:splat 301\n/houses /en/houses/ 301\n/houses/* /en/houses/:splat 301\n/* /404.html 404\n', encoding="utf-8")
+    preview_header = "  X-Robots-Tag: noindex, nofollow, noarchive\n" if PREVIEW_MODE else ""
     (OUT / "_headers").write_text("/*\n" + preview_header + "  X-Content-Type-Options: nosniff\n", encoding="utf-8")
-    print(f"Generated {len(LANGS) * len(ROUTES)} public pages, 12 confirmations, and language gateway")
+    print(f"Generated {len(LANGS) * len(ROUTES)} public pages, 12 confirmations, language gateway, and 404 page")
 
 
 if __name__ == "__main__": build()

@@ -2,3 +2,4 @@
 /horses/* /en/horses/:splat 301
 /houses /en/houses/ 301
 /houses/* /en/houses/:splat 301
+/* /404.html 404
