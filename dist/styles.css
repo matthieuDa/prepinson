@@ -187,6 +187,7 @@ em { font-weight: 400; }
 .team-heading > p:last-child { color: var(--muted); line-height: 1.8; }
 .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
 .team-card { display: grid; grid-template-columns: 1.05fr 1fr; min-height: 390px; background: var(--paper); }
+.team-card > picture { display: block; min-width: 0; }
 .team-card > img, .team-card > picture > img { min-height: 390px; object-position: center 28%; }
 .team-card > div { padding: 42px 35px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; }
 .team-card h3 { margin: 0 0 21px; font-size: 39px; }
@@ -228,7 +229,7 @@ em { font-weight: 400; }
 .feedpane-shell:empty { display: grid; place-items: center; }
 .feedpane-shell:empty::before { content: 'Instagram'; color: var(--muted); font-family: var(--serif); font-size: 34px; }
 .feedpane-fallback { display: flex; justify-content: flex-end; margin: 22px 0 0; }
-.feedpane-shell .fp-watermark a { color: #4d5b51 !important; }
+.feedpane-shell .fp-watermark { display: none !important; }
 
 /* Inner pages retain V1's centred photographic hero. */
 .hero { position: relative; isolation: isolate; height: min(850px, 90svh); min-height: 640px; overflow: hidden; background: #314233; color: white; }
@@ -454,7 +455,7 @@ em { font-weight: 400; }
   .expertise-grid { gap: 20px; }
   .expertise-title h3 { font-size: 28px; }
   .selected-section { gap: 45px; }
-  .team-card { grid-template-columns: 1fr; }
+  .team-card { grid-template-columns: 1fr; grid-template-rows: 430px 1fr; }
   .team-card > img, .team-card > picture > img { height: 430px; }
   .contact-layout { gap: 6%; }
   .property-summary { gap: 45px; }
@@ -510,6 +511,7 @@ em { font-weight: 400; }
   .team-heading > .eyebrow { grid-column: auto; }
   .team-heading h2 { font-size: 49px; }
   .team-grid { grid-template-columns: 1fr; gap: 20px; }
+  .team-card { grid-template-rows: 380px auto; }
   .team-card > img, .team-card > picture > img { height: 380px; min-height: 0; }
   .estate-grid { grid-template-columns: 1fr; gap: 38px; }
   .estate-photo { height: 360px; }
