@@ -196,11 +196,16 @@
 
   const videoDialog = document.querySelector('[data-video-modal]');
   const dialogVideo = videoDialog?.querySelector('video');
+  const videoCaption = videoDialog?.querySelector('.dialog-caption');
+  const defaultVideoCaption = videoCaption?.textContent;
+  const defaultVideoLabel = videoDialog?.getAttribute('aria-label');
   document.querySelectorAll('[data-video-open], [data-film]').forEach((trigger) => {
     trigger.addEventListener('click', () => {
       if (!videoDialog || !dialogVideo) return;
       const source = trigger.getAttribute('data-video-open') || trigger.getAttribute('data-film');
       if (!source) return;
+      if (videoCaption) videoCaption.textContent = trigger.getAttribute('data-video-caption') || defaultVideoCaption;
+      videoDialog.setAttribute('aria-label', trigger.textContent.trim() || defaultVideoLabel);
       dialogVideo.src = source;
       showDialog(videoDialog, trigger);
       dialogVideo.play().catch(() => {
@@ -212,6 +217,8 @@
     dialogVideo?.pause();
     dialogVideo?.removeAttribute('src');
     dialogVideo?.load();
+    if (videoCaption) videoCaption.textContent = defaultVideoCaption;
+    if (defaultVideoLabel) videoDialog.setAttribute('aria-label', defaultVideoLabel);
   });
 
   const lightbox = document.querySelector('[data-lightbox]');

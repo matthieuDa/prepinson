@@ -1035,33 +1035,33 @@
     ]
   },
   "prepinson-bay-horse-outdoors.webp": {
-    "width": 1800,
-    "height": 1452,
+    "width": 5500,
+    "height": 3667,
     "variants": [
       {
         "src": "/assets/prepinson-bay-horse-outdoors-480.webp",
         "width": 480,
-        "height": 387
+        "height": 320
       },
       {
         "src": "/assets/prepinson-bay-horse-outdoors-768.webp",
         "width": 768,
-        "height": 620
+        "height": 512
       },
       {
         "src": "/assets/prepinson-bay-horse-outdoors-1200.webp",
         "width": 1200,
-        "height": 968
+        "height": 800
       },
       {
         "src": "/assets/prepinson-bay-horse-outdoors-1600.webp",
         "width": 1600,
-        "height": 1291
+        "height": 1067
       },
       {
         "src": "/assets/prepinson-bay-horse-outdoors-1800.webp",
         "width": 1800,
-        "height": 1452
+        "height": 1200
       }
     ]
   },

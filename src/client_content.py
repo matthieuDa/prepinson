@@ -72,21 +72,29 @@ TEXT_UPDATES = {
         "Dalton, Juni och Jackson är uppfödda på Prepinson. Qurious HS kom till oss genom vårt samarbete med Grevlunda.",
         "Den Dalton, d'Juni an de Jackson sinn zu Prepinson gezu ginn. De Qurious HS koum duerch eis Partnerschaft mat Grevlunda bei eis.",
     ),
+    "references_intro": (
+        "Here are a few horses bred or developed at Prepinson. Dalton, Juni and Jackson were born here; Qurious HS joined us through our partnership with Grevlunda.",
+        "Voici quelques chevaux nés ou accompagnés à Prepinson. Dalton, Juni et Jackson sont nés chez nous ; Qurious HS nous a rejoints dans le cadre de notre partenariat avec Grevlunda.",
+        "Hier ziet u enkele paarden die bij Prepinson zijn geboren of begeleid. Dalton, Juni en Jackson zijn hier geboren; Qurious HS kwam bij ons via onze samenwerking met Grevlunda.",
+        "Hier stellen wir einige Pferde vor, die in Prepinson geboren oder von uns begleitet wurden. Dalton, Juni und Jackson wurden hier geboren; Qurious HS kam durch unsere Partnerschaft mit Grevlunda zu uns.",
+        "Här är några hästar som fötts upp eller utvecklats på Prepinson. Dalton, Juni och Jackson föddes här; Qurious HS kom till oss genom vårt samarbete med Grevlunda.",
+        "Hei sinn e puer Päerd, déi zu Prepinson gebuer goufen oder vun eis begleet goufen. Den Dalton, d'Juni an de Jackson sinn hei gebuer; de Qurious HS koum duerch eis Partnerschaft mat Grevlunda bei eis.",
+    ),
     "dalton_title": (
-        "Dalton de Prepinson\nDeveloping towards Grand Prix",
-        "Dalton de Prepinson\nEn route vers le Grand Prix",
-        "Dalton de Prepinson\nOp weg naar de Grand Prix",
-        "Dalton de Prepinson\nAuf dem Weg zum Grand Prix",
-        "Dalton de Prepinson\nPå väg mot Grand Prix",
-        "Dalton de Prepinson\nUm Wee a Richtung Grand Prix",
+        "Dalton de Prepinson\nFrom Prepinson to the USA",
+        "Dalton de Prepinson\nDe Prepinson aux États-Unis",
+        "Dalton de Prepinson\nVan Prepinson naar de Verenigde Staten",
+        "Dalton de Prepinson\nVon Prepinson in die USA",
+        "Dalton de Prepinson\nFrån Prepinson till USA",
+        "Dalton de Prepinson\nVu Prepinson an d’USA",
     ),
     "dalton_copy": (
-        "Born and raised at Prepinson, Dalton was sold to a talented rider in 2025. Since then, he has enjoyed great success and continues his development towards Grand Prix level.",
-        "Né et élevé à Prepinson, Dalton a été vendu à un cavalier talentueux en 2025. Depuis, il connaît de beaux succès et poursuit sa formation vers le niveau Grand Prix.",
-        "Dalton is geboren en grootgebracht bij Prepinson en werd in 2025 verkocht aan een getalenteerde ruiter. Sindsdien behaalt hij mooie successen en wordt hij verder opgeleid richting Grand Prix.",
-        "Dalton wurde in Prepinson geboren und aufgezogen und 2025 an einen talentierten Reiter verkauft. Seitdem feiert er große Erfolge und wird weiter in Richtung Grand Prix ausgebildet.",
-        "Dalton föddes och växte upp på Prepinson och såldes till en talangfull ryttare 2025. Sedan dess har han haft fina framgångar och fortsätter sin utbildning mot Grand Prix.",
-        "Den Dalton ass zu Prepinson gebuer a grouss ginn a gouf 2025 un en talentéierte Reider verkaaft. Zënterhier huet hie schéin Erfolleger erreecht a gëtt weider a Richtung Grand Prix ausgebilt.",
+        "Born and raised at Prepinson, Dalton showed an early aptitude for dressage. Helena Bicker, our rider at the time, laid the foundations of his training before he continued his education with Jan Brink at Tullstorp Dressage Stable in Sweden. Sold to the United States in 2025, he continues his journey as a dressage horse. From Prepinson to Tullstorp and then the USA, his path reflects our approach: ambitious breeding, patient development and the right people around each horse at every stage.",
+        "Né et élevé à Prepinson, Dalton a montré très tôt des aptitudes pour le dressage. Helena Bicker, alors cavalière du haras, a posé les bases de sa formation avant qu’il ne poursuive son apprentissage auprès de Jan Brink, au Tullstorp Dressage Stable, en Suède. Vendu aux États-Unis en 2025, il poursuit son parcours de cheval de dressage. De Prepinson à Tullstorp puis aux États-Unis, son histoire reflète notre approche : élever avec ambition, former avec patience et entourer chaque cheval des bonnes personnes à chaque étape.",
+        "Dalton werd bij Prepinson geboren en grootgebracht en liet al vroeg aanleg voor dressuur zien. Helena Bicker, destijds onze amazone, legde de basis voor zijn opleiding. Daarna zette hij zijn training voort bij Jan Brink op Tullstorp Dressage Stable in Zweden. In 2025 werd hij verkocht aan de Verenigde Staten, waar hij zich verder ontwikkelt als dressuurpaard. Zijn weg van Prepinson via Tullstorp naar de VS weerspiegelt onze aanpak: ambitieus fokken, geduldig opleiden en elk paard in elke fase met de juiste mensen omringen.",
+        "In Prepinson geboren und aufgewachsen, zeigte Dalton früh Talent für die Dressur. Helena Bicker, damals unsere Reiterin, legte den Grundstein für seine Ausbildung. Anschließend setzte er seine Entwicklung bei Jan Brink im Tullstorp Dressage Stable in Schweden fort. 2025 wurde er in die USA verkauft, wo er seinen Weg als Dressurpferd fortsetzt. Sein Weg von Prepinson über Tullstorp in die USA spiegelt unseren Ansatz wider: ambitionierte Zucht, geduldige Ausbildung und die richtigen Menschen an der Seite jedes Pferdes.",
+        "Född och uppvuxen på Prepinson visade Dalton tidigt talang för dressyr. Helena Bicker, som då var vår ryttare, lade grunden för hans utbildning. Därefter fortsatte han sin träning hos Jan Brink på Tullstorp Dressage Stable i Sverige. År 2025 såldes han till USA, där han fortsätter sin resa som dressyrhäst. Vägen från Prepinson via Tullstorp till USA speglar vårt arbetssätt: målmedveten avel, tålmodig utbildning och rätt människor omkring hästen i varje skede.",
+        "Den Dalton ass zu Prepinson gebuer a grouss ginn an huet schonn fréi Talent fir Dressur gewisen. D’Helena Bicker, deemools eis Reiderin, huet d’Grondlage vu senger Ausbildung geluecht. Duerno huet hien seng Ausbildung beim Jan Brink am Tullstorp Dressage Stable a Schweden weidergefouert. 2025 gouf hien an d’USA verkaaft, wou hie säi Wee als Dressurpäerd weidergeet. Vu Prepinson iwwer Tullstorp bis an d’USA weist seng Geschicht eis Approche: mat Ambitioun ziichten, mat Gedold ausbilden an all Päerd zu all Etapp déi richteg Leit zur Säit stellen.",
     ),
     "juni_copy": (
         "Born and raised at Prepinson, Juni showed talent and promise from an early age. In 2025, Lisen and Peder Fredricson joined us as co-owners. Juni is now based at their stable, Grevlunda, in Sweden, where she continues her development as a show jumping horse in one of Europe’s leading equestrian environments.",
@@ -121,7 +129,7 @@ TEXT_UPDATES = {
         "De Qurious HS koum bei Prepinson, wéi mir hien zesumme mat Grevlunda, dem Stall vu Lisen a Peder Fredricson, kaf hunn. Mir hunn all u säi Potenzial gegleeft. Haut gëtt hie vum Peder Fredricson geridden an entwéckelt sech a Richtung héchsten Niveau am Sprangsport. Och wann hien net bei eis gezu gouf, ass hien e wichtegen Deel vun der Geschicht vu Prepinson. Säi Wee weist eis Ambitioun, Päerd fir de Spëtzesport ze entdecken an ze begleeden. Mir si frou, dëse Wee mat Grevlunda ze deelen.",
     ),
 }
-TEXT_UPDATES["references_desc"] = TEXT_UPDATES["service_references_copy"]
+TEXT_UPDATES["references_desc"] = TEXT_UPDATES["references_intro"]
 
 V1_UPDATES = {
     "home_tagline": (

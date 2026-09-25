@@ -241,11 +241,16 @@ def references(lang):
         f'<button type="button" data-lightbox-item="{i}" data-lightbox-src="/assets/{name}?v={ASSET_VERSION}" aria-label="{escape(ui("enlarge", lang) + ": " + GALLERY_ALT[name][lang], quote=True)}">{image(name, GALLERY_ALT[name][lang], sizes="(max-width: 700px) 88vw, 27vw")}</button>'
         for i, name in enumerate(dalton_photos)
     ) + '</div></div>'
+    media = {
+        "dalton": dalton_gallery,
+        "juni": f'<div class="reference-media reference-photo reference-photo--portrait"><p class="eyebrow">{escape(ui("juni_photo", lang))}</p>{image("juni-stable.webp", ui("juni_photo", lang), width=2901, height=3868)}<button type="button" class="film-button dark-film" data-video-open="/assets/juni-prepinson.mp4?v={ASSET_VERSION}" data-video-caption="Juni de Prepinson"><span class="circle">{icon("play")}</span>{escape(ui("juni_video", lang))}</button></div>',
+        "qurious": f'<div class="reference-media reference-photo"><p class="eyebrow">{escape(ui("qurious_photo", lang))}</p>{image("qurious-hs-jumping.jpeg", ui("qurious_photo", lang), width=480, height=320)}<button type="button" class="film-button dark-film" data-video-open="/assets/qurious-hs.mp4?v={ASSET_VERSION}" data-video-caption="Qurious HS"><span class="circle">{icon("play")}</span>{escape(ui("qurious_video", lang))}</button></div>',
+    }
     rows = "".join(
-        f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><div class="reference-facts"><p class="reference-pedigree"><span>{ui("reference_training", lang)}</span>{ui("reference_" + HORSE_DISCIPLINES[slug], lang)}</p><p class="reference-pedigree"><span>{ui("pedigree", lang)}</span>{escape(PEDIGREES[slug])}</p></div><div class="reference-story-copy"><p>{tx(f"{slug}_copy", lang)}</p></div>{dalton_gallery if slug == "dalton" else ""}</article>'
+        f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><div class="reference-facts"><p class="reference-pedigree"><span>{ui("reference_training", lang)}</span>{ui("reference_" + HORSE_DISCIPLINES[slug], lang)}</p><p class="reference-pedigree"><span>{ui("pedigree", lang)}</span>{escape(PEDIGREES[slug])}</p></div><div class="reference-story-copy"><p>{tx(f"{slug}_copy", lang)}</p></div>{media.get(slug, "")}</article>'
         for i, slug in enumerate(HORSE_STORIES, 1)
     )
-    return inner_hero(lang, tx("service_references", lang), tx("references_hero", lang), tx("service_references_copy", lang), "hero-horses-2000.webp") + f'<section id="discover" class="reference-stories container">{rows}</section>'
+    return inner_hero(lang, ui("references_selection_label", lang), tx("references_hero", lang), tx("references_intro", lang), "hero-horses-2000.webp") + f'<section id="discover" class="reference-stories container">{rows}</section>'
 
 
 def property_card(lang, slug):
