@@ -286,6 +286,9 @@ em { font-weight: 400; }
 .reference-stories { padding: 70px 0 120px; }
 .reference-story { display: grid; grid-template-columns: .35fr .8fr 1fr; gap: 45px; align-items: start; padding: 50px 0; border-bottom: 1px solid var(--line); }
 .reference-story h2 { margin: 0; font-size: 52px; }
+.reference-facts { grid-column: 3; padding-top: 24px; }
+.reference-facts .reference-pedigree { margin: 0; }
+.reference-facts .reference-pedigree + .reference-pedigree { margin-top: 12px; }
 .reference-story-copy { grid-column: 2 / -1; max-width: 76ch; }
 .reference-story-copy p { margin: 0; color: var(--muted); line-height: 1.85; }
 .reference-media { grid-column: 2 / -1; margin-top: 18px; }
@@ -543,6 +546,7 @@ em { font-weight: 400; }
   .sales-section { padding: 65px 0; }
   .reference-story { grid-template-columns: 1fr; gap: 12px; padding: 38px 0; }
   .reference-story h2 { font-size: 43px; }
+  .reference-facts { grid-column: auto; padding-top: 0; }
   .reference-story-copy { grid-column: auto; }
   .reference-media { grid-column: auto; margin-top: 20px; }
   .reference-gallery { grid-template-columns: 1fr 1fr; gap: 10px; }

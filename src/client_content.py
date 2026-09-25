@@ -12,6 +12,12 @@ PEDIGREES = {
     "qurious": "Comme Il Faut × Calista FX (Diamant de Semilly)",
 }
 HORSE_STORIES = tuple(PEDIGREES)
+HORSE_DISCIPLINES = {
+    "dalton": "dressage",
+    "juni": "jumping",
+    "jackson": "jumping",
+    "qurious": "jumping",
+}
 
 TEXT_UPDATES = {
     "home_title": (

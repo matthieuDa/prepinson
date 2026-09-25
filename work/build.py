@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from src.site_data import FACILITY_FACTS, HOUSE_FACTS, LANGS, LANGUAGE_NAMES, ROUTES, TEXT, text  # noqa: E402
-from src.client_content import HORSE_STORIES, PEDIGREES
+from src.client_content import HORSE_DISCIPLINES, HORSE_STORIES, PEDIGREES
 from src.presentation_data import MEDIA, PROPERTIES, GALLERY_ALT, ui, v1  # noqa: E402
 
 try:
@@ -242,7 +242,7 @@ def references(lang):
         for i, name in enumerate(dalton_photos)
     ) + '</div></div>'
     rows = "".join(
-        f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><p class="reference-pedigree"><span>{ui("pedigree", lang)}</span>{escape(PEDIGREES[slug])}</p><div class="reference-story-copy"><p>{tx(f"{slug}_copy", lang)}</p></div>{dalton_gallery if slug == "dalton" else ""}</article>'
+        f'<article id="{slug}" class="reference-story"><p class="eyebrow">0{i} / HARAS DE PREPINSON</p><h2>{display_title(tx(f"{slug}_title", lang))}</h2><div class="reference-facts"><p class="reference-pedigree"><span>{ui("reference_training", lang)}</span>{ui("reference_" + HORSE_DISCIPLINES[slug], lang)}</p><p class="reference-pedigree"><span>{ui("pedigree", lang)}</span>{escape(PEDIGREES[slug])}</p></div><div class="reference-story-copy"><p>{tx(f"{slug}_copy", lang)}</p></div>{dalton_gallery if slug == "dalton" else ""}</article>'
         for i, slug in enumerate(HORSE_STORIES, 1)
     )
     return inner_hero(lang, tx("service_references", lang), tx("references_hero", lang), tx("service_references_copy", lang), "hero-horses-2000.webp") + f'<section id="discover" class="reference-stories container">{rows}</section>'

@@ -115,6 +115,9 @@ UI = {
     "instagram_fallback": _l("View the latest posts on Instagram", "Voir les dernières publications sur Instagram", "Bekijk de nieuwste berichten op Instagram", "Neueste Beiträge auf Instagram ansehen", "Se de senaste inläggen på Instagram", "Déi lescht Bäiträg op Instagram kucken"),
     "read_story": _l("Read the story", "Lire son histoire", "Lees het verhaal", "Geschichte lesen", "Läs berättelsen", "Geschicht liesen"),
     "dalton_gallery": _l("Dalton at Falsterbo", "Dalton à Falsterbo", "Dalton in Falsterbo", "Dalton in Falsterbo", "Dalton i Falsterbo", "Den Dalton zu Falsterbo"),
+    "reference_training": _l("Training at Prepinson", "Formation à Prepinson", "Opleiding bij Prepinson", "Ausbildung in Prepinson", "Utbildning på Prepinson", "Ausbildung zu Prepinson"),
+    "reference_dressage": _l("Dressage", "Dressage", "Dressuur", "Dressur", "Dressyr", "Dressur"),
+    "reference_jumping": _l("Show jumping", "Saut d’obstacles", "Springen", "Springreiten", "Hoppning", "Sprangreiden"),
 }
 
 
