@@ -327,6 +327,52 @@
     });
   }
 
+  // Load FeedPane only after the visitor scrolls near its section.
+  const feedpane = document.querySelector('#feedpane');
+  if (feedpane) {
+    let requested = false;
+    let hasScrolled = false;
+
+    const loadFeedpane = () => {
+      if (requested) return;
+      requested = true;
+
+      const script = document.createElement('script');
+      script.dataset.key = '6c7a542cd3ba470d84f9ce26f775c77c';
+      script.dataset.target = '#feedpane';
+      script.dataset.cols = '3';
+      script.dataset.mobileCols = '1';
+      script.dataset.gap = '14';
+      script.dataset.radius = '0';
+      script.dataset.posts = '6';
+      script.dataset.autoplay = 'false';
+      script.defer = true;
+      script.src = 'https://feedpane.com/widget.js';
+      document.head.appendChild(script);
+      observer?.disconnect();
+      window.removeEventListener('scroll', onScroll);
+    };
+
+    const isNearViewport = () => {
+      const rect = feedpane.getBoundingClientRect();
+      return rect.top <= window.innerHeight + 200 && rect.bottom >= -200;
+    };
+
+    const onScroll = () => {
+      hasScrolled = true;
+      if (isNearViewport()) loadFeedpane();
+    };
+
+    const observer = 'IntersectionObserver' in window
+      ? new IntersectionObserver((entries) => {
+        if (hasScrolled && entries.some((entry) => entry.isIntersecting)) loadFeedpane();
+      }, { rootMargin: '200px 0px' })
+      : null;
+
+    if (observer) observer.observe(feedpane);
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
   // FeedPane creates its lightbox link before a post is selected. Give that
   // link the real profile destination until the widget supplies a permalink.
   const feedpaneFallback = document.querySelector('.feedpane-fallback a[href]');

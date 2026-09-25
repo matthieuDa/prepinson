@@ -178,13 +178,7 @@ for path in sorted(expected):
         if tag == "iframe":
             fail(rel, "third-party iframe present")
         if tag == "script" and attrs.get("src", "").startswith(("http://", "https://")):
-            feedpane_allowed = (
-                route == ""
-                and attrs.get("src") == "https://feedpane.com/widget.js"
-                and attrs.get("data-key") == "6c7a542cd3ba470d84f9ce26f775c77c"
-            )
-            if not feedpane_allowed:
-                fail(rel, "unapproved third-party script present")
+            fail(rel, "third-party script must be loaded on demand, not in page HTML")
         if tag == "img":
             if "hero-image" in attrs.get("class", "").split() and (attrs.get("loading") == "lazy" or attrs.get("fetchpriority") != "high"):
                 fail(rel, "hero image must load with high priority, without lazy loading")

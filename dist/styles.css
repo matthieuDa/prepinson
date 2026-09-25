@@ -225,7 +225,8 @@ em { font-weight: 400; }
 .journal-grid a:hover img { transform: scale(1.02); }
 .journal-grid .eyebrow { margin: 23px 0 15px; }
 .journal-grid h3 { margin: 0 0 20px; font-size: 35px; }
-.feedpane-shell { min-height: 320px; overflow: hidden; background: #eceee6; }
+.feedpane-shell { min-height: 320px; overflow: hidden; background: transparent; }
+.feedpane-shell [data-fp-key], .feedpane-shell .fp-grid { background-color: transparent !important; }
 .feedpane-shell:empty { display: grid; place-items: center; }
 .feedpane-shell:empty::before { content: 'Instagram'; color: var(--muted); font-family: var(--serif); font-size: 34px; }
 .feedpane-fallback { display: flex; justify-content: flex-end; margin: 22px 0 0; }
