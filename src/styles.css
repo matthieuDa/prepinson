@@ -234,6 +234,7 @@ em { font-weight: 400; }
 .gallery button::after { content: ''; position: absolute; right: 15px; bottom: 15px; width: 32px; height: 32px; border-radius: 50%; background: var(--paper) url('/assets/arrow-up-right.svg') center / 17px 17px no-repeat; }
 .sales-section { padding: 100px 0; display: grid; grid-template-columns: .9fr 1.1fr; gap: 9%; align-items: center; }
 .sales-section p:not(.eyebrow) { max-width: 460px; color: var(--muted); }
+.sales-section > picture { display: block; min-width: 0; }
 .sales-section > img, .sales-section > picture > img { height: 560px; }
 .reference-stories { padding: 70px 0 120px; }
 .reference-story { display: grid; grid-template-columns: .35fr .8fr 1fr; gap: 45px; align-items: start; padding: 50px 0; border-bottom: 1px solid var(--line); }
