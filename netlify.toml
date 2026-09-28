@@ -1,15 +1,22 @@
 [build]
-  command = "./scripts/build.sh"
+  command = "INSTAGRAM_SNAPSHOT_MODE=skip ./scripts/build.sh"
   publish = "dist"
 
 [[edge_functions]]
   function = "language-redirect"
   path = "/"
 
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["sharp"]
+
+[functions."refresh-instagram"]
+  schedule = "17 */12 * * *"
+
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; base-uri 'self'; connect-src 'self' https://feedpane.com; font-src 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: https://*.fbcdn.net https://*.cdninstagram.com; media-src 'self' https://feedpane.com https://*.fbcdn.net https://*.cdninstagram.com; object-src 'none'; script-src 'self' https://feedpane.com; style-src 'self' 'unsafe-inline'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; connect-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data:; media-src 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; upgrade-insecure-requests"
     Cross-Origin-Opener-Policy = "same-origin"
     Cross-Origin-Resource-Policy = "same-origin"
     Permissions-Policy = "camera=(), geolocation=(), microphone=(), payment=(), usb=()"
@@ -23,7 +30,7 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 [context.deploy-preview]
-  command = "./scripts/build.sh"
+  command = "INSTAGRAM_SNAPSHOT_MODE=skip ./scripts/build.sh"
 
 [context.deploy-preview.environment]
   PREVIEW_MODE = "true"

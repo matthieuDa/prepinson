@@ -1,3 +1,6 @@
+/instagram-feed.json /.netlify/functions/instagram-feed 200!
+/instagram-image /.netlify/functions/instagram-image 200!
+/instagram-health.json /.netlify/functions/instagram-health 200!
 /horses /en/horses/ 301
 /horses/* /en/horses/:splat 301
 /houses /en/houses/ 301

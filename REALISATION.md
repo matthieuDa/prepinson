@@ -172,6 +172,10 @@ Rapports et captures locaux : `outputs/v6/layout-report.json`, `outputs/v6/hero-
 
 Publication limitée à la branche et au Deploy Preview de la PR existante. Les dépendances précédemment documentées (relecture native luxembourgeoise et éléments juridiques avant production) subsistent. Aucune photographie n’a été attribuée à Juni, Jackson ou Qurious sans identification fournie.
 
+## Flux Instagram actuel
+
+Les mentions de FeedPane dans les recettes V4 à V6 ci-dessus décrivent les anciennes versions. L'intégration courante utilise l'API Instagram côté serveur, des images WebP servies par Prépinson et un chargement différé dans le navigateur. Sur Netlify, le flux est synchronisé deux fois par jour et initialisé automatiquement après le premier déploiement de production. Le dernier flux sain reste en place si une synchronisation échoue ; les anciennes images restent disponibles sept jours. Le lien direct Instagram et le bouton de reprise couvrent les échecs côté visiteur. Le contrôle `/instagram-health.json` permet de surveiller la fraîcheur du flux ; la configuration d'une alerte externe et les vérifications sur le site publié font partie de la mise en production.
+
 ### Ajustements après retour de Matthieu
 
 - La photographie principale précédente (`3M3A2739`, troupeau et poulains) est rétablie sur ordinateur **et** téléphone, avec les variantes et cadrages antérieurs. Ce choix remplace la proposition sportive décrite ci-dessus.

@@ -1,14 +1,18 @@
 outputs/
 node_modules/
+.pnpm-store/
 .DS_Store
 .openai/
 .netlify/
 __pycache__/
 *.pyc
+.env
+.env.*
 
 # Scratch and raw source captures kept out of the public repo.
 work/*
 !work/build.py
+!work/instagram.py
 !work/home-haras.html
 !work/asset-sources.json
 !work/property-sources.json

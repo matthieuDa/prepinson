@@ -334,68 +334,66 @@
     });
   }
 
-  // Load FeedPane only after the visitor scrolls near its section.
-  const feedpane = document.querySelector('#feedpane');
-  if (feedpane) {
+  const instagramFeed = document.querySelector('#instagram-feed');
+  if (instagramFeed) {
+    const retry = document.querySelector('[data-instagram-retry]');
     let requested = false;
-    let hasScrolled = false;
-
-    const loadFeedpane = () => {
+    const loadInstagram = async () => {
       if (requested) return;
       requested = true;
-
-      const script = document.createElement('script');
-      script.dataset.key = '6c7a542cd3ba470d84f9ce26f775c77c';
-      script.dataset.target = '#feedpane';
-      script.dataset.cols = '3';
-      script.dataset.mobileCols = '1';
-      script.dataset.gap = '14';
-      script.dataset.radius = '0';
-      script.dataset.posts = '6';
-      script.dataset.autoplay = 'false';
-      script.defer = true;
-      script.src = 'https://feedpane.com/widget.js';
-      document.head.appendChild(script);
+      if (retry) { retry.hidden = true; retry.disabled = true; }
       observer?.disconnect();
       window.removeEventListener('scroll', onScroll);
+      try {
+        const response = await fetch('/instagram-feed.json');
+        if (!response.ok) throw new Error('feed unavailable');
+        const { posts } = await response.json();
+        if (!Array.isArray(posts)) throw new Error('invalid feed');
+        if (!posts.length) return;
+        const grid = document.createElement('div');
+        grid.className = 'instagram-grid';
+        for (const post of posts.slice(0, 6)) {
+          if (!post.image || !/^https:\/\/www\.instagram\.com\//.test(post.permalink || '')) continue;
+          const link = document.createElement('a');
+          link.href = post.permalink;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.className = 'instagram-post';
+          link.setAttribute('aria-label', post.caption ? `Instagram : ${post.caption.slice(0, 120)}` : 'Voir cette publication sur Instagram');
+          const image = document.createElement('img');
+          image.src = post.image;
+          image.alt = post.caption ? post.caption.slice(0, 160) : 'Publication du Haras de Prepinson';
+          image.loading = 'lazy';
+          image.decoding = 'async';
+          link.appendChild(image);
+          grid.appendChild(link);
+        }
+        if (grid.children.length) instagramFeed.replaceChildren(grid);
+        else throw new Error('no usable posts');
+      } catch {
+        requested = false;
+        if (retry) retry.hidden = false;
+        // The profile link remains available when the API or connection fails.
+      } finally {
+        if (retry) retry.disabled = false;
+      }
     };
 
     const isNearViewport = () => {
-      const rect = feedpane.getBoundingClientRect();
+      const rect = instagramFeed.getBoundingClientRect();
       return rect.top <= window.innerHeight + 200 && rect.bottom >= -200;
     };
-
     const onScroll = () => {
-      hasScrolled = true;
-      if (isNearViewport()) loadFeedpane();
+      if (isNearViewport()) loadInstagram();
     };
-
     const observer = 'IntersectionObserver' in window
       ? new IntersectionObserver((entries) => {
-        if (hasScrolled && entries.some((entry) => entry.isIntersecting)) loadFeedpane();
+        if (entries.some((entry) => entry.isIntersecting)) loadInstagram();
       }, { rootMargin: '200px 0px' })
       : null;
-
-    if (observer) observer.observe(feedpane);
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
-
-  // FeedPane creates its lightbox link before a post is selected. Give that
-  // link the real profile destination until the widget supplies a permalink.
-  const feedpaneFallback = document.querySelector('.feedpane-fallback a[href]');
-  if (feedpaneFallback) {
-    const initialiseFeedpaneLink = () => {
-      const link = document.querySelector('.fp-lb-link');
-      if (!link) return false;
-      if (!link.getAttribute('href')) link.href = feedpaneFallback.href;
-      return true;
-    };
-    if (!initialiseFeedpaneLink()) {
-      const observer = new MutationObserver(() => {
-        if (initialiseFeedpaneLink()) observer.disconnect();
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
+    if (observer) observer.observe(instagramFeed);
+    else window.addEventListener('scroll', onScroll, { passive: true });
+    retry?.addEventListener('click', loadInstagram);
   }
 
   document.addEventListener('keydown', (event) => {

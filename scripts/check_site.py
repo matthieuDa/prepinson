@@ -321,6 +321,22 @@ for phrase in ("HubSpot", "Three factual stories", "Individual photographs will 
         fail("dist", f"outdated editorial text: {phrase}")
 if "instagram.com/embed" in public or "lightwidget" in public.lower():
     fail("dist", "remote Instagram/LightWidget embed present")
+if "feedpane" in public.lower() or "feedpane.com" in (DIST / "app.js").read_text().lower():
+    fail("dist", "obsolete FeedPane integration remains")
+for lang in LANGS:
+    homepage = (DIST / lang / "index.html").read_text(encoding="utf-8")
+    if ('id="instagram-feed"' not in homepage or 'data-instagram-retry' not in homepage
+            or f'https://www.instagram.com/haras_de_prepinson/' not in homepage):
+        fail(f"{lang}/index.html", "Instagram gallery or fallback link is missing")
+snapshot = DIST / "instagram-feed.json"
+if snapshot.exists():
+    posts = json.loads(snapshot.read_text(encoding="utf-8")).get("posts", [])
+    if len(posts) > 6 or any(not (DIST / post.get("image", "").lstrip("/")).is_file() for post in posts):
+        fail("instagram-feed.json", "up to six first-party images are required when a snapshot is built")
+    elif any(not post["image"].endswith(".webp") for post in posts):
+        fail("instagram-feed.json", "Instagram gallery images must use WebP")
+    elif sum((DIST / post["image"].lstrip("/")).stat().st_size for post in posts) > 1_200_000:
+        fail("instagram-feed.json", "Instagram gallery exceeds the 1.2 MB image budget")
 
 if errors:
     print("VALIDATION FAILED")

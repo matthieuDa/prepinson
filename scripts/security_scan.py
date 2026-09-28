@@ -9,7 +9,7 @@ import subprocess
 ROOT = Path(__file__).resolve().parent.parent
 SECRET_PATTERNS = {
     "private key": re.compile(rb"BEGIN [A-Z ]*PRIVATE KEY"),
-    "credential assignment": re.compile(rb"(?:api[_-]?key|client[_-]?secret|access[_-]?token|password)\s*[:=]\s*['\"][^'\"]{8,}", re.I),
+    "credential assignment": re.compile(rb"(?:api[_-]?key|client[_-]?secret|access[_-]?token|password)\s*[:=]\s*['\"][^'\"\r\n]{8,}", re.I),
     "GitHub token": re.compile(rb"gh[pousr]_[A-Za-z0-9_]{20,}"),
     "Netlify token": re.compile(rb"nfp_[A-Za-z0-9_-]{20,}"),
 }

@@ -196,7 +196,7 @@ def home(lang):
 <section class="selected-section container"><div class="selected-heading"><p class="eyebrow">{ui("references_label", lang)}</p><h2>{tx("references_hero", lang)}</h2><p>{tx("service_references_copy", lang)}</p>{editorial_link(url(lang, "horses/references"), tx("service_references", lang))}</div><div class="pedigree-list">{refs}</div></section>
 <section id="team" class="team-section"><div class="container"><div class="team-heading"><p class="eyebrow">{ui("team_label", lang)}</p><h2>{v1("team_title", lang)}</h2><p>{v1("team_intro", lang)}</p></div><div class="team-grid">{team}</div></div></section>
 <section class="home-houses"><div class="estate-grid container"><div class="estate-photo">{responsive_image("house-hero", ui("alt_houses", lang))}</div><div class="estate-copy"><p class="eyebrow">{ui("houses_label", lang)}</p><h2>{tx("houses_teaser_title", lang)}</h2><p>{ui("houses_home_copy", lang)}</p>{editorial_link(url(lang, "houses"), ui("houses_cta", lang))}</div></div></section>
-<section id="journal" class="journal-stories feedpane-section container"><div class="section-head"><div><p class="eyebrow">{ui("journal_label", lang)}</p><h2>{v1("journal_title", lang)}</h2></div><p class="journal-intro">{v1("journal_intro", lang)}</p></div><div id="feedpane" class="feedpane-shell" aria-label="Instagram · Haras de Prepinson"></div><p class="feedpane-fallback">{editorial_link(IG_HARAS, ui("instagram_fallback", lang), target="_blank", rel="noopener noreferrer")}</p></section>'''
+<section id="journal" class="journal-stories container"><div class="section-head"><div><p class="eyebrow">{ui("journal_label", lang)}</p><h2>{v1("journal_title", lang)}</h2></div><p class="journal-intro">{v1("journal_intro", lang)}</p></div><div id="instagram-feed" class="instagram-feed" aria-label="Instagram · Haras de Prepinson" aria-live="polite"></div><button type="button" class="instagram-retry" data-instagram-retry hidden>{ui("instagram_retry", lang)}</button><p class="instagram-fallback">{editorial_link(IG_HARAS, ui("instagram_fallback", lang), target="_blank", rel="noopener noreferrer")}</p></section>'''
 
 
 def team_album(lang):
@@ -389,7 +389,7 @@ def build():
     if (ROOT / "src/app.js").exists(): shutil.copy2(ROOT / "src/app.js", OUT / "app.js")
     if (ROOT / "src/icons.svg").exists(): shutil.copy2(ROOT / "src/icons.svg", OUT / "icons.svg")
     for child in list(OUT.iterdir()):
-        if child.name in {"assets", "styles.css", "app.js", "favicon.svg", "icons.svg"}: continue
+        if child.name in {"assets", "styles.css", "app.js", "favicon.svg", "icons.svg", "instagram-feed.json"}: continue
         shutil.rmtree(child) if child.is_dir() else child.unlink()
     (OUT / "index.html").write_text(gateway(), encoding="utf-8")
     (OUT / "404.html").write_text(not_found(), encoding="utf-8")
@@ -404,9 +404,11 @@ def build():
             loc = DOMAIN + url(lang, route); alternates = "".join(f'<xhtml:link rel="alternate" hreflang="{code}" href="{DOMAIN + url(code, route)}"/>' for code in LANGS); xdefault = DOMAIN + ("/" if not route else url("en", route)); entries.append(f'<url><loc>{loc}</loc>{alternates}<xhtml:link rel="alternate" hreflang="x-default" href="{xdefault}"/></url>')
     (OUT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' + ''.join(entries) + '</urlset>', encoding="utf-8")
     (OUT / "robots.txt").write_text(f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n', encoding="utf-8")
-    (OUT / "_redirects").write_text('/horses /en/horses/ 301\n/horses/* /en/horses/:splat 301\n/houses /en/houses/ 301\n/houses/* /en/houses/:splat 301\n/* /404.html 404\n', encoding="utf-8")
+    (OUT / "_redirects").write_text('/instagram-feed.json /.netlify/functions/instagram-feed 200!\n/instagram-image /.netlify/functions/instagram-image 200!\n/instagram-health.json /.netlify/functions/instagram-health 200!\n/horses /en/horses/ 301\n/horses/* /en/horses/:splat 301\n/houses /en/houses/ 301\n/houses/* /en/houses/:splat 301\n/* /404.html 404\n', encoding="utf-8")
     preview_header = "  X-Robots-Tag: noindex, nofollow, noarchive\n" if PREVIEW_MODE else ""
     (OUT / "_headers").write_text("/*\n" + preview_header + "  X-Content-Type-Options: nosniff\n", encoding="utf-8")
+    from work.instagram import build as build_instagram
+    build_instagram()
     print(f"Generated {len(LANGS) * len(ROUTES)} public pages, 12 confirmations, language gateway, and 404 page")
 
 

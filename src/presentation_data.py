@@ -114,6 +114,7 @@ UI = {
     "facilities_detail_title": _l("Facilities for daily work", "Des installations pour le travail quotidien", "Faciliteiten voor het dagelijkse werk", "Anlage für die tägliche Arbeit", "Anläggning för det dagliga arbetet", "Infrastrukture fir déi deeglech Aarbecht"),
     "gallery_title": _l("Inside and outside", "À l’intérieur et à l’extérieur", "Binnen en buiten", "Innen und außen", "Inomhus och utomhus", "Bannen a baussen"),
     "instagram_fallback": _l("View the latest posts on Instagram", "Voir les dernières publications sur Instagram", "Bekijk de nieuwste berichten op Instagram", "Neueste Beiträge auf Instagram ansehen", "Se de senaste inläggen på Instagram", "Déi lescht Bäiträg op Instagram kucken"),
+    "instagram_retry": _l("Try loading the posts again", "Réessayer de charger les publications", "Probeer de berichten opnieuw te laden", "Beiträge erneut laden", "Försök ladda inläggen igen", "Probéiert d'Bäiträg nach eng Kéier ze lueden"),
     "read_story": _l("Read the story", "Lire son histoire", "Lees het verhaal", "Geschichte lesen", "Läs berättelsen", "Geschicht liesen"),
     "dalton_gallery": _l("Dalton at Falsterbo", "Dalton à Falsterbo", "Dalton in Falsterbo", "Dalton in Falsterbo", "Dalton i Falsterbo", "Den Dalton zu Falsterbo"),
     "juni_video": _l("Watch Juni in action", "Voir Juni en piste", "Bekijk Juni in actie", "Juni im Parcours ansehen", "Se Juni på banan", "D’Juni am Parcours kucken"),
