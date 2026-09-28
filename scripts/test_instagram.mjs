@@ -4,6 +4,7 @@ import { syncInstagram } from '../netlify/lib/instagram.mjs';
 import { serveFeed } from '../netlify/functions/instagram-feed.mjs';
 import { serveImage } from '../netlify/functions/instagram-image.mjs';
 import { serveHealth } from '../netlify/functions/instagram-health.mjs';
+import { initializeInstagram } from '../netlify/functions/instagram-on-deploy.mjs';
 
 class MemoryStore {
   entries = new Map();
@@ -143,4 +144,27 @@ test('health reports the count and flags stale or incomplete feeds without revea
   const partial = await serveHealth(new Request('https://www.prepinson.com/instagram-health.json'), deps.store, 3 * day);
   assert.equal(partial.status, 503);
   assert.equal((await partial.json()).postCount, 5);
+});
+
+test('a Deploy Preview initializes only its own empty feed', async () => {
+  const production = new MemoryStore();
+  const preview = new MemoryStore();
+  const tokenStore = new MemoryStore();
+  let calls = 0;
+  const options = {
+    openPublicStore: (context) => context === 'deploy-preview' ? preview : production,
+    openPrivateStore: () => tokenStore,
+    sync: async ({ store }) => {
+      calls++;
+      await store.set('feed', JSON.stringify({ posts: six }));
+      return { posts: six };
+    },
+    logger: { log() {}, error() {} },
+  };
+  await initializeInstagram({ deploy: { context: 'deploy-preview' } }, options);
+  assert.equal(calls, 1);
+  assert.equal(await production.get('feed'), null);
+  assert.equal((await preview.get('feed', { type: 'json' })).posts.length, 6);
+  await initializeInstagram({ deploy: { context: 'deploy-preview' } }, options);
+  assert.equal(calls, 1);
 });

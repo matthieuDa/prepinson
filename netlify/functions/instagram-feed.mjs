@@ -18,4 +18,4 @@ export async function serveFeed(request, store = publicStore()) {
   }
 }
 
-export default serveFeed;
+export default (request, context) => serveFeed(request, publicStore(context?.deploy?.context));

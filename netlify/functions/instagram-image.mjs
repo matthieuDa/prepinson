@@ -16,4 +16,4 @@ export async function serveImage(request, store = publicStore()) {
   });
 }
 
-export default serveImage;
+export default (request, context) => serveImage(request, publicStore(context?.deploy?.context));

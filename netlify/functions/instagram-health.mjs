@@ -24,4 +24,4 @@ export async function serveHealth(request, store = publicStore(), now = Date.now
   }
 }
 
-export default serveHealth;
+export default (request, context) => serveHealth(request, publicStore(context?.deploy?.context));

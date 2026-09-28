@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs';
+import { getDeployStore, getStore } from '@netlify/blobs';
 import { optimizeInstagramImage } from './instagram-image.mjs';
 
 const API = 'https://graph.instagram.com';
@@ -6,8 +6,10 @@ const FIELDS = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestam
 const REGION = 'eu-central-1';
 const RETAIN_MS = 7 * 86400000;
 
-export const publicStore = () => getStore({ name: 'prepinson-instagram', region: REGION });
-const privateStore = () => getStore({ name: 'prepinson-instagram-private', region: REGION });
+// Preview writes belong to that deploy; production updates survive new deploys.
+const openStore = (name, context) => (context === 'deploy-preview' ? getDeployStore : getStore)({ name, region: REGION });
+export const publicStore = (context) => openStore('prepinson-instagram', context);
+export const privateStore = (context) => openStore('prepinson-instagram-private', context);
 
 function imageSource(item) {
   if (item.media_type === 'VIDEO') return item.thumbnail_url || item.media_url;
