@@ -26,6 +26,7 @@ Run `npm run check` and `python3 scripts/security_scan.py` before committing. Br
 
 - `npm run test:instagram`: in-memory synchronization, image retention, cache headers, cold start, token renewal failures, and health checks.
 - `node scripts/check_forms.mjs`: simulated submissions only, six languages, validation, failure/success, no-JS and keyboard interactions.
+- `npm run test:motion`: immediate hero visibility, scroll appearances, live reduced-motion changes, mobile panel geometry and visible-content fallbacks in all six languages. Set `BROWSER_ENGINE=webkit` to check WebKit.
 - `node scripts/check_layout.mjs`: all 72 pages at seven widths, plus loaded photographs in reference screenshots.
 - `LIGHTHOUSE_CLI=… CHROME_PATH=… node scripts/audit_lighthouse.mjs`: full audits of 12 templates on mobile/desktop. `AUDIT_ROUTES=home,ortho-25 AUDIT_PROFILES=mobile` selects a relevant regression check; no audits are excluded.
 
