@@ -14,14 +14,17 @@ def href(lang, route):
 def label(key, lang):
     return key if key in {'La Grange','Le Cottage'} else text(key, lang)
 
+def is_current(target, current):
+    return current == target or (current == '' and target == '#haras')
+
 def link(key, target, lang, current):
-    active = ' aria-current="page"' if current == target else ''
+    active = ' aria-current="page"' if is_current(target, current) else ''
     return f'<a href="{href(lang,target)}"{active}>{escape(label(key,lang))}</a>'
 
 def menu(lang, current, mobile=False):
     groups = []
     for key, children in GROUPS:
-        active = any(target == current for _, target in children)
+        active = any(is_current(target, current) for _, target in children)
         links = ''.join(link(k, target, lang, current) for k, target in children)
         groups.append(f'<details class="nav-group{" current-group" if active else ""}"><summary>{escape(label(key,lang))}<svg class="icon" aria-hidden="true"><use href="/icons.svg#chevron-down"/></svg></summary><div class="nav-submenu">{links}</div></details>')
     return ''.join(groups) + f'<a class="nav-book" href="/{lang}/contact/"' + (' aria-current="page"' if current == 'contact' else '') + f'>{text("nav_contact",lang)}</a>'
