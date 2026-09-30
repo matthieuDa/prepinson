@@ -22,7 +22,7 @@ Les résultats détaillés et les captures sont dans `outputs/publication-2026-0
 - WebKit : même matrice de 720 configurations, aucun débordement détecté. Ce résultat porte sur le moteur WebKit automatisé, pas sur une recette dans Safari installé.
 - Navigation : clavier, fermeture, restitution du focus, écran court, page derrière le menu rendue inerte, navigation sans JavaScript, langue de session et absence d’appels tiers. La simulation de zoom teste une largeur CSS de 720 px correspondant à une fenêtre de 1440 px à 200 %.
 - Accessibilité automatisée : axe sur les 90 pages, règles WCAG 2 A/AA, WCAG 2.1 AA et bonnes pratiques, aucune violation détectée. Une recette humaine reste complémentaire à cette mesure.
-- Formulaires : validation, erreur, confirmation, double clic et soumission sans JavaScript, avec réponses serveur simulées. En complément, une demande technique et une inscription fictive ont été soumises sur la preview le 30 septembre : confirmations affichées et deux enregistrements vérifiés dans Netlify. L’inscription fictive a ensuite été écartée de la liste active. La réception en boîte mail reste à tester après configuration des notifications.
+- Formulaires : validation, erreur, confirmation, double clic et soumission sans JavaScript, avec réponses serveur simulées. En complément, une demande technique et une inscription fictive ont été soumises sur la preview le 30 septembre : confirmations affichées et deux enregistrements vérifiés dans Netlify. Les deux enregistrements fictifs ont ensuite été écartés des listes actives. La réception en boîte mail reste à tester après configuration des notifications.
 - Instagram : sept tests du stockage, du rafraîchissement, des erreurs et de l’isolation des previews.
 - Liens externes : 25 destinations contrôlées, réponses HTTP 200, dont les deux plateformes de réservation et les deux itinéraires.
 - Sécurité : analyse des fichiers et de l’historique Git sans détection de secrets, de documents privés ou de tarifs chiffrés. En-têtes de sécurité et CSP conservés.
@@ -81,3 +81,46 @@ Dans Search Console et Bing Webmaster Tools, utiliser les propriétés du domain
 - [APD · Cookies et autres traceurs](https://www.autoriteprotectiondonnees.be/cookies-et-autres-traceurs) : préférence linguistique de session exemptée de consentement, avec obligation d’information.
 - [RGPD](https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32016R0679) : transparence, bases de traitement et droits. Les 24 mois constituent une politique de conservation retenue pour le site, pas une durée universelle imposée par la loi.
 - [Netlify DPA](https://www.netlify.com/pdf/netlify-dpa.pdf) et [confidentialité Netlify](https://www.netlify.com/privacy/) : sous-traitance et transferts internationaux.
+
+## Mesures Lighthouse locales finales
+
+Médiane de trois mesures par page et profil, 15 types de page en anglais. Les contrôles de contenu, de mise en page et d’accessibilité couvrent les six langues. La mesure mobile du Cottage a été répétée après optimisation. Aucun test ne désactive des audits pour améliorer le score.
+
+| Page | Profil | Performance | Accessibilité | Bonnes pratiques | SEO technique | LCP | CLS |
+|---|---|---:|---:|---:|---:|---:|---:|
+| activities | desktop | 100 | 100 | 100 | 100 | 0.49 s | 0.000 |
+| boarding | desktop | 100 | 100 | 100 | 100 | 0.48 s | 0.000 |
+| contact | desktop | 100 | 100 | 100 | 100 | 0.36 s | 0.000 |
+| facilities | desktop | 100 | 100 | 100 | 100 | 0.57 s | 0.000 |
+| for-sale | desktop | 100 | 100 | 100 | 100 | 0.52 s | 0.000 |
+| home | desktop | 100 | 100 | 100 | 100 | 0.66 s | 0.000 |
+| horses | desktop | 100 | 100 | 100 | 100 | 0.58 s | 0.000 |
+| houses | desktop | 100 | 100 | 100 | 100 | 0.56 s | 0.000 |
+| legal | desktop | 100 | 100 | 100 | 100 | 0.36 s | 0.000 |
+| ortho-24 | desktop | 100 | 100 | 100 | 100 | 0.60 s | 0.000 |
+| ortho-25 | desktop | 100 | 100 | 100 | 100 | 0.54 s | 0.000 |
+| privacy | desktop | 100 | 100 | 100 | 100 | 0.36 s | 0.000 |
+| programmes | desktop | 100 | 100 | 100 | 100 | 0.48 s | 0.000 |
+| references | desktop | 100 | 100 | 100 | 100 | 0.60 s | 0.000 |
+| team | desktop | 100 | 100 | 100 | 100 | 0.47 s | 0.000 |
+| activities | mobile | 99 | 100 | 100 | 100 | 1.95 s | 0.000 |
+| boarding | mobile | 99 | 100 | 100 | 100 | 2.10 s | 0.000 |
+| contact | mobile | 100 | 100 | 100 | 100 | 1.65 s | 0.000 |
+| facilities | mobile | 98 | 100 | 100 | 100 | 2.40 s | 0.000 |
+| for-sale | mobile | 99 | 100 | 100 | 100 | 2.03 s | 0.000 |
+| home | mobile | 99 | 100 | 100 | 100 | 2.18 s | 0.000 |
+| horses | mobile | 99 | 100 | 100 | 100 | 2.25 s | 0.000 |
+| houses | mobile | 99 | 100 | 100 | 100 | 2.25 s | 0.000 |
+| legal | mobile | 100 | 100 | 100 | 100 | 1.50 s | 0.000 |
+| ortho-24 | mobile | 98 | 100 | 100 | 100 | 2.40 s | 0.000 |
+| ortho-25 | mobile | 98 | 100 | 100 | 100 | 2.34 s | 0.000 |
+| privacy | mobile | 100 | 100 | 100 | 100 | 1.50 s | 0.000 |
+| programmes | mobile | 99 | 100 | 100 | 100 | 1.95 s | 0.000 |
+| references | mobile | 99 | 100 | 100 | 100 | 2.18 s | 0.000 |
+| team | mobile | 99 | 100 | 100 | 100 | 2.18 s | 0.000 |
+
+Le blocage total du thread principal (TBT) est de 0 ms dans ces mesures. Il ne remplace pas l’INP réel. LCP mobile médian maximal : 2.40 s. Le domaine de preview est volontairement non indexable. Les scores SEO ci-dessus concernent le rendu local de production.
+
+### Mesures sur Netlify
+
+Sur la preview déployée au commit `6ffb3917c0e5b94d8da068dd486e89ac1562bd8d`, trois mesures mobiles supplémentaires par page donnent une médiane de performance de 100 pour l’accueil et Le Cottage, avec 100 en accessibilité et bonnes pratiques. Le SEO vaut 69 car la preview est volontairement bloquée à l’indexation ; ce résultat attendu ne doit pas être corrigé en rendant la preview indexable. Les rapports bruts sont dans `outputs/publication-2026-09-30/lighthouse-netlify/`. Les 118 contrôles HTTP ont également été répétés avec succès sur ce commit.
