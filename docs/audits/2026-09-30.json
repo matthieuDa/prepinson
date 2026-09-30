@@ -1,0 +1,514 @@
+{
+  "generatedAt": "2026-09-30T19:40:25.593693+00:00",
+  "method": "15 English page templates, mobile and desktop, median of three local Lighthouse runs. Cottage mobile repeated after final image optimization. Layout and accessibility verified in all six locales. Lab results are not field Core Web Vitals.",
+  "lighthouseVersion": "13.5.0",
+  "medians": [
+    {
+      "name": "home",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2178.3008999999997,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "horses",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2253.1724,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "programmes",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 1952.3496,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "facilities",
+      "profile": "mobile",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2402.8626999999997,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "for-sale",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2028.7464999999997,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "references",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2177.7884,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "houses",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2254.4033999999997,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "ortho-24",
+      "profile": "mobile",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2403.8055,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "activities",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 1952.9024999999997,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "legal",
+      "profile": "mobile",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 1502.3727,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "privacy",
+      "profile": "mobile",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 1502.5434,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "team",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2177.8845,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "boarding",
+      "profile": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2102.6067,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "contact",
+      "profile": "mobile",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 1652.0861,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "home",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 664.4469,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "horses",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 581.9276,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "programmes",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 481.6825,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "facilities",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 565.933,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "for-sale",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 521.4704,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "references",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 602.7511,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "houses",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 562.5649999999999,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "ortho-24",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 602.5632,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "ortho-25",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 543.2355,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "activities",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 486.1603,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "legal",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 362.31270000000006,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "privacy",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 362.9941,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "team",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 465.0661,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "boarding",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 483.3389,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "contact",
+      "profile": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 363.23654999999997,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    },
+    {
+      "name": "ortho-25",
+      "profile": "mobile",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2341.8962,
+        "cls": 0,
+        "tbtMs": 0
+      }
+    }
+  ],
+  "rawReports": [
+    "lighthouse-final/",
+    "lighthouse-cottage-final/"
+  ],
+  "layout": {
+    "chromium": 720,
+    "webkit": 720,
+    "firefox": "blocked by browser launch failure",
+    "safari": "native check blocked by locked Mac"
+  },
+  "accessibility": {
+    "axePages": 90,
+    "violations": 0
+  },
+  "deployment": {
+    "httpChecks": 118,
+    "errors": 0,
+    "navigationChecks": 108,
+    "edgeLanguageCases": 7
+  },
+  "forms": {
+    "verifiedAt": "2026-09-30",
+    "previewCommit": "bde969a",
+    "contact-fr": {
+      "submitted": true,
+      "confirmation": "/fr/contact/thanks/",
+      "verifiedInNetlify": true,
+      "testReference": "QA-20260930"
+    },
+    "newsletter": {
+      "submitted": true,
+      "confirmation": "/fr/newsletter/thanks/",
+      "verifiedInNetlify": true,
+      "storedFields": [
+        "email",
+        "consent",
+        "consent_version",
+        "language",
+        "source_page"
+      ],
+      "testExcludedFromActiveList": true
+    },
+    "notificationsConfigured": false,
+    "inboxReceiptVerified": false
+  },
+  "netlifyPreview": {
+    "commit": "6ffb3917c0e5b94d8da068dd486e89ac1562bd8d",
+    "performanceMedian": 100,
+    "routes": [
+      "home",
+      "ortho-25"
+    ],
+    "runsPerRoute": 3,
+    "seo": 69,
+    "seoReason": "Intentional noindex on preview",
+    "httpChecks": 118
+  }
+}
