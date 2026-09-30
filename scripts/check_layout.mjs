@@ -3,14 +3,15 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 const mod=process.env.PLAYWRIGHT_MODULE||'playwright-core';
 const pw=await import(path.isAbsolute(mod)?pathToFileURL(path.join(mod,'index.js')).href:mod);
-const chromium=pw.chromium||pw.default?.chromium;
+const engineName=process.env.BROWSER_ENGINE||'chromium';
+const engine=pw[engineName]||pw.default?.[engineName];
 const base=process.env.SITE_URL||'http://localhost:3008';
 const output=process.env.AUDIT_OUTPUT||'outputs/v1-restoration';
 await mkdir(output,{recursive:true});
-const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
+const browser=await engine.launch({headless:true,...(engineName==='chromium'?{executablePath:process.env.CHROME_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}:{})});
 const langs=['en','fr','nl','de','sv','lb'];
-const routes=['','horses','horses/programmes','horses/facilities','horses/for-sale','horses/references','houses','houses/ortho-24','houses/ortho-25','activities','legal','privacy'];
-const widths=[360,390,768,1024,1280,1440,1920], errors=[],checks=[];
+const routes=['','horses','horses/programmes','horses/facilities','horses/for-sale','horses/references','houses','houses/ortho-24','houses/ortho-25','activities','legal','privacy','team','horses/boarding','contact'];
+const widths=[360,390,761,768,1024,1280,1440,1920], errors=[],checks=[];
 const context=await browser.newContext({deviceScaleFactor:1});
 const page=await context.newPage();
 let current='';
@@ -51,7 +52,7 @@ for(const lang of (process.env.CAPTURE_ONLY ? [] : langs)){
  const keyboardOpen=await panels.evaluateAll(items=>items.filter(item=>item.open).map(item=>items.indexOf(item)));
  if(keyboardOpen.length!==1||keyboardOpen[0]!==3)errors.push({page:current,type:'accordion',message:`Keyboard opening did not remain exclusive: ${keyboardOpen}`});
 }
-for(const route of ['','horses','horses/programmes','houses','houses/ortho-24','houses/ortho-25'])for(const width of [390,768,1440]){
+for(const route of (process.env.SKIP_CAPTURES?[]:['','horses','horses/programmes','houses','houses/ortho-24','houses/ortho-25','team','horses/boarding','contact']))for(const width of [390,768,1440]){
  await page.setViewportSize({width,height:900});
  await page.goto(base+'/en/'+(route?route+'/':''),{waitUntil:'load'});await page.evaluate(()=>document.fonts.ready);
  await page.evaluate(async()=>{for(const i of document.images){if(!i.closest('dialog'))i.loading='eager';} await Promise.all([...document.images].filter(i=>!i.closest('dialog')).map(i=>i.decode().catch(()=>{})));});
@@ -62,7 +63,8 @@ for(const route of ['','horses','horses/programmes','houses','houses/ortho-24','
  await page.screenshot({path:`${output}/current-${route.replaceAll('/','-')||'home'}-${width}.png`,fullPage:true});
  await page.screenshot({path:`${output}/viewport-${route.replaceAll('/','-')||'home'}-${width}.png`});
 }
+const browserVersion=browser.version();
 await browser.close();
-if(!process.env.CAPTURE_ONLY)await writeFile(`${output}/layout-report.json`,JSON.stringify({date:new Date().toISOString(),base,checks,errors},null,2));
+if(!process.env.CAPTURE_ONLY)await writeFile(`${output}/layout-report.json`,JSON.stringify({date:new Date().toISOString(),engine:engineName,version:browserVersion,base,checks,errors},null,2));
 console.log(JSON.stringify({checks:checks.length,errorCount:errors.length,errors:errors.slice(0,8)},null,2));
 if(errors.length)process.exitCode=1;

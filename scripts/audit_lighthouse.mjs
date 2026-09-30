@@ -11,6 +11,7 @@ const chromePath = process.env.CHROME_PATH;
 const nodeBinary = process.env.NODE_BINARY || process.execPath;
 const baseUrl = (process.env.BASE_URL || 'http://localhost:3008').replace(/\/$/, '');
 const outputDir = resolve(process.env.OUTPUT_DIR || 'outputs/v1-restoration/lighthouse');
+const repetitions = Math.max(1, Math.min(5, Number(process.env.AUDIT_RUNS || 1)));
 const debugPort = Number(process.env.CHROME_DEBUG_PORT || 9333);
 
 if (!lighthouseCli || !chromePath) {
@@ -31,6 +32,9 @@ const allRoutes = [
   ['activities', '/en/activities/'],
   ['legal', '/en/legal/'],
   ['privacy', '/en/privacy/'],
+  ['team', '/en/team/'],
+  ['boarding', '/en/horses/boarding/'],
+  ['contact', '/en/contact/'],
 ];
 
 const allProfiles = [
@@ -100,6 +104,7 @@ const summary = {
   generatedAt: new Date().toISOString(),
   baseUrl,
   routes: routes.length,
+  repetitions,
   profiles: profiles.map(([name]) => name),
   excludedAudits: [],
   snapshot: {
@@ -114,9 +119,9 @@ let exitCode = 0;
 try {
   await waitForChrome();
   for (const [profile, profileArgs] of profiles) {
-    for (const [name, path] of routes) {
+    for (const [name, path] of routes) for (let iteration=1;iteration<=repetitions;iteration++) {
       const url = `${baseUrl}${path}`;
-      const stem = join(outputDir, `${name}-${profile}`);
+      const stem = join(outputDir, `${name}-${profile}${repetitions>1?'-'+iteration:''}`);
       console.log(`[${profile}] ${name}: ${url}`);
       const result = spawnSync(nodeBinary, [
         lighthouseCli,
@@ -146,13 +151,13 @@ try {
         .filter((audit) => audit.score !== null && audit.score < 1 && !excludedModes.has(audit.scoreDisplayMode))
         .map((audit) => ({ id: audit.id, title: audit.title, score: audit.score, displayValue: audit.displayValue || '' }));
       const targets = {
-        performance: profile === 'mobile' ? scores.performance >= 90 : true,
+        performance: profile === 'mobile' ? scores.performance >= 90 : scores.performance >= 95,
         accessibility: scores.accessibility === 100,
         'best-practices': scores['best-practices'] === 100,
         seo: scores.seo === 100,
       };
       if (Object.values(targets).some((passed) => !passed)) exitCode = 1;
-      summary.runs.push({ name, profile, url, scores, targets, failedAudits });
+      summary.runs.push({ name, profile, iteration, url, scores, targets, failedAudits, metrics:{lcpMs:lhr.audits['largest-contentful-paint'].numericValue,cls:lhr.audits['cumulative-layout-shift'].numericValue,tbtMs:lhr.audits['total-blocking-time'].numericValue}, lighthouseVersion:lhr.lighthouseVersion });
     }
   }
 } finally {
@@ -168,11 +173,22 @@ try {
   await rm(profileDir, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }).catch(() => {});
 }
 
+const median = values => [...values].sort((a,b)=>a-b)[Math.floor(values.length/2)];
+summary.medians=[];
+for (const [profile] of profiles) for(const [name] of routes) {
+ const group=summary.runs.filter(run=>run.name===name&&run.profile===profile&&!run.error);
+ if(group.length!==repetitions)continue;
+ const scores=Object.fromEntries(Object.keys(group[0].scores).map(key=>[key,median(group.map(run=>run.scores[key]))]));
+ const metrics=Object.fromEntries(Object.keys(group[0].metrics).map(key=>[key,median(group.map(run=>run.metrics[key]))]));
+ summary.medians.push({name,profile,scores,metrics});
+}
+exitCode=summary.runs.some(run=>run.error||run.scores.accessibility<100||run.scores['best-practices']<100||run.scores.seo<100)||summary.medians.some(run=>run.scores.performance<(run.profile==='mobile'?90:95))?1:0;
 await writeFile(join(outputDir, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
 const lines = [
-  '# Lighthouse — V1 restoration',
+  '# Lighthouse — Publication 2026-09-30',
   '',
   `Generated: ${summary.generatedAt}`,
+  `Runs per page/profile: ${repetitions}. Medians below; raw runs retained in JSON. Lab metrics, not field Core Web Vitals.`,
   `Generator SHA-256: ${summary.snapshot.generatorSha256}`,
   `Source CSS SHA-256: ${summary.snapshot.sourceCssSha256}`,
   `Generated CSS SHA-256: ${summary.snapshot.generatedCssSha256}`,
@@ -180,7 +196,7 @@ const lines = [
   '| Page | Profile | Performance | Accessibility | Best practices | SEO |',
   '|---|---:|---:|---:|---:|---:|',
 ];
-for (const run of summary.runs) {
+for (const run of summary.medians) {
   if (run.error) lines.push(`| ${run.name} | ${run.profile} | ERROR | ERROR | ERROR | ERROR |`);
   else lines.push(`| ${run.name} | ${run.profile} | ${run.scores.performance} | ${run.scores.accessibility} | ${run.scores['best-practices']} | ${run.scores.seo} |`);
 }

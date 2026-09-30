@@ -2147,5 +2147,193 @@
         "height": 1800
       }
     ]
+  },
+  "steven-brunet.webp": {
+    "width": 1600,
+    "height": 1040,
+    "variants": [
+      {
+        "src": "/assets/steven-brunet-400.webp",
+        "width": 400,
+        "height": 260
+      },
+      {
+        "src": "/assets/steven-brunet-800.webp",
+        "width": 800,
+        "height": 520
+      },
+      {
+        "src": "/assets/steven-brunet-1200.webp",
+        "width": 1200,
+        "height": 780
+      },
+      {
+        "src": "/assets/steven-brunet-1600.webp",
+        "width": 1600,
+        "height": 1040
+      }
+    ]
+  },
+  "pierre-martin.webp": {
+    "width": 1600,
+    "height": 1066,
+    "variants": [
+      {
+        "src": "/assets/pierre-martin-400.webp",
+        "width": 400,
+        "height": 266
+      },
+      {
+        "src": "/assets/pierre-martin-800.webp",
+        "width": 800,
+        "height": 533
+      },
+      {
+        "src": "/assets/pierre-martin-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/pierre-martin-1600.webp",
+        "width": 1600,
+        "height": 1066
+      }
+    ]
+  },
+  "luc-canivet.webp": {
+    "width": 1600,
+    "height": 1067,
+    "variants": [
+      {
+        "src": "/assets/luc-canivet-400.webp",
+        "width": 400,
+        "height": 267
+      },
+      {
+        "src": "/assets/luc-canivet-800.webp",
+        "width": 800,
+        "height": 534
+      },
+      {
+        "src": "/assets/luc-canivet-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/luc-canivet-1600.webp",
+        "width": 1600,
+        "height": 1067
+      }
+    ]
+  },
+  "training-new.webp": {
+    "width": 1600,
+    "height": 2400,
+    "variants": [
+      {
+        "src": "/assets/training-new-400.webp",
+        "width": 400,
+        "height": 600
+      },
+      {
+        "src": "/assets/training-new-800.webp",
+        "width": 800,
+        "height": 1200
+      },
+      {
+        "src": "/assets/training-new-1200.webp",
+        "width": 1200,
+        "height": 1800
+      },
+      {
+        "src": "/assets/training-new-1600.webp",
+        "width": 1600,
+        "height": 2400
+      }
+    ]
+  },
+  "jackson-standing.webp": {
+    "width": 1600,
+    "height": 1066,
+    "variants": [
+      {
+        "src": "/assets/jackson-standing-400.webp",
+        "width": 400,
+        "height": 266
+      },
+      {
+        "src": "/assets/jackson-standing-800.webp",
+        "width": 800,
+        "height": 533
+      },
+      {
+        "src": "/assets/jackson-standing-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/jackson-standing-1600.webp",
+        "width": 1600,
+        "height": 1066
+      }
+    ]
+  },
+  "jackson-jumping.webp": {
+    "width": 1600,
+    "height": 1066,
+    "variants": [
+      {
+        "src": "/assets/jackson-jumping-400.webp",
+        "width": 400,
+        "height": 266
+      },
+      {
+        "src": "/assets/jackson-jumping-800.webp",
+        "width": 800,
+        "height": 533
+      },
+      {
+        "src": "/assets/jackson-jumping-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/jackson-jumping-1600.webp",
+        "width": 1600,
+        "height": 1066
+      }
+    ]
+  },
+  "juni-jumping.webp": {
+    "width": 480,
+    "height": 320,
+    "variants": [
+      {
+        "src": "/assets/juni-jumping-400.webp",
+        "width": 400,
+        "height": 267
+      }
+    ]
+  },
+  "juni-stable.webp": {
+    "width": 2901,
+    "height": 3868,
+    "variants": [
+      {
+        "src": "/assets/juni-stable-400.webp",
+        "width": 400,
+        "height": 533
+      },
+      {
+        "src": "/assets/juni-stable-800.webp",
+        "width": 800,
+        "height": 1067
+      },
+      {
+        "src": "/assets/juni-stable-1200.webp",
+        "width": 1200,
+        "height": 1600
+      }
+    ]
   }
 }

@@ -282,3 +282,12 @@ SUBJECTS = {
     "sv": (("boarding", "Hästuppstallning"), ("training", "Hästträning"), ("breeding", "Avel"), ("programme-foal", "Program för fölhantering"), ("programme-pre-breaking", "Program som förbereder hästen för inridning"), ("programme-breaking", "Program för inridning"), ("programme-jumping", "Program för hoppträning"), ("horse-search", "Söker en häst"), ("stay", "En vistelse på Prepinson"), ("ortho-24", "En vistelse i Ortho 24, La Grange"), ("ortho-25", "En vistelse i Ortho 25, Le Cottage"), ("other", "Annan förfrågan")),
     "lb": (("boarding", "Päerdspensioun"), ("training", "Ausbildung vu Päerd"), ("breeding", "Zuucht"), ("programme-foal", "Programm fir den Ëmgang mam Fëllen"), ("programme-pre-breaking", "Programm fir d’Virbereedung op d’Ureiden"), ("programme-breaking", "Programm fir d’Ureiden"), ("programme-jumping", "Programm fir Sprangtraining"), ("horse-search", "Sich no engem Päerd"), ("stay", "En Openthalt zu Prepinson"), ("ortho-24", "En Openthalt am Ortho 24, La Grange"), ("ortho-25", "En Openthalt am Ortho 25, Le Cottage"), ("other", "Aner Ufro")),
 }
+
+from src.release_content import COPY as RELEASE_COPY
+for _index, _lang in enumerate(LANGS):
+    FORM_COPY[_lang]['privacy_link'] = RELEASE_COPY['privacy_label'][_index]
+    FORM_COPY[_lang]['newsletter_success_copy'] = RELEASE_COPY['newsletter_recorded'][_index]
+    SUBJECTS[_lang] = tuple((key, label.replace('Ortho 24, ', '').replace('Ortho 25, ', '')) for key, label in SUBJECTS[_lang])
+
+# Keep house names grammatical in the contextual form subjects.
+SUBJECTS['fr'] = tuple((key, label.replace('à Le Cottage','au Cottage')) for key,label in SUBJECTS['fr'])

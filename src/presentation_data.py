@@ -684,3 +684,8 @@ MEDIA.update({
     "team_eva": "eva-schiller-portrait.webp",
     "team_nicolas": "nicolas-derouault-portrait.webp",
 })
+
+from src.release_content import COPY as RELEASE_COPY
+for _key in ('gallery_title', 'juni_jumping', 'jackson_standing', 'jackson_jumping'):
+    UI[_key] = dict(zip(LANGS, RELEASE_COPY[_key]))
+MEDIA['training'] = 'training-new.webp'

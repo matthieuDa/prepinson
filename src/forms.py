@@ -4,6 +4,7 @@ from html import escape
 
 from src.form_data import FORM_COPY, LANGS, SUBJECTS
 from src.presentation_data import ui
+from src.navigation import footer_navigation
 
 
 IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
@@ -41,11 +42,11 @@ def _context(route):
         return "houses", "", "stay"
     if clean == "horses/for-sale":
         return "horses", "", "horse-search"
-    if clean in {"horses", "horses/facilities"}:
+    if clean in {"horses", "horses/facilities", "horses/boarding"}:
         return "horses", "", "boarding"
     if clean == "horses/programmes":
         return "horses", "", "training"
-    if clean.startswith("horses"):
+    if clean.startswith("horses") or clean == "team":
         return "horses", "", "other"
     return "general", "", "other"
 
@@ -89,7 +90,7 @@ def render_contact(lang, route):
     direct = (
         f'<a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com {_arrow_icon()}</a>'
         if area == "houses"
-        else f'<a href="mailto:haras@prepinson.com">haras@prepinson.com {_arrow_icon()}</a>'
+        else f'<a href="mailto:{"sales" if clean == "horses/for-sale" else "haras"}@prepinson.com">{"sales" if clean == "horses/for-sale" else "haras"}@prepinson.com {_arrow_icon()}</a>'
     )
     if area == "general":
         direct += f'<a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com {_arrow_icon()}</a>'
@@ -105,6 +106,7 @@ def render_contact(lang, route):
     options = "".join(
         f'<option value="{escape(key, quote=True)}"' + (" selected" if key == selected else "") + f'>{escape(label)}</option>'
         for key, label in SUBJECTS[lang]
+        if area == "general" or (key in {"stay", "ortho-24", "ortho-25", "other"} if area == "houses" else key not in {"stay", "ortho-24", "ortho-25"})
     )
 
     return f'''<section id="contact" class="contact-section" aria-labelledby="contact-title">
@@ -164,6 +166,7 @@ def render_footer(lang, route):
         <p class="form-status" data-form-status role="status" aria-live="polite" hidden></p>
       </form>
     </div>
+    {footer_navigation(lang, clean)}
     <div class="footer-social">
       <div><p class="eyebrow">{escape(copy['horses']).upper()}</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="{IG_HARAS}" target="_blank" rel="noopener noreferrer">@haras_de_prepinson {_arrow_icon()}</a></div>
       <div><p class="eyebrow">{escape(copy['houses']).upper()}</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener noreferrer">@prepinson_houses {_arrow_icon()}</a></div>

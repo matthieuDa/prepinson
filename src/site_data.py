@@ -215,3 +215,16 @@ def text(key, lang):
 # Eva’s final approved facts and stories supersede the earlier editorial copy.
 from src.client_content import TEXT_UPDATES
 TEXT.update(TEXT_UPDATES)
+
+from src.release_content import COPY as RELEASE_COPY
+TEXT.update(RELEASE_COPY)
+ROUTES = (*ROUTES, 'team', 'horses/boarding', 'contact')
+TEXT['privacy_heading'] = TEXT['privacy_label']
+TEXT['privacy_title'] = tuple(f'{label} | Prepinson' for label in TEXT['privacy_label'])
+TEXT['ortho24_display_title'] = ('La Grange',) * len(LANGS)
+TEXT['ortho25_display_title'] = ('Le Cottage',) * len(LANGS)
+for key, name in (('ortho24_title', 'La Grange'), ('ortho25_title', 'Le Cottage')):
+    TEXT[key] = tuple(value.replace('Ortho 24 Grange', name).replace('Ortho 25 Cottage', name) for value in TEXT[key])
+
+from src.legal_content import COPY as LEGAL_COPY
+TEXT.update(LEGAL_COPY)

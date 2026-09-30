@@ -9,7 +9,9 @@
     "test:instagram": "node --test scripts/test_instagram.mjs",
     "build": "python3 work/build.py",
     "test:forms": "node scripts/check_forms.mjs",
-    "test:layout": "node scripts/check_layout.mjs"
+    "test:layout": "node scripts/check_layout.mjs",
+    "test:release": "python3 scripts/check_release.py",
+    "test:navigation": "node scripts/check_navigation.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^11.1.1",
