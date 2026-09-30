@@ -9,10 +9,12 @@ const browser=await (pw[engineName]||pw.default[engineName]).launch({headless:tr
 const base=process.env.SITE_URL||'http://localhost:3008', output=process.env.AUDIT_OUTPUT||'outputs/publication-2026-09-30';
 await mkdir(output,{recursive:true});
 const checks=[],errors=[];
+let activePage;
 function assert(ok,message){if(!ok)throw Error(message);checks.push(message);}
 try {
  for(const lang of ['en','fr','nl','de','sv','lb']) {
   const context=await browser.newContext({viewport:{width:360,height:480},reducedMotion:'reduce'}),page=await context.newPage();
+  activePage=page;
   const external=[];page.on('request',req=>{if(!req.url().startsWith(base)&&!req.url().startsWith('data:')&&!req.url().startsWith('blob:'+base+'/'))external.push(req.url());});
   await page.goto(`${base}/${lang}/contact/`);
   assert((await context.cookies()).length===0,`${lang}: no unsolicited cookie`);
@@ -50,12 +52,58 @@ try {
   await page.keyboard.press('Escape');
   assert(await desktop.first().locator('summary').evaluate(el=>el===document.activeElement),`${lang}: desktop closure restores focus`);
   assert(await page.locator('.navlinks > a[href$="/contact/"]').count()===1,`${lang}: Contact is a direct link`);
+  await page.mouse.move(700,300);
+  await desktop.nth(1).locator('summary').hover();
+  await page.waitForFunction(()=>document.querySelectorAll('.navlinks .nav-group')[1].open);
+  assert(await desktop.nth(1).evaluate(el=>el.open),`${lang}: hover opens without a click`);
+  await desktop.nth(1).locator('.nav-submenu a').last().hover();
+  assert(await desktop.nth(1).evaluate(el=>el.open),`${lang}: pointer can reach the bottom of the panel`);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  assert(!(await desktop.nth(1).evaluate(el=>el.open)),`${lang}: Escape dismisses hover without reopening`);
+  await page.mouse.move(700,300);
+  await desktop.nth(2).locator('summary').hover();
+  await page.waitForFunction(()=>document.querySelectorAll('.navlinks .nav-group')[2].open);
+  await desktop.nth(2).locator('summary').click();
+  assert(await desktop.nth(2).evaluate(el=>el.open),`${lang}: click immediately after hover keeps the panel available`);
+  await page.mouse.move(700,300);
+  await page.waitForFunction(()=>!document.querySelectorAll('.navlinks .nav-group')[2].open);
+  assert(!(await desktop.nth(2).evaluate(el=>el.open)),`${lang}: panel closes after pointer leaves`);
+  await desktop.first().locator('summary').hover();
+  await page.waitForFunction(()=>document.querySelector('.navlinks .nav-group').open);
+  await desktop.nth(1).locator('summary').hover();
+  await page.waitForFunction(()=>document.querySelectorAll('.navlinks .nav-group')[1].open);
+  assert(await desktop.evaluateAll(items=>items.filter(el=>el.open).length===1),`${lang}: only one hover panel is open`);
+  await desktop.nth(1).locator('summary').focus();await page.keyboard.press('Tab');
+  // macOS WebKit may skip links on Tab unless full keyboard access is enabled.
+  await desktop.nth(1).locator('.nav-submenu a').first().focus();
+  await page.mouse.move(700,300);await page.waitForTimeout(300);
+  assert(await desktop.nth(1).evaluate(el=>el.open),`${lang}: keyboard focus keeps its panel open after pointer exit`);
+  await page.keyboard.press('Escape');
+  const mainTop=await page.locator('main').evaluate(el=>el.getBoundingClientRect().top+scrollY);
+  await page.evaluate(()=>scrollTo({top:400,behavior:'instant'}));
+  await page.waitForFunction(()=>document.querySelector('header.nav').classList.contains('is-stuck'));
+  assert(await page.locator('header.nav').evaluate(el=>el.getBoundingClientRect().top===0&&el.getBoundingClientRect().height===76),`${lang}: compact desktop header stays visible`);
+  assert(Math.abs(await page.locator('main').evaluate(el=>el.getBoundingClientRect().top+scrollY)-mainTop)<1,`${lang}: sticky header causes no content jump`);
+  await page.setViewportSize({width:390,height:844});
+  await button.click();
+  assert(await page.evaluate(()=>Math.abs(document.querySelector('#mobile-menu').getBoundingClientRect().top-document.querySelector('header.nav').getBoundingClientRect().bottom)<1),`${lang}: mobile panel meets the sticky header`);
+  await page.setViewportSize({width:1440,height:900});
+  await page.waitForFunction(()=>!document.querySelector('#mobile-menu').classList.contains('open'));
+  assert(await desktop.first().locator('summary').evaluate(el=>el===document.activeElement),`${lang}: resizing an open mobile menu moves focus to visible desktop navigation`);
+  await page.setViewportSize({width:390,height:844});
+  await page.waitForFunction(()=>document.activeElement===document.querySelector('[data-menu-toggle]'));
+  await button.click();
+  await page.keyboard.press('Escape');
+  const touchTargets=await page.locator('[data-menu-toggle],header .language-switch summary').evaluateAll(items=>items.every(el=>{const s=getComputedStyle(el,'::before');return parseFloat(s.width)>=44&&parseFloat(s.height)>=44;}));
+  assert(touchTargets,`${lang}: menu and language have 44px hit areas without moving their artwork`);
   // Browser zoom reflows a 1440px window at 200% into a 720 CSS-pixel viewport.
   await page.setViewportSize({width:720,height:450});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${lang}: 200 percent zoom-equivalent viewport has no horizontal page overflow`);
   assert(external.length===0,`${lang}: no third-party requests ${external.join(", ")}`);
   await context.close();
   const nojs=await browser.newContext({javaScriptEnabled:false,viewport:{width:360,height:640}}),p=await nojs.newPage();
+  activePage=p;
   await p.goto(`${base}/${lang}/`);
   await p.locator('#mobile-menu .nav-group').nth(1).locator('summary').click();
   await p.locator(`#mobile-menu a[href='/${lang}/horses/boarding/']`).click();
@@ -74,7 +122,7 @@ try {
   }
   await context.close();
  }
-} catch(error){errors.push({error:error.stack});}
+} catch(error){errors.push({error:error.stack});if(activePage&&!activePage.isClosed())await activePage.screenshot({path:`${output}/navigation-failure.png`}).catch(()=>{});}
 const report={date:new Date().toISOString(),engine:engineName,version:browser.version(),base,checks,errors};
 await browser.close();await writeFile(`${output}/navigation-${engineName}.json`,JSON.stringify(report,null,2));
 console.log(JSON.stringify({engine:engineName,checks:checks.length,errorCount:errors.length,errors:errors.slice(0,5)},null,2));if(errors.length)process.exitCode=1;

@@ -7,6 +7,40 @@
   const languageSwitches = Array.from(document.querySelectorAll('details.language-switch'));
   const pageMain = document.querySelector('main');
   const pageFooter = document.querySelector('footer');
+  const header = document.querySelector('header.nav');
+  const ribbon = document.querySelector('.stay-ribbon');
+  const desktopQuery = window.matchMedia('(min-width: 1251px)');
+  let navigationFocus = null;
+  document.addEventListener('focusin', event => {
+    if (event.target === body) return;
+    navigationFocus = event.target.closest('.navlinks') ? 'desktop'
+      : event.target.closest('#mobile-menu, [data-menu-toggle]') ? 'mobile' : null;
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!event.target.closest('.navlinks, #mobile-menu, [data-menu-toggle]')) navigationFocus = null;
+  });
+
+  // Keep the original composition at the top; reserve its space on solid pages.
+  if (header && ribbon) {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'nav-placeholder';
+    placeholder.hidden = true;
+    placeholder.setAttribute('aria-hidden', 'true');
+    if (header.classList.contains('solid-nav')) header.before(placeholder);
+    let frame = 0;
+    const updateHeader = () => {
+      frame = 0;
+      const stuck = window.scrollY >= ribbon.offsetHeight;
+      header.classList.toggle('is-stuck', stuck);
+      placeholder.hidden = !stuck;
+      document.documentElement.style.setProperty('--nav-panel-top', `${Math.max(0, header.getBoundingClientRect().bottom)}px`);
+    };
+    const scheduleHeader = () => { if (!frame) frame = requestAnimationFrame(updateHeader); };
+    window.addEventListener('scroll', scheduleHeader, { passive: true });
+    window.addEventListener('resize', scheduleHeader);
+    if ('ResizeObserver' in window) new ResizeObserver(scheduleHeader).observe(ribbon);
+    updateHeader();
+  }
 
   if (body.dataset.page === '404') {
     const supported = ['en', 'fr', 'nl', 'de', 'sv', 'lb'];
@@ -48,6 +82,7 @@
   const setMenu = (open, restoreFocus = false) => {
     if (!menuButton || !mobileMenu) return;
     mobileMenu.classList.toggle('open', open);
+    header?.classList.toggle('mobile-menu-open', open);
     mobileMenu.setAttribute('aria-hidden', String(!open));
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? menuButton.dataset.closeLabel : menuButton.dataset.openLabel);
@@ -71,9 +106,11 @@
     mobileMenu.addEventListener('click', (event) => {
       if (event.target.closest('a')) setMenu(false);
     });
-    const desktopQuery = window.matchMedia('(min-width: 1251px)');
     const closeAtDesktop = (event) => {
-      if (event.matches && mobileMenu.classList.contains('open')) setMenu(false);
+      if (event.matches && mobileMenu.classList.contains('open')) {
+        setMenu(false);
+        if (navigationFocus === 'mobile') header?.querySelector('.navlinks summary')?.focus({ preventScroll: true });
+      }
     };
     if (typeof desktopQuery.addEventListener === 'function') desktopQuery.addEventListener('change', closeAtDesktop);
     else desktopQuery.addListener(closeAtDesktop);
@@ -86,25 +123,108 @@
         if (other !== details) other.removeAttribute('open');
       });
       if (mobileMenu?.classList.contains('open')) setMenu(false);
+      navGroups.forEach(group => closeGroup(group));
     });
   });
 
   const navGroups = [...document.querySelectorAll('.nav-group')];
-  navGroups.forEach(group => group.addEventListener('toggle', () => {
-    if (group.open) {
-      navGroups.filter(other => other !== group).forEach(other => { other.open = false; });
-      languageSwitches.forEach(other => { other.open = false; });
-    }
-  }));
+  const hoverQuery = window.matchMedia('(min-width: 1251px) and (hover: hover) and (pointer: fine)');
+  const navStates = new Map(navGroups.map(group => [group, { enter: 0, leave: 0, inside: false, suppressed: false, hoverOpened: false }]));
+  const clearTimers = state => { clearTimeout(state.enter); clearTimeout(state.leave); };
+  const keyboardInside = group => group.contains(document.activeElement) && document.activeElement.matches(':focus-visible');
+  const closeGroup = (group, suppress = false) => {
+    const state = navStates.get(group);
+    clearTimers(state);
+    const summary = group.querySelector('summary');
+    if (group.open && group.contains(document.activeElement) && document.activeElement !== summary) summary.focus({ preventScroll: true });
+    state.hoverOpened = false;
+    state.suppressed = suppress;
+    group.open = false;
+  };
+  const syncHeaderSurface = () => header?.classList.toggle('disclosure-open', Boolean(header.querySelector('details[open]')));
+  navGroups.forEach(group => {
+    const state = navStates.get(group);
+    const summary = group.querySelector('summary');
+    group.addEventListener('toggle', () => {
+      if (group.open) {
+        navGroups.filter(other => other !== group).forEach(other => closeGroup(other));
+        languageSwitches.forEach(other => { other.open = false; });
+      }
+      syncHeaderSurface();
+    });
+    // Native details remains the click, keyboard, touch and no-JavaScript fallback.
+    if (!group.closest('.navlinks')) return;
+    group.addEventListener('pointerenter', event => {
+      if (event.pointerType !== 'mouse' || !hoverQuery.matches) return;
+      state.inside = true;
+      clearTimers(state);
+      if (state.suppressed || group.open) return;
+      state.enter = setTimeout(() => {
+        if (!state.inside || state.suppressed || !hoverQuery.matches) return;
+        navGroups.filter(other => other !== group).forEach(other => closeGroup(other));
+        languageSwitches.forEach(other => { other.open = false; });
+        state.hoverOpened = true;
+        group.open = true;
+        syncHeaderSurface();
+      }, 120);
+    });
+    group.addEventListener('pointerleave', () => {
+      state.inside = false;
+      state.suppressed = false;
+      clearTimers(state);
+      state.leave = setTimeout(() => {
+        if (!state.inside && !keyboardInside(group)) { closeGroup(group); syncHeaderSurface(); }
+      }, 220);
+    });
+    summary.addEventListener('click', event => {
+      clearTimers(state);
+      // A click arriving just after hover should not collapse the new panel.
+      if (event.detail && state.hoverOpened && group.open) event.preventDefault();
+      state.hoverOpened = false;
+    });
+    summary.addEventListener('keydown', () => { clearTimers(state); state.hoverOpened = false; });
+    group.addEventListener('focusout', event => {
+      if (!event.relatedTarget || group.contains(event.relatedTarget)) return;
+      setTimeout(() => {
+        if (!group.contains(document.activeElement) && !state.inside) { closeGroup(group); syncHeaderSurface(); }
+      }, 0);
+    });
+  });
+  languageSwitches.forEach(details => {
+    details.addEventListener('toggle', syncHeaderSurface);
+    details.addEventListener('focusout', event => {
+      // WebKit can blur a summary to the body before activating a clicked link.
+      // Outside clicks already dismiss this menu; only follow explicit focus moves.
+      if (!event.relatedTarget || details.contains(event.relatedTarget)) return;
+      setTimeout(() => {
+        if (!details.contains(document.activeElement)) details.open = false;
+      }, 0);
+    });
+  });
+  hoverQuery.addEventListener('change', () => {
+    if (desktopQuery.matches && mobileMenu?.classList.contains('open')) setMenu(false);
+    navGroups.forEach(group => {
+      const state = navStates.get(group);
+      state.inside = false;
+      clearTimers(state);
+      if (group.closest('.navlinks') ? !hoverQuery.matches : desktopQuery.matches) closeGroup(group);
+    });
+    if (!desktopQuery.matches && navigationFocus === 'desktop') menuButton?.focus({ preventScroll: true });
+    if (desktopQuery.matches && navigationFocus === 'mobile') header?.querySelector('.navlinks summary')?.focus({ preventScroll: true });
+    syncHeaderSurface();
+  });
   document.addEventListener('click', event => {
-    navGroups.forEach(group => { if (!group.contains(event.target)) group.open = false; });
+    navGroups.forEach(group => { if (!group.contains(event.target)) closeGroup(group); });
+    syncHeaderSurface();
   });
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
     const openGroup = navGroups.find(group => group.open);
     if (openGroup) {
-      openGroup.open = false;
-      openGroup.querySelector('summary').focus();
+      const restoreFocus = openGroup.contains(document.activeElement);
+      closeGroup(openGroup, true);
+      if (restoreFocus) openGroup.querySelector('summary').focus();
+      syncHeaderSurface();
       event.stopImmediatePropagation();
     }
   });

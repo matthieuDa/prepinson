@@ -5,6 +5,9 @@
   --line: #d6d9cf;
   --soft: #eaece3;
   --footer: #21382d;
+  --focus: #af762f;
+  --nav-resting-height: 110px;
+  --nav-compact-height: 76px;
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'DM Sans', Arial, sans-serif;
 }
@@ -17,7 +20,7 @@ a { color: inherit; text-decoration: none; }
 button, input, select, textarea { color: inherit; font: inherit; }
 button { border: 0; background: none; cursor: pointer; }
 button, a { -webkit-tap-highlight-color: transparent; }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid #bda579; outline-offset: 5px; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 5px; }
 img { display: block; width: 100%; height: 100%; object-fit: cover; }
 picture { display: contents; }
 h1, h2, h3, p { margin-top: 0; }
@@ -660,7 +663,6 @@ em { font-weight: 400; }
 .reference-media .gallery img { object-fit:contain; background:#e6e7e1; }
 .reference-media .film-button { margin-top:24px; }
 .service-story#training img, .expertise-card[href$='#training'] img { object-position:center 65% !important; }
-:where(a,button,summary,input,select,textarea):focus-visible { outline:3px solid #b77b32; outline-offset:5px; }
 @media(max-width:1250px) {
  .mobile-nav { top:144px; max-height:calc(100dvh - 144px); overflow-y:auto; padding:22px 7% 35px; }
  .mobile-nav .nav-group { border-bottom:1px solid #ffffff30; }
@@ -686,3 +688,28 @@ em { font-weight: 400; }
 @media(prefers-reduced-motion:reduce) { .nav-group *, .staff-card * { transition:none !important; } }
 
 @media(max-width:700px) { .mobile-nav { top:119px; max-height:calc(100dvh - 119px); gap:8px; } }
+
+/* UX review: preserve the original layout, type, palette and imagery. */
+.nav-placeholder { height: var(--nav-resting-height); }
+.nav.is-stuck { position: fixed; top: 0; height: var(--nav-compact-height); background: var(--footer); }
+.nav.disclosure-open, .nav.mobile-menu-open { background: var(--footer); }
+.navlinks .nav-group[open] > .nav-submenu { animation: nav-reveal 160ms ease-out; }
+.nav-submenu, .language-options { max-height: calc(100dvh - var(--nav-panel-top, 144px) - 16px); overflow-y: auto; overscroll-behavior: contain; }
+.nav-submenu a, .language-options > a { min-height: 44px; }
+.menu-toggle, .language-switch > summary, .nav-book { position: relative; }
+.menu-toggle::before, .language-switch > summary::before, .nav-book::before {
+  content: ''; position: absolute; left: 50%; top: 50%;
+  width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%);
+}
+@keyframes nav-reveal { from { opacity: .7; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+@media(max-width:1250px) {
+  .mobile-nav { top: var(--nav-panel-top, 144px); max-height: calc(100dvh - var(--nav-panel-top, 144px)); padding-bottom: max(35px, env(safe-area-inset-bottom)); }
+  .mobile-nav .nav-submenu { max-height: none; overflow: visible; }
+  .mobile-nav .nav-submenu a { min-height: 44px; }
+}
+@media(max-width:700px) {
+  :root { --nav-resting-height: 85px; --nav-compact-height: 68px; }
+  .mobile-nav { top: var(--nav-panel-top, 119px); max-height: calc(100dvh - var(--nav-panel-top, 119px)); }
+}
+@media(prefers-reduced-motion:reduce) { .navlinks .nav-group[open] > .nav-submenu { animation: none; } }
+@media(forced-colors:active) { :root { --focus: Highlight; } }
