@@ -11,7 +11,7 @@ IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
 IG_HOUSE = "https://www.instagram.com/prepinson_houses/"
 MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
 MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
-CONSENT_VERSION = "2026-09-20"
+CONSENT_VERSION = "2026-09-30"
 
 
 def _arrow_icon():

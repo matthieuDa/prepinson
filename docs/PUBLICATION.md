@@ -22,7 +22,7 @@ Les résultats détaillés et les captures sont dans `outputs/publication-2026-0
 - WebKit : même matrice de 720 configurations, aucun débordement détecté. Ce résultat porte sur le moteur WebKit automatisé, pas sur une recette dans Safari installé.
 - Navigation : clavier, fermeture, restitution du focus, écran court, page derrière le menu rendue inerte, navigation sans JavaScript, langue de session et absence d’appels tiers. La simulation de zoom teste une largeur CSS de 720 px correspondant à une fenêtre de 1440 px à 200 %.
 - Accessibilité automatisée : axe sur les 90 pages, règles WCAG 2 A/AA, WCAG 2.1 AA et bonnes pratiques, aucune violation détectée. Une recette humaine reste complémentaire à cette mesure.
-- Formulaires : validation, erreur, confirmation, double clic et soumission sans JavaScript, avec réponses serveur simulées. Ces tests n’envoient pas de demande aux destinataires réels.
+- Formulaires : validation, erreur, confirmation, double clic et soumission sans JavaScript, avec réponses serveur simulées. En complément, une demande technique et une inscription fictive ont été soumises sur la preview le 30 septembre : confirmations affichées et deux enregistrements vérifiés dans Netlify. L’inscription fictive a ensuite été écartée de la liste active. La réception en boîte mail reste à tester après configuration des notifications.
 - Instagram : sept tests du stockage, du rafraîchissement, des erreurs et de l’isolation des previews.
 - Liens externes : 25 destinations contrôlées, réponses HTTP 200, dont les deux plateformes de réservation et les deux itinéraires.
 - Sécurité : analyse des fichiers et de l’historique Git sans détection de secrets, de documents privés ou de tarifs chiffrés. En-têtes de sécurité et CSP conservés.
@@ -32,6 +32,8 @@ Les résultats détaillés et les captures sont dans `outputs/publication-2026-0
 Firefox n’a pas pu être lancé de manière fiable sur ce Mac : le moteur récent refuse le profil temporaire ; le moteur précédent échoue au démarrage du processus de rendu. Safari installé n’a pas pu être contrôlé car le Mac est verrouillé. Reprendre ces deux recettes sur un appareil disponible avant de présenter la couverture comme exhaustive.
 
 Les mesures Lighthouse sont des mesures de laboratoire. Le score SEO contrôle une base technique ; il ne prouve ni un classement Google ni une présence dans les réponses des IA. Les Core Web Vitals réels, en particulier l’INP, nécessitent des visites réelles et des données de terrain suffisantes.
+
+- Déploiement : 118 contrôles HTTP passent sur la preview (pages, redirections, médias, sitemap, en-têtes et Instagram), 108 contrôles de navigation passent dans Chrome sur Netlify et sept cas de négociation de langue sont vérifiés sur la fonction Edge.
 
 ## Vérifications Netlify et conditions de bascule
 
@@ -62,7 +64,7 @@ Les anciennes pages WordPress utiles sont redirigées vers leurs équivalents da
 
 Les nouvelles pages répondent à trois besoins distincts : identifier l’équipe, comprendre la pension, et contacter le bon interlocuteur. Les pages existantes couvrent déjà formation, vente, références, installations, deux maisons et alentours. Aucune page de comparaison ou série de pages géographiques répétitives n’a été créée. Les améliorations éditoriales suivantes seront utiles lorsqu’il existe des informations vérifiées : photos intérieures de La Grange, conditions pratiques de pension, nouvelles références et témoignages autorisés.
 
-Dans Search Console et Bing Webmaster Tools, utiliser les propriétés du domaine, soumettre `https://www.prepinson.com/sitemap.xml`, inspecter l’accueil et les trois nouveaux types de page dans plusieurs langues, puis suivre couverture, erreurs 404, requêtes et Core Web Vitals. L’accès à ces comptes et la validation de propriété restent à effectuer ; aucun code de suivi visiteur n’est nécessaire pour ces consoles. Ne promettre ni indexation immédiate ni classement.
+Dans Search Console et Bing Webmaster Tools, utiliser les propriétés du domaine, soumettre `https://www.prepinson.com/sitemap.xml`, inspecter l’accueil et les trois nouveaux types de page dans plusieurs langues, puis suivre couverture, erreurs 404, requêtes et Core Web Vitals. La session Google disponible indique ne pas avoir accès à la propriété prepinson.com ; Bing Webmaster Tools présente un écran de connexion. L’accès aux comptes propriétaires et la validation restent à effectuer ; aucun code de suivi visiteur n’est nécessaire pour ces consoles. Ne promettre ni indexation immédiate ni classement.
 
 ## Maintenance
 
