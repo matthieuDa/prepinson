@@ -2,6 +2,12 @@
 from html import escape
 from src.site_data import text
 
+FOOTER_MENU_LABEL = {
+    'en': 'Footer navigation', 'fr': 'Navigation de pied de page',
+    'nl': 'Voettekstnavigatie', 'de': 'Navigation im Fußbereich',
+    'sv': 'Sidfotsnavigering', 'lb': 'Navigatioun am Foussberäich',
+}
+
 GROUPS = (
  ('nav_haras', (('nav_presentation', '#haras'), ('nav_team', 'team'), ('nav_facilities', 'horses/facilities'))),
  ('nav_horses', (('nav_overview', 'horses'), ('nav_boarding', 'horses/boarding'), ('nav_training', 'horses/programmes'), ('nav_sales', 'horses/for-sale'), ('nav_references', 'horses/references'))),
@@ -26,14 +32,14 @@ def menu(lang, current, mobile=False):
     for key, children in GROUPS:
         active = any(is_current(target, current) for _, target in children)
         links = ''.join(link(k, target, lang, current) for k, target in children)
-        groups.append(f'<details class="nav-group{" current-group" if active else ""}"><summary>{escape(label(key,lang))}<svg class="icon" aria-hidden="true"><use href="/icons.svg#chevron-down"/></svg></summary><div class="nav-submenu">{links}</div></details>')
+        groups.append(f'<details class="nav-group{" current-group" if active else ""}"><summary><span class="nav-label">{escape(label(key,lang))}</span><svg class="icon" aria-hidden="true"><use href="/icons.svg#chevron-down"/></svg></summary><div class="nav-submenu">{links}</div></details>')
     return ''.join(groups) + f'<a class="nav-book" href="/{lang}/contact/"' + (' aria-current="page"' if current == 'contact' else '') + f'>{text("nav_contact",lang)}</a>'
 
 def footer_navigation(lang, current):
     columns = []
     for key, children in GROUPS:
         columns.append(f'<div><h3>{escape(label(key,lang))}</h3>' + ''.join(link(k,target,lang,current) for k,target in children) + '</div>')
-    return f'<nav class="footer-navigation" aria-label="{text("menu",lang)}">{"".join(columns)}</nav>'
+    return f'<nav class="footer-navigation" aria-label="{FOOTER_MENU_LABEL[lang]}">{"".join(columns)}</nav>'
 
 def crumbs(lang, route):
     if not route: return []

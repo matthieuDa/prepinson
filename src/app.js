@@ -560,3 +560,75 @@
     }
   });
 })();
+
+// Subtle, one-time editorial motion. The base state is always visible:
+// no hidden CSS class, inline bootstrap, timer fallback or extra request.
+(() => {
+  'use strict';
+  document.documentElement.classList.add('nav-enhanced');
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  if (preference.matches || !('IntersectionObserver' in window) || !Element.prototype.animate) return;
+
+  const selectors = [
+    'main h2', '.intro-portrait', '.expertise-card', '.team-card',
+    '.staff-card', '.property-card', '.service-story-image', '.estate-photo',
+    '.activity-image', '.activities-stay-card',
+  ];
+  const items = [...document.querySelectorAll(selectors.join(','))].filter(element => {
+    // Keep forms, disclosures, the first viewport and anchor destinations stable.
+    if (element.closest('.hero, .haras-hero, dialog, details, form, #contact')) return false;
+    const bounds = element.getBoundingClientRect();
+    return bounds.height > 0 && bounds.top >= innerHeight;
+  });
+  const waiting = new Set(items);
+  const active = new Map();
+  const settle = element => {
+    waiting.delete(element);
+    observer.unobserve(element);
+    active.get(element)?.cancel();
+    active.delete(element);
+  };
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      const element = entry.target;
+      waiting.delete(element);
+      observer.unobserve(element);
+      if (preference.matches || document.visibilityState === 'hidden' || element.contains(document.activeElement)) continue;
+      const animation = element.animate([
+        { opacity: .25, transform: 'translateY(12px)' },
+        { opacity: 1, transform: 'translateY(0)' },
+      ], { duration: 560, easing: 'cubic-bezier(.22,.61,.36,1)' });
+      animation.id = 'prepinson-reveal';
+      active.set(element, animation);
+      animation.onfinish = () => active.delete(element);
+    }
+  }, { threshold: 0, rootMargin: '0px 0px -16px 0px' });
+  items.forEach(element => observer.observe(element));
+
+  document.addEventListener('focusin', event => {
+    for (const element of [...waiting, ...active.keys()]) {
+      if (element.contains(event.target)) settle(element);
+    }
+  });
+  const settleHash = () => {
+    let id;
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const target = id && document.getElementById(id);
+    if (!target) return;
+    for (const element of [...waiting, ...active.keys()]) {
+      if (target.contains(element) || element.contains(target)) settle(element);
+    }
+  };
+  window.addEventListener('hashchange', settleHash);
+  settleHash();
+  const settleAll = () => {
+    observer.disconnect();
+    waiting.clear();
+    active.forEach(animation => animation.cancel());
+    active.clear();
+  };
+  preference.addEventListener('change', event => { if (event.matches) settleAll(); });
+  window.addEventListener('pagehide', settleAll);
+  window.addEventListener('beforeprint', settleAll);
+})();
