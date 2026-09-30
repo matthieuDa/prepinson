@@ -291,3 +291,17 @@ for _index, _lang in enumerate(LANGS):
 
 # Keep house names grammatical in the contextual form subjects.
 SUBJECTS['fr'] = tuple((key, label.replace('à Le Cottage','au Cottage')) for key,label in SUBJECTS['fr'])
+
+# The dedicated contact page has one primary path and optional direct contacts.
+CONTACT_PAGE_COPY = {
+    "en": ("Contact & directions", "Use this form for your horse, a purchase or a stay. We will reply by email.", "Prefer email or phone?", "Horse sales"),
+    "fr": ("Contact & accès", "Utilisez ce formulaire pour votre cheval, un achat ou un séjour. Nous vous répondrons par e-mail.", "Vous préférez l’e-mail ou le téléphone ?", "Vente de chevaux"),
+    "nl": ("Contact & route", "Gebruik dit formulier voor uw paard, een aankoop of een verblijf. We antwoorden per e-mail.", "Liever per e-mail of telefoon?", "Paardenverkoop"),
+    "de": ("Kontakt & Anreise", "Nutzen Sie dieses Formular für Ihr Pferd, einen Kauf oder einen Aufenthalt. Wir antworten per E-Mail.", "Lieber per E-Mail oder Telefon?", "Pferdeverkauf"),
+    "sv": ("Kontakt & vägbeskrivning", "Använd formuläret för frågor om din häst, ett köp eller en vistelse. Vi svarar via e-post.", "Föredrar du e-post eller telefon?", "Hästförsäljning"),
+    "lb": ("Kontakt & Urees", "Benotzt dëse Formulaire fir Äert Päerd, e Kaf oder en Openthalt. Mir äntweren Iech per E-Mail.", "Léiwer per E-Mail oder Telefon?", "Päerdsverkaf"),
+}
+for _lang, _values in CONTACT_PAGE_COPY.items():
+    FORM_COPY[_lang].update(zip(("page_heading", "page_instruction", "direct_alternative", "sales"), _values))
+for _lang, _label in zip(LANGS, ("Choose a subject", "Choisissez un sujet", "Kies een onderwerp", "Wählen Sie ein Thema", "Välj ett ämne", "Wielt en Thema")):
+    FORM_COPY[_lang]["choose_subject"] = _label

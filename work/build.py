@@ -242,16 +242,23 @@ def sales(lang):
 
 
 
+def reference_gallery(items, lang):
+    """Align photographs by their native proportions without cropping or matting."""
+    ratios = [IMAGE_MANIFEST[name]["width"] / IMAGE_MANIFEST[name]["height"] for name, _ in items]
+    buttons = ""
+    for i, ((name, alt), ratio) in enumerate(zip(items, ratios)):
+        sizes = f"(max-width: 700px) 86vw, {72 * ratio / sum(ratios):.1f}vw"
+        buttons += f'<button type="button" style="flex-grow:{ratio:.6f}" data-lightbox-item="{i}" data-lightbox-src="/assets/{name}?v={ASSET_VERSION}" aria-label="{escape(ui("enlarge", lang) + ": " + alt, quote=True)}">{image(name, alt, sizes=sizes)}</button>'
+    return f'<div class="reference-gallery" role="group" aria-label="{escape(ui("gallery_label", lang))}">{buttons}</div>'
+
+
 def references(lang):
     dalton_photos = ("dalton-falsterbo-dressage.webp", "dalton-falsterbo-finish.webp", "dalton-falsterbo-arena-entry.webp")
-    dalton_gallery = '<div class="reference-media"><p class="eyebrow">' + escape(ui("dalton_gallery", lang)) + '</p><div class="reference-gallery">' + "".join(
-        f'<button type="button" data-lightbox-item="{i}" data-lightbox-src="/assets/{name}?v={ASSET_VERSION}" aria-label="{escape(ui("enlarge", lang) + ": " + GALLERY_ALT[name][lang], quote=True)}">{image(name, GALLERY_ALT[name][lang], sizes="(max-width: 700px) 88vw, 27vw")}</button>'
-        for i, name in enumerate(dalton_photos)
-    ) + '</div></div>'
+    dalton_gallery = '<div class="reference-media"><p class="eyebrow">' + escape(ui("dalton_gallery", lang)) + '</p>' + reference_gallery(tuple((name, GALLERY_ALT[name][lang]) for name in dalton_photos), lang) + '</div>'
     media = {
         "dalton": dalton_gallery,
-        "juni": '<div class="reference-media">' + gallery((("juni-stable.webp",ui("juni_photo",lang)),("juni-jumping.webp",ui("juni_jumping",lang))),lang) + f'<button type="button" class="film-button dark-film" data-video-open="/assets/juni-prepinson.mp4?v={ASSET_VERSION}" data-video-caption="Juni de Prepinson"><span class="circle">{icon("play")}</span>{escape(ui("juni_video", lang))}</button></div>',
-        "jackson": '<div class="reference-media">' + gallery((("jackson-standing.webp",ui("jackson_standing",lang)),("jackson-jumping.webp",ui("jackson_jumping",lang))),lang) + '</div>',
+        "juni": '<div class="reference-media">' + reference_gallery((("juni-stable.webp",ui("juni_photo",lang)),("juni-jumping.webp",ui("juni_jumping",lang))),lang) + f'<button type="button" class="film-button dark-film" data-video-open="/assets/juni-prepinson.mp4?v={ASSET_VERSION}" data-video-caption="Juni de Prepinson"><span class="circle">{icon("play")}</span>{escape(ui("juni_video", lang))}</button></div>',
+        "jackson": '<div class="reference-media">' + reference_gallery((("jackson-standing.webp",ui("jackson_standing",lang)),("jackson-jumping.webp",ui("jackson_jumping",lang))),lang) + '</div>',
         "qurious": f'<div class="reference-media"><button type="button" class="film-button dark-film" data-video-open="/assets/qurious-hs.mp4?v={ASSET_VERSION}" data-video-caption="Qurious HS"><span class="circle">{icon("play")}</span>{escape(ui("qurious_video", lang))}</button></div>',
 
     }
@@ -349,8 +356,8 @@ def boarding_page(lang):
 
 
 def contact_page(lang):
-    cards = ''.join(f'<article><p class="eyebrow">0{i}</p><h2>{tx(title,lang)}</h2><a class="text-link" href="mailto:{mail}">{mail}</a><a class="editorial-link dark-link" href="#contact" data-contact-subject="{subject}">{tx("nav_contact",lang)} {icon("arrow-down")}</a></article>' for i,(title,mail,subject) in enumerate((('nav_haras','haras@prepinson.com','other'),('sales_heading','sales@prepinson.com','horse-search'),('nav_houses','thehouse@prepinson.com','stay')),1))
-    return f'<section class="contact-page container"><div class="page-heading"><p class="eyebrow">PREPINSON · ORTHO</p><h1>{tx("nav_access",lang)}</h1><p>{tx("contact_page_desc",lang)}</p></div><div class="contact-channels">{cards}</div><div class="access-panel"><address>Haras de Prepinson<br>Ortho 24 · 6983 La Roche-en-Ardenne · {ui("country",lang)}<br><a href="tel:+32470851310">+32 470 85 13 10</a></address><div class="related-links">{editorial_link(MAP_HARAS,tx("footer_maps_haras",lang),target="_blank",rel="noopener noreferrer")}{editorial_link(MAP_HOUSE,tx("footer_maps_house",lang),target="_blank",rel="noopener noreferrer")}</div></div></section>'
+    # This page is the form itself; avoid introductory cards repeating its actions.
+    return render_contact(lang, "contact") if render_contact else fallback_contact(lang, "contact")
 
 
 BUILDERS = {"team": team_page, "horses/boarding": boarding_page, "contact": contact_page, "": home, "horses": horses, "horses/programmes": programmes, "horses/facilities": facilities, "horses/for-sale": sales, "horses/references": references, "houses": houses, "activities": activities, "legal": legal, "privacy": privacy}
@@ -395,7 +402,7 @@ def render(lang, route):
     content = house(lang, route.rsplit("/", 1)[1]) if route.startswith("houses/") else BUILDERS[route](lang)
     solid = route in {"legal", "privacy", "team", "contact", "horses/boarding"}
     content = breadcrumbs(lang,route) + content if solid else content.replace('</section>', '</section>' + breadcrumbs(lang,route), 1)
-    contact = render_contact(lang, route) if render_contact else fallback_contact(lang, route); footer = render_footer(lang, route) if render_footer else fallback_footer(lang, route)
+    contact = "" if route == "contact" else (render_contact(lang, route) if render_contact else fallback_contact(lang, route)); footer = render_footer(lang, route) if render_footer else fallback_footer(lang, route)
     body = header(lang, route, solid) + f'<main id="main">{content}{contact}</main>' + footer + (forms_dialogs(lang) if forms_dialogs else dialogs(lang))
     og_image = "og-houses.jpg" if route.startswith("houses") else "og-prepinson.jpg"
     ui_strings = json.dumps({"menu": tx("menu", lang), "close": tx("close", lang), "language": tx("language", lang)}, ensure_ascii=False)

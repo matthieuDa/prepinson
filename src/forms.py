@@ -23,6 +23,10 @@ def _copy(lang):
     return FORM_COPY[lang if lang in LANGS else "en"]
 
 
+def _address_link(lang):
+    return f'<address><a class="address-link" href="{MAP_HARAS}" target="_blank" rel="noopener noreferrer">Ortho 24<br>6983 La Roche-en-Ardenne<br>{ui("country", lang)} {_arrow_icon()}</a></address>'
+
+
 def _route(route):
     return (route or "").strip("/")
 
@@ -109,13 +113,28 @@ def render_contact(lang, route):
         if area == "general" or (key in {"stay", "ortho-24", "ortho-25", "other"} if area == "houses" else key not in {"stay", "ortho-24", "ortho-25"})
     )
 
-    return f'''<section id="contact" class="contact-section" aria-labelledby="contact-title">
+    is_contact_page = clean == "contact"
+    if is_contact_page:
+        options = f'<option value="" selected disabled>{escape(copy["choose_subject"])}</option>' + options.replace(" selected", "")
+    heading = (f'<h1 id="contact-title">{escape(copy["page_heading"])}</h1>' if is_contact_page else
+               f'<p class="eyebrow">{escape(copy["contact_eyebrow"])}</p><h2 id="contact-title">{copy["contact_title"]}</h2>')
+    contact_extras = ""
+    if is_contact_page:
+        context_copy = copy["page_instruction"]
+        contacts = "".join(f'<div><dt>{escape(copy[key])}</dt><dd><a href="mailto:{mail}">{mail}</a></dd></div>' for key, mail in
+                           (("horses", "haras@prepinson.com"), ("sales", "sales@prepinson.com"), ("houses", "thehouse@prepinson.com")))
+        contact_extras = f'''<div class="contact-options">
+          <details class="contact-alternatives"><summary>{escape(copy['direct_alternative'])}</summary><a class="contact-phone" href="tel:+32470851310">+32 470 85 13 10</a><dl>{contacts}</dl></details>
+          <div class="contact-location"><h2>{escape(copy['visit'])}</h2>{_address_link(lang)}</div>
+        </div>'''
+    else:
+        contact_extras = f'<div class="contact-direct">{direct}<a href="tel:+32470851310">+32 470 85 13 10</a></div>'
+
+    return f'''<section id="contact" class="contact-section{' contact-page-section' if is_contact_page else ''}" aria-labelledby="contact-title">
   <div class="container contact-layout">
     <div class="contact-copy">
-      <p class="eyebrow">{escape(copy['contact_eyebrow'])}</p>
-      <h2 id="contact-title">{copy['contact_title']}</h2>
-      <p>{escape(context_copy)}</p>
-      <div class="contact-direct">{direct}<a href="tel:+32470851310">+32 470 85 13 10</a></div>
+      {heading}
+      <p>{escape(context_copy)}</p>{'' if is_contact_page else contact_extras}
     </div>
     <form class="contact-form" name="{form_name}" method="POST" action="{action}" data-netlify="true" netlify-honeypot="company" data-progressive-form {_form_state_attributes(copy)}>
       <input type="hidden" name="form-name" value="{form_name}">
@@ -134,7 +153,7 @@ def render_contact(lang, route):
       <p class="form-required">{escape(copy['required_note'])}</p>
       <p class="form-status" data-form-status role="status" aria-live="polite" hidden></p>
       <button class="btn dark" type="submit"><span data-submit-label>{escape(copy['send'])}</span>{_arrow_icon()}</button>
-    </form>
+    </form>{contact_extras if is_contact_page else ''}
   </div>
 </section>'''
 
@@ -168,9 +187,9 @@ def render_footer(lang, route):
     </div>
     {footer_navigation(lang, clean)}
     <div class="footer-social">
-      <div><p class="eyebrow">{escape(copy['horses']).upper()}</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="{IG_HARAS}" target="_blank" rel="noopener noreferrer">@haras_de_prepinson {_arrow_icon()}</a></div>
+      <div><p class="eyebrow">{escape(copy['horses']).upper()}</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="tel:+32470851310">+32 470 85 13 10</a><a href="{IG_HARAS}" target="_blank" rel="noopener noreferrer">@haras_de_prepinson {_arrow_icon()}</a></div>
       <div><p class="eyebrow">{escape(copy['houses']).upper()}</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener noreferrer">@prepinson_houses {_arrow_icon()}</a></div>
-      <div><p class="eyebrow">{escape(copy['visit']).upper()}</p><address>Ortho 24<br>6983 La Roche-en-Ardenne<br>{ui("country", lang)}</address><a href="{MAP_HARAS}" target="_blank" rel="noopener noreferrer">{escape(copy['haras_map'])} {_arrow_icon()}</a><a href="{MAP_HOUSE}" target="_blank" rel="noopener noreferrer">{escape(copy['house_map'])} {_arrow_icon()}</a></div>
+      <div><p class="eyebrow">{escape(copy['visit']).upper()}</p>{_address_link(lang)}</div>
     </div>
     <div class="footer-signature" aria-hidden="true">PREPINSON</div>
     <div class="footer-bottom"><span>© 2026 HARAS DE PREPINSON</span><div class="footer-legal"><a href="/{lang}/legal/">{escape(copy['legal'])}</a><a href="/{lang}/privacy/">{escape(copy['privacy_link'])}</a></div></div>

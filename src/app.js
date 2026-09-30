@@ -231,7 +231,7 @@
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const disclosures = new Map();
-  document.querySelectorAll('main details').forEach((details) => {
+  document.querySelectorAll('main details:not(.contact-alternatives)').forEach((details) => {
     const summary = details.querySelector(':scope > summary');
     if (!summary) return;
     const state = { expanded: details.open, animation: null };

@@ -103,9 +103,16 @@ for path in sorted(expected):
         fail(rel, "obsolete houses Instagram handle remains in public copy")
     if "https://www.instagram.com/prepinson_houses/" not in raw or "@prepinson_houses" not in raw:
         fail(rel, "current houses Instagram link or label is missing")
-    for map_label in (FORM_COPY[lang]["haras_map"], FORM_COPY[lang]["house_map"]):
-        if map_label not in raw:
-            fail(rel, f"footer map link is not explicit: {map_label}")
+    footer = raw.split('<footer', 1)[1].split('</footer>', 1)[0]
+    if footer.count('href="https://maps.app.goo.gl/') != 1 or '<address><a class="address-link"' not in footer:
+        fail(rel, "footer directions must use one linked address")
+    if footer.count('href="tel:+32470851310"') != 1:
+        fail(rel, "footer must contain the phone number once")
+    if route == "contact":
+        if raw.count('class="contact-form"') != 1 or 'class="contact-channels"' in raw:
+            fail(rel, "contact page must provide one primary form without duplicate channel cards")
+        if FORM_COPY[lang]['page_instruction'] not in raw or 'class="contact-alternatives"' not in raw:
+            fail(rel, "contact page must explain the primary form and label direct alternatives")
     if route == "horses/programmes":
         if 'class="programme-list" data-exclusive-details' not in raw:
             fail(rel, "programme list is not configured as an exclusive details group")

@@ -84,8 +84,10 @@ try {
   await page.evaluate(()=>scrollTo({top:400,behavior:'instant'}));
   await page.waitForFunction(()=>document.querySelector('header.nav').classList.contains('is-stuck'));
   assert(await page.locator('header.nav').evaluate(el=>el.getBoundingClientRect().top===0&&el.getBoundingClientRect().height===76),`${lang}: compact desktop header stays visible`);
+  assert(await page.locator('header .brand').evaluate(el=>getComputedStyle(el).transform==='matrix(0.82, 0, 0, 0.82, 0, 0)'),`${lang}: desktop wordmark shrinks with the header`);
   assert(Math.abs(await page.locator('main').evaluate(el=>el.getBoundingClientRect().top+scrollY)-mainTop)<1,`${lang}: sticky header causes no content jump`);
   await page.setViewportSize({width:390,height:844});
+  assert(await page.locator('header .brand').evaluate(el=>getComputedStyle(el).transform==='none'),`${lang}: mobile wordmark keeps its readable size`);
   await button.click();
   assert(await page.evaluate(()=>Math.abs(document.querySelector('#mobile-menu').getBoundingClientRect().top-document.querySelector('header.nav').getBoundingClientRect().bottom)<1),`${lang}: mobile panel meets the sticky header`);
   await page.setViewportSize({width:1440,height:900});

@@ -33,7 +33,6 @@ def footer_navigation(lang, current):
     columns = []
     for key, children in GROUPS:
         columns.append(f'<div><h3>{escape(label(key,lang))}</h3>' + ''.join(link(k,target,lang,current) for k,target in children) + '</div>')
-    columns.append(f'<div><h3>{text("nav_contact",lang)}</h3>{link("nav_access","contact",lang,current)}<a href="mailto:sales@prepinson.com">sales@prepinson.com</a><a href="tel:+32470851310">+32 470 85 13 10</a><a href="/{lang}/#journal">{text("journal_nav",lang)}</a></div>')
     return f'<nav class="footer-navigation" aria-label="{text("menu",lang)}">{"".join(columns)}</nav>'
 
 def crumbs(lang, route):
