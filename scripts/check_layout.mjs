@@ -6,6 +6,7 @@ const pw=await import(path.isAbsolute(mod)?pathToFileURL(path.join(mod,'index.js
 const engineName=process.env.BROWSER_ENGINE||'chromium';
 const engine=pw[engineName]||pw.default?.[engineName];
 const base=process.env.SITE_URL||'http://localhost:3008';
+const captureLang=process.env.CAPTURE_LANG||'en';
 const output=process.env.AUDIT_OUTPUT||'outputs/v1-restoration';
 await mkdir(output,{recursive:true});
 const browser=await engine.launch({headless:true,...(engineName==='chromium'?{executablePath:process.env.CHROME_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}:{})});
@@ -54,7 +55,7 @@ for(const lang of (process.env.CAPTURE_ONLY ? [] : langs)){
 }
 for(const route of (process.env.SKIP_CAPTURES?[]:['','horses','horses/programmes','houses','houses/ortho-24','houses/ortho-25','team','horses/boarding','contact']))for(const width of [390,768,1440]){
  await page.setViewportSize({width,height:900});
- await page.goto(base+'/en/'+(route?route+'/':''),{waitUntil:'load'});await page.evaluate(()=>document.fonts.ready);
+ await page.goto(base+'/'+captureLang+'/'+(route?route+'/':''),{waitUntil:'load'});await page.evaluate(()=>document.fonts.ready);
  await page.evaluate(async()=>{for(const i of document.images){if(!i.closest('dialog'))i.loading='eager';} await Promise.all([...document.images].filter(i=>!i.closest('dialog')).map(i=>i.decode().catch(()=>{})));});
  // Capture the settled top position; smooth scrolling would displace fixed UI in a full-page screenshot.
  await page.evaluate(()=>{window.scrollTo({top:0,behavior:'instant'});});

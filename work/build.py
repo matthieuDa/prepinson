@@ -176,7 +176,7 @@ def editorial_link(href, label, dark=True, **attrs):
 def inner_hero(lang, eyebrow, title, intro, media, *, booking=None, position="center", title_html=None):
     alt = ui({"training": "alt_training", "facilities": "alt_facilities", "house-hero": "alt_houses", "hero-horses-2000.webp": "alt_hero"}.get(media, "alt_houses"), lang)
     if media in GALLERY_ALT: alt = GALLERY_ALT[media][lang]
-    visual = responsive_image(media, alt, cls="hero-media", hero=True, position=position) if media in {"training", "facilities", "house-hero"} else image(media, alt, cls="hero-media", hero=True, position=position)
+    visual = responsive_image(media, alt, cls="hero-media", hero=True, position=position) if media in {"training", "facilities", "house-hero"} else image(media, alt, cls="hero-media", hero=True, position=position, sizes="(max-width: 700px) max(825px, 105svh), 100vw" if media == "cottage.jpg" else None)
     action = f'<a class="btn light" href="{booking}" target="_blank" rel="noopener noreferrer">{ui("check_availability", lang)} {icon("arrow-up-right")}</a>' if booking else ""
     return f'<section class="hero inner-hero">{visual}<div class="hero-shade"></div><div class="hero-content reveal"><p class="eyebrow">{eyebrow}</p><h1>{title_html or escape(title)}</h1><p>{intro}</p>{action}</div><div class="hero-bottom"><span class="location">{ui("location", lang)}</span><a class="scroll-link" href="#discover">{ui("scroll", lang)} <span>{icon("arrow-down")}</span></a></div></section>'
 
