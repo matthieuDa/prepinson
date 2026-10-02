@@ -1,0 +1,10 @@
+/* Serein: compact hierarchy and a little more photographic presence. */
+:root { --section-space: clamp(60px, 7vw, 104px); --reading-leading: 1.78; }
+@media (min-width: 901px) {
+  .haras-intro { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .haras-intro h2 { font-size: clamp(48px, 4.3vw, 66px); }
+}
+@media (min-width: 1251px) {
+  .navlinks .nav-submenu { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-block: 22px 26px; }
+  .navlinks .nav-submenu a { min-height: 52px; padding-block: 13px; }
+}

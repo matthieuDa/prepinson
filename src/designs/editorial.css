@@ -1,0 +1,10 @@
+/* Éditorial: a little more room for the final copy and a quieter portrait. */
+:root { --section-space: clamp(68px, 8vw, 124px); --reading-leading: 1.85; }
+@media (min-width: 901px) {
+  .haras-intro { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  .haras-intro h2 { font-size: clamp(52px, 5.1vw, 78px); margin-bottom: 32px; }
+  .intro-portrait { margin-top: 8px; }
+}
+@media (min-width: 1251px) {
+  .navlinks .nav-submenu a { font-family: var(--serif); font-size: 27px; line-height: 1.25; padding-block: 14px; }
+}
