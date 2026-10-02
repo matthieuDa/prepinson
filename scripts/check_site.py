@@ -82,6 +82,25 @@ def fail(path, message):
 expected = {DIST / lang / route / "index.html" if route else DIST / lang / "index.html" for lang in LANGS for route in ROUTES}
 utility = {DIST / lang / kind / "thanks" / "index.html" for lang in LANGS for kind in ("contact", "newsletter")}
 all_expected = expected | utility
+proposal_indexes = set()
+if (DIST / "propositions").exists():
+    for variant in ("equilibre", "editorial", "serein"):
+        prefix = f"/propositions/{variant}"
+        for original in all_expected | {DIST / "index.html", DIST / "404.html"}:
+            proposal = DIST / "propositions" / variant / original.relative_to(DIST)
+            if original.name == "index.html":
+                proposal_indexes.add(proposal)
+            if not proposal.exists():
+                fail(proposal, "missing isolated proposal")
+                continue
+            raw = proposal.read_text(encoding="utf-8")
+            normalized = re.sub(r"<!-- design-preview:start -->.*?<!-- design-preview:end -->", "", raw, flags=re.S).replace(prefix + "/", "/")
+            if normalized != original.read_text(encoding="utf-8"):
+                fail(proposal, "proposal changed reference content or markup")
+            if '<meta name="robots" content="noindex,nofollow">' not in raw:
+                fail(proposal, "proposal must remain unindexed")
+    proposal_indexes.add(DIST / "propositions/index.html")
+all_expected |= proposal_indexes
 actual = set(DIST.glob("*/**/index.html")) - {DIST / "index.html"}
 if actual != all_expected:
     fail("dist", f"route matrix mismatch; missing={sorted(map(str, all_expected-actual))}, extra={sorted(map(str, actual-all_expected))}")

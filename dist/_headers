@@ -1,2 +1,5 @@
 /*
   X-Content-Type-Options: nosniff
+
+/propositions/*
+  X-Robots-Tag: noindex, nofollow, noarchive

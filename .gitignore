@@ -16,3 +16,7 @@ work/*
 !work/home-haras.html
 !work/asset-sources.json
 !work/property-sources.json
+
+# Isolated design previews are rebuilt from the unchanged reference.
+dist/propositions/
+evidence/

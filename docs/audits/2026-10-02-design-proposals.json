@@ -1,0 +1,228 @@
+{
+  "reference_url": "https://deploy-preview-3--prepinson.netlify.app/fr/",
+  "reference_commit": "7c464e89719ebffb9e9464359724cafe8eb7e518",
+  "branch": "codex/prepinson-design-comparison",
+  "browsers": [
+    {
+      "engine": "chromium",
+      "checks": {
+        "layouts": 5400,
+        "interactions": 201,
+        "content": 18,
+        "accessibility": 0
+      },
+      "viewports": [
+        [
+          280,
+          653
+        ],
+        [
+          320,
+          568
+        ],
+        [
+          360,
+          800
+        ],
+        [
+          390,
+          844
+        ],
+        [
+          540,
+          720
+        ],
+        [
+          699,
+          900
+        ],
+        [
+          700,
+          900
+        ],
+        [
+          701,
+          900
+        ],
+        [
+          768,
+          1024
+        ],
+        [
+          900,
+          700
+        ],
+        [
+          901,
+          900
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          1250,
+          900
+        ],
+        [
+          1251,
+          900
+        ],
+        [
+          1440,
+          1000
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          2560,
+          1080
+        ],
+        [
+          844,
+          390
+        ],
+        [
+          1114,
+          720
+        ],
+        [
+          720,
+          540
+        ]
+      ],
+      "issues": []
+    },
+    {
+      "engine": "webkit",
+      "checks": {
+        "layouts": 5400,
+        "interactions": 201,
+        "content": 18,
+        "accessibility": 0
+      },
+      "viewports": [
+        [
+          280,
+          653
+        ],
+        [
+          320,
+          568
+        ],
+        [
+          360,
+          800
+        ],
+        [
+          390,
+          844
+        ],
+        [
+          540,
+          720
+        ],
+        [
+          699,
+          900
+        ],
+        [
+          700,
+          900
+        ],
+        [
+          701,
+          900
+        ],
+        [
+          768,
+          1024
+        ],
+        [
+          900,
+          700
+        ],
+        [
+          901,
+          900
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          1250,
+          900
+        ],
+        [
+          1251,
+          900
+        ],
+        [
+          1440,
+          1000
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          2560,
+          1080
+        ],
+        [
+          844,
+          390
+        ],
+        [
+          1114,
+          720
+        ],
+        [
+          720,
+          540
+        ]
+      ],
+      "issues": []
+    }
+  ],
+  "accessibility": {
+    "states": 145,
+    "failures": []
+  },
+  "forms": {
+    "checks": 36,
+    "mocked": true
+  },
+  "integrity": {
+    "reference_commit": "7c464e89719ebffb9e9464359724cafe8eb7e518",
+    "version": "d68495052cd5",
+    "languages": [
+      "fr",
+      "en",
+      "nl",
+      "de",
+      "sv",
+      "lb"
+    ],
+    "variants": [
+      "equilibre",
+      "editorial",
+      "serein"
+    ],
+    "identical_pages_per_variant": 104,
+    "content_verified": 312
+  },
+  "reference_build_differences": [
+    "_headers"
+  ],
+  "assets_unchanged": true,
+  "physical_devices_tested": false,
+  "notes": [
+    "Foldable-like viewport sizes are simulated, not hinge emulation or physical-device testing.",
+    "The original site and PR 3 remain unchanged.",
+    "Comparison pages only adjust stylesheet/script loading and local navigation prefixes."
+  ]
+}

@@ -12,7 +12,10 @@
     "test:layout": "node scripts/check_layout.mjs",
     "test:release": "python3 scripts/check_release.py",
     "test:navigation": "node scripts/check_navigation.mjs",
-    "test:motion": "node scripts/check_motion.mjs"
+    "test:motion": "node scripts/check_motion.mjs",
+    "build:proposals": "python3 scripts/build_design_previews.py",
+    "test:proposals": "node scripts/check_design_previews.mjs",
+    "test:a11y:proposals": "node scripts/check_design_accessibility.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^11.1.1",
