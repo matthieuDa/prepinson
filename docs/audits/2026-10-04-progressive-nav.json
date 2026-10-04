@@ -1,0 +1,350 @@
+{
+  "date": "2026-10-04",
+  "selected_variant": "equilibre",
+  "branch": "codex/prepinson-design-comparison",
+  "reference_commit": "7c464e89719ebffb9e9464359724cafe8eb7e518",
+  "preview": "https://deploy-preview-4--prepinson.netlify.app/propositions/equilibre/fr/",
+  "languages": [
+    "fr",
+    "en",
+    "nl",
+    "de",
+    "sv",
+    "lb"
+  ],
+  "changes": [
+    "Six decorative masked blur layers, 1–24 px",
+    "Transparent neutral header without full-width rule or shadow",
+    "Light-page header retains dark labels with mobile menu open",
+    "CSS fallback without JavaScript; reduced transparency and forced colors",
+    "Contact outline and language separator reflect the supplied capture",
+    "WebKit cold-load CSS readiness handled with an idempotent load listener"
+  ],
+  "validation": {
+    "chromium": {
+      "layouts": 1800,
+      "interactions": 67,
+      "content_signatures": 6,
+      "viewports": [
+        [
+          280,
+          653
+        ],
+        [
+          320,
+          568
+        ],
+        [
+          360,
+          800
+        ],
+        [
+          390,
+          844
+        ],
+        [
+          540,
+          720
+        ],
+        [
+          699,
+          900
+        ],
+        [
+          700,
+          900
+        ],
+        [
+          701,
+          900
+        ],
+        [
+          768,
+          1024
+        ],
+        [
+          900,
+          700
+        ],
+        [
+          901,
+          900
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          1250,
+          900
+        ],
+        [
+          1251,
+          900
+        ],
+        [
+          1440,
+          1000
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          2560,
+          1080
+        ],
+        [
+          844,
+          390
+        ],
+        [
+          1114,
+          720
+        ],
+        [
+          720,
+          540
+        ]
+      ],
+      "surface_checks": 56,
+      "surface_assertions": [
+        "fr/ rest no solid surface or rule",
+        "fr/ rest six independent blur layers",
+        "fr/ sticky no solid surface or rule",
+        "fr/ sticky six independent blur layers",
+        "fr/contact/ rest no solid surface or rule",
+        "fr/contact/ rest six independent blur layers",
+        "fr/contact/ sticky no solid surface or rule",
+        "fr/contact/ sticky six independent blur layers",
+        "en/ rest no solid surface or rule",
+        "en/ rest six independent blur layers",
+        "en/ sticky no solid surface or rule",
+        "en/ sticky six independent blur layers",
+        "en/contact/ rest no solid surface or rule",
+        "en/contact/ rest six independent blur layers",
+        "en/contact/ sticky no solid surface or rule",
+        "en/contact/ sticky six independent blur layers",
+        "nl/ rest no solid surface or rule",
+        "nl/ rest six independent blur layers",
+        "nl/ sticky no solid surface or rule",
+        "nl/ sticky six independent blur layers",
+        "nl/contact/ rest no solid surface or rule",
+        "nl/contact/ rest six independent blur layers",
+        "nl/contact/ sticky no solid surface or rule",
+        "nl/contact/ sticky six independent blur layers",
+        "de/ rest no solid surface or rule",
+        "de/ rest six independent blur layers",
+        "de/ sticky no solid surface or rule",
+        "de/ sticky six independent blur layers",
+        "de/contact/ rest no solid surface or rule",
+        "de/contact/ rest six independent blur layers",
+        "de/contact/ sticky no solid surface or rule",
+        "de/contact/ sticky six independent blur layers",
+        "sv/ rest no solid surface or rule",
+        "sv/ rest six independent blur layers",
+        "sv/ sticky no solid surface or rule",
+        "sv/ sticky six independent blur layers",
+        "sv/contact/ rest no solid surface or rule",
+        "sv/contact/ rest six independent blur layers",
+        "sv/contact/ sticky no solid surface or rule",
+        "sv/contact/ sticky six independent blur layers",
+        "lb/ rest no solid surface or rule",
+        "lb/ rest six independent blur layers",
+        "lb/ sticky no solid surface or rule",
+        "lb/ sticky six independent blur layers",
+        "lb/contact/ rest no solid surface or rule",
+        "lb/contact/ rest six independent blur layers",
+        "lb/contact/ sticky no solid surface or rule",
+        "lb/contact/ sticky six independent blur layers",
+        "editorial unchanged decoration",
+        "serein unchanged decoration",
+        "Mobile close icon visible and reachable",
+        "Close returns to content",
+        "Light-page mobile menu preserves dark labels",
+        "No-JS masked blur fallback",
+        "Reduced transparency removes blur layers",
+        "Forced colors removes decorative surface"
+      ],
+      "issues": []
+    },
+    "webkit": {
+      "layouts": 1800,
+      "interactions": 67,
+      "content_signatures": 6,
+      "viewports": [
+        [
+          280,
+          653
+        ],
+        [
+          320,
+          568
+        ],
+        [
+          360,
+          800
+        ],
+        [
+          390,
+          844
+        ],
+        [
+          540,
+          720
+        ],
+        [
+          699,
+          900
+        ],
+        [
+          700,
+          900
+        ],
+        [
+          701,
+          900
+        ],
+        [
+          768,
+          1024
+        ],
+        [
+          900,
+          700
+        ],
+        [
+          901,
+          900
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          1250,
+          900
+        ],
+        [
+          1251,
+          900
+        ],
+        [
+          1440,
+          1000
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          2560,
+          1080
+        ],
+        [
+          844,
+          390
+        ],
+        [
+          1114,
+          720
+        ],
+        [
+          720,
+          540
+        ]
+      ],
+      "surface_checks": 54,
+      "surface_assertions": [
+        "fr/ rest no solid surface or rule",
+        "fr/ rest six independent blur layers",
+        "fr/ sticky no solid surface or rule",
+        "fr/ sticky six independent blur layers",
+        "fr/contact/ rest no solid surface or rule",
+        "fr/contact/ rest six independent blur layers",
+        "fr/contact/ sticky no solid surface or rule",
+        "fr/contact/ sticky six independent blur layers",
+        "en/ rest no solid surface or rule",
+        "en/ rest six independent blur layers",
+        "en/ sticky no solid surface or rule",
+        "en/ sticky six independent blur layers",
+        "en/contact/ rest no solid surface or rule",
+        "en/contact/ rest six independent blur layers",
+        "en/contact/ sticky no solid surface or rule",
+        "en/contact/ sticky six independent blur layers",
+        "nl/ rest no solid surface or rule",
+        "nl/ rest six independent blur layers",
+        "nl/ sticky no solid surface or rule",
+        "nl/ sticky six independent blur layers",
+        "nl/contact/ rest no solid surface or rule",
+        "nl/contact/ rest six independent blur layers",
+        "nl/contact/ sticky no solid surface or rule",
+        "nl/contact/ sticky six independent blur layers",
+        "de/ rest no solid surface or rule",
+        "de/ rest six independent blur layers",
+        "de/ sticky no solid surface or rule",
+        "de/ sticky six independent blur layers",
+        "de/contact/ rest no solid surface or rule",
+        "de/contact/ rest six independent blur layers",
+        "de/contact/ sticky no solid surface or rule",
+        "de/contact/ sticky six independent blur layers",
+        "sv/ rest no solid surface or rule",
+        "sv/ rest six independent blur layers",
+        "sv/ sticky no solid surface or rule",
+        "sv/ sticky six independent blur layers",
+        "sv/contact/ rest no solid surface or rule",
+        "sv/contact/ rest six independent blur layers",
+        "sv/contact/ sticky no solid surface or rule",
+        "sv/contact/ sticky six independent blur layers",
+        "lb/ rest no solid surface or rule",
+        "lb/ rest six independent blur layers",
+        "lb/ sticky no solid surface or rule",
+        "lb/ sticky six independent blur layers",
+        "lb/contact/ rest no solid surface or rule",
+        "lb/contact/ rest six independent blur layers",
+        "lb/contact/ sticky no solid surface or rule",
+        "lb/contact/ sticky six independent blur layers",
+        "editorial unchanged decoration",
+        "serein unchanged decoration",
+        "Mobile close icon visible and reachable",
+        "Close returns to content",
+        "Light-page mobile menu preserves dark labels",
+        "No-JS masked blur fallback"
+      ],
+      "issues": []
+    },
+    "accessibility": {
+      "states": 49,
+      "failures": []
+    },
+    "html_round_trip": {
+      "reference_commit": "7c464e89719ebffb9e9464359724cafe8eb7e518",
+      "version": "a41065cccc13",
+      "languages": [
+        "fr",
+        "en",
+        "nl",
+        "de",
+        "sv",
+        "lb"
+      ],
+      "variants": [
+        "equilibre",
+        "editorial",
+        "serein"
+      ],
+      "identical_pages_per_variant": 104,
+      "content_verified": 312
+    },
+    "scope": "Full layout and navigation matrix after blur implementation; targeted checks rerun after final mobile contrast and WebKit first-load corrections."
+  },
+  "limitations": [
+    "Browser viewport simulations, not tests on physical foldable devices",
+    "No physical Safari device or hinge simulation",
+    "Axe results do not guarantee accessibility or contrast over every possible photograph"
+  ],
+  "source_sha256": {
+    "src/designs/equilibre.css": "c72b296d568a3330662a3fdcf3fcff4a875ba238e7bb1957351ce4f046834351",
+    "src/designs/refinement.js": "cec04e4212cd44afcde0a083d229c6c7eef72788a9f2c4d579ba23d9e62e739e"
+  }
+}

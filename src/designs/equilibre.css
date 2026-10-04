@@ -1,2 +1,112 @@
-/* Équilibre: the closest finish to the approved composition. */
+/* Équilibre, selected: retain the approved composition and soften navigation over imagery. */
 :root { --section-space: clamp(64px, 7.5vw, 112px); }
+.nav {
+  --nav-progressive-blur: 1;
+  --nav-blur-tail: 54px;
+  --nav-tint-top: rgb(24 29 35 / .56);
+  --nav-tint-middle: rgb(24 29 35 / .38);
+  --nav-fallback-filter: blur(18px);
+  --nav-fallback-mask: linear-gradient(to bottom, #000 55%, transparent);
+}
+.nav, .nav.solid-nav, .nav.is-stuck, .nav.disclosure-open, .nav.mobile-menu-open {
+  background: transparent;
+  border-bottom: 0;
+  box-shadow: none;
+}
+/* Replace both legacy edges, including the photograph-only gradient. */
+:is(.nav, .nav:not(.solid-nav):not(.is-stuck):not(.disclosure-open):not(.mobile-menu-open))::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(100% + var(--nav-blur-tail));
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--nav-tint-top), var(--nav-tint-middle) calc(100% - var(--nav-blur-tail)), transparent);
+  -webkit-backdrop-filter: var(--nav-fallback-filter);
+  backdrop-filter: var(--nav-fallback-filter);
+  -webkit-mask-image: var(--nav-fallback-mask);
+  mask-image: var(--nav-fallback-mask);
+}
+.nav::after { display: none; }
+/* The parent remains unfiltered: each layer must sample the page itself. */
+.nav[data-progressive-blur] {
+  --nav-fallback-filter: none;
+  --nav-fallback-mask: none;
+}
+.nav-blur {
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(100% + var(--nav-blur-tail));
+  z-index: -2;
+  pointer-events: none;
+}
+.nav-blur > span {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
+  -webkit-mask-image: linear-gradient(to bottom, #000 var(--from), transparent var(--to));
+  mask-image: linear-gradient(to bottom, #000 var(--from), transparent var(--to));
+}
+.nav-blur > :nth-child(1) { --blur: 1px; --from: 88%; --to: 100%; }
+.nav-blur > :nth-child(2) { --blur: 2px; --from: 76%; --to: 96%; }
+.nav-blur > :nth-child(3) { --blur: 4px; --from: 64%; --to: 86%; }
+.nav-blur > :nth-child(4) { --blur: 8px; --from: 48%; --to: 74%; }
+.nav-blur > :nth-child(5) { --blur: 16px; --from: 30%; --to: 60%; }
+.nav-blur > :nth-child(6) { --blur: 24px; --from: 12%; --to: 46%; }
+/* The scrolled header also crosses light sections: a neutral veil protects white labels. */
+.nav.is-stuck {
+  --nav-tint-top: rgb(24 29 35 / .82);
+  --nav-tint-middle: rgb(24 29 35 / .72);
+}
+.nav .navlinks, .nav > .language-switch, .nav > .brand { text-shadow: 0 1px 8px rgb(0 0 0 / .12); }
+.navlinks .nav-book { border-radius: 6px; border-color: rgb(255 255 255 / .55); background: rgb(255 255 255 / .03); }
+.navlinks .nav-book:hover, .navlinks .nav-book:focus-visible { background: var(--paper); }
+.navlinks .nav-submenu, .language-options {
+  background: rgb(245 244 239 / .96);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  text-shadow: none;
+}
+.navlinks .nav-submenu { border-top: 0; }
+/* Inner pages start on paper, so the transparent header uses ink until it scrolls. */
+.nav.solid-nav:not(.is-stuck) {
+  --nav-tint-top: rgb(245 244 239 / .9);
+  --nav-tint-middle: rgb(245 244 239 / .55);
+  color: #293039;
+}
+.nav.solid-nav:not(.is-stuck) .brand img { filter: brightness(0) saturate(100%) opacity(.8); }
+.nav.solid-nav:not(.is-stuck) .menu-toggle { color: inherit; }
+.nav.solid-nav:not(.is-stuck) .nav-book { border-color: rgb(41 48 57 / .45); }
+.nav.solid-nav:not(.is-stuck) :is(.brand,.navlinks,.language-switch) { text-shadow: none; }
+@media (min-width: 1251px) {
+  .nav > .language-switch { border-left: 1px solid rgb(255 255 255 / .38); padding-left: 22px; margin-left: 10px; }
+  .nav.solid-nav:not(.is-stuck) > .language-switch { border-left-color: rgb(41 48 57 / .28); }
+}
+@media (max-width: 1250px) {
+  .nav-enhanced .mobile-nav, .mobile-nav {
+    background: rgb(245 244 239 / .96);
+    color: #293039;
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+  }
+  .mobile-nav .nav-group { border-bottom-color: rgb(41 48 57 / .18); }
+  .mobile-nav > .nav-book { border-color: rgb(41 48 57 / .38); border-radius: 6px; }
+}
+@media (max-width: 700px) { .nav { --nav-blur-tail: 40px; } }
+/* Readable fallbacks for older browsers and accessibility display preferences. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav { --nav-tint-top: rgb(24 29 35 / .88); --nav-tint-middle: rgb(24 29 35 / .78); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .nav-blur { display: none; }
+  .nav, .nav.is-stuck { --nav-fallback-filter: none; --nav-fallback-mask: none; --nav-tint-top: #293039; --nav-tint-middle: #293039; }
+  .nav.solid-nav:not(.is-stuck) { --nav-tint-top: var(--paper); --nav-tint-middle: var(--paper); }
+  .navlinks .nav-submenu, .language-options, .nav-enhanced .mobile-nav { background: var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (forced-colors: active) {
+  .nav-blur, .nav::before { display: none; }
+  .nav, .nav.solid-nav, .nav.is-stuck { background: Canvas; color: CanvasText; }
+  .nav .brand img { filter: none; }
+}
