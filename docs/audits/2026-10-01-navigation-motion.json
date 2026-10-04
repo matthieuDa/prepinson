@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-09-30T22:18:06.388085+00:00",
+  "baseCommit": "ddbe2cd013cb2149fc24965119c02ba07bd65aea",
+  "reference": "https://6abd7c82e1175e00082089cb--prepinson.netlify.app/en/",
+  "branch": "codex/prepinson-navigation-motion",
+  "languages": [
+    "en",
+    "fr",
+    "nl",
+    "de",
+    "sv",
+    "lb"
+  ],
+  "widths": [
+    360,
+    390,
+    761,
+    768,
+    1024,
+    1280,
+    1440,
+    1920
+  ],
+  "browsers": {
+    "chromium": {
+      "layoutConfigurations": 720,
+      "navigationChecks": 192,
+      "motionChecks": 69,
+      "errors": []
+    },
+    "webkit": {
+      "layoutConfigurations": 720,
+      "navigationChecks": 192,
+      "motionChecks": 69,
+      "errors": []
+    }
+  },
+  "accessibility": {
+    "states": 24,
+    "unexpectedViolations": 0,
+    "scopeNote": "When the mobile overlay is open, main and its h1 are intentionally inert; the two whole-document best-practice notices are recorded separately. No WCAG rule is excluded."
+  },
+  "mediaUnchanged": true,
+  "implementation": {
+    "hero": "Visible immediately; no entry animation",
+    "sectionMotion": "12px, 560ms, once; default DOM remains visible",
+    "fallbacks": [
+      "reduced motion",
+      "no JavaScript",
+      "no IntersectionObserver",
+      "keyboard focus",
+      "direct hash navigation",
+      "print"
+    ]
+  },
+  "limits": [
+    "WebKit automation is not a test on an actual iPhone or native Safari.",
+    "No new Lighthouse performance scores were measured."
+  ]
+}
