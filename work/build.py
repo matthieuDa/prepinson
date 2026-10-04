@@ -44,7 +44,7 @@ IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
 IG_HOUSE = "https://www.instagram.com/prepinson_houses/"
 MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
 MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
-ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/client_content.py", "src/release_content.py", "src/legal_content.py", "src/navigation.py", "src/styles.css", "src/navigation-refined.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "work/build.py"))).hexdigest()[:12]
+ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/client_content.py", "src/release_content.py", "src/legal_content.py", "src/navigation.py", "src/styles.css", "src/navigation-refined.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "src/designs/refinement.css", "src/designs/equilibre.css", "src/designs/refinement.js", "src/designs/illustrations/haras.webp", "src/designs/illustrations/horses.webp", "src/designs/illustrations/houses.webp", "work/build.py"))).hexdigest()[:12]
 
 META = {
     "team": ("team_title", "team_desc"),
@@ -429,9 +429,16 @@ def build():
     OUT.mkdir(exist_ok=True)
     if (ROOT / "src/styles.css").exists():
         fonts = (ROOT / "src/fonts.css").read_text(encoding="utf-8") if (ROOT / "src/fonts.css").exists() else ""
-        styles = (ROOT / "src/styles.css").read_text(encoding="utf-8") + "\n" + (ROOT / "src/navigation-refined.css").read_text(encoding="utf-8")
+        styles = "\n".join((ROOT / name).read_text(encoding="utf-8") for name in ("src/styles.css", "src/navigation-refined.css", "src/designs/refinement.css", "src/designs/equilibre.css"))
         (OUT / "styles.css").write_text(fonts + "\n" + styles, encoding="utf-8")
-    if (ROOT / "src/app.js").exists(): shutil.copy2(ROOT / "src/app.js", OUT / "app.js")
+    if (ROOT / "src/app.js").exists():
+        app = (ROOT / "src/app.js").read_text(encoding="utf-8")
+        finishing = (ROOT / "src/designs/refinement.js").read_text(encoding="utf-8").replace("__ASSET_VERSION__", ASSET_VERSION)
+        (OUT / "app.js").write_text(app + "\n" + finishing, encoding="utf-8")
+    nav_illustrations = OUT / "assets" / "nav-illustrations"
+    nav_illustrations.mkdir(parents=True, exist_ok=True)
+    for name in ("haras.webp", "horses.webp", "houses.webp"):
+        shutil.copy2(ROOT / "src" / "designs" / "illustrations" / name, nav_illustrations / name)
     if (ROOT / "src/icons.svg").exists(): shutil.copy2(ROOT / "src/icons.svg", OUT / "icons.svg")
     for child in list(OUT.iterdir()):
         if child.name in {"assets", "styles.css", "app.js", "favicon.svg", "icons.svg", "instagram-feed.json"}: continue
