@@ -6,7 +6,7 @@ Le brief est une finition du design approuvé, avec le contenu définitif. Les p
 
 ## Propositions
 
-- **Équilibre — option retenue** : colonne de lecture adaptée aux trois paragraphes, navbar transparente au flou progressif neutre, sous-menus clairs sur trois colonnes.
+- **Équilibre — option retenue** : colonne de lecture adaptée aux trois paragraphes, navbar transparente en haut, fond blanc au défilement et panneaux illustrés.
 - **Éditorial** : lecture légèrement plus ample, portrait plus discret, sous-menus en Cormorant Garamond.
 - **Serein** : titres un peu plus contenus, rythme légèrement resserré, panneau de navigation sur deux colonnes.
 
@@ -14,7 +14,7 @@ Comparaison : `/propositions/`. Chaque site est disponible sous `/propositions/{
 
 ## Isolation et construction
 
-`npm run build:proposals` construit d'abord la référence avec son générateur d'origine. Il crée ensuite trois copies de chaque page, en ajoutant seulement les feuilles CSS et le petit script de synchronisation géométrique de la navigation et de décoration du flou, et en préfixant les destinations internes. Les assets restent partagés et inchangés. Une normalisation stricte vérifie à la génération et dans `check_site.py` que les trois copies restituent exactement le HTML de référence.
+`npm run build:proposals` construit d'abord la référence avec son générateur d'origine. Il crée ensuite trois copies de chaque page, en ajoutant seulement les feuilles CSS et le petit script de synchronisation géométrique de la navigation et de décoration du flou, et en préfixant les destinations internes. Les médias du site restent partagés et inchangés ; les trois illustrations fournies pour la navbar sont copiées dans les assets de la preview. Une normalisation stricte vérifie à la génération et dans `check_site.py` que les trois copies restituent exactement le HTML de référence.
 
 Sources : `src/designs/refinement.css` (socle commun), les trois petites feuilles de variante et `refinement.js`. Aucun changement au générateur d'origine, au JavaScript métier ou aux fichiers de contenu. Les sorties de comparaison sont ignorées par Git et reconstruites par Netlify sur cette branche. Les aperçus sont marqués `noindex`.
 
@@ -41,3 +41,11 @@ Principe technique de référence : [Progressive blur in CSS, Kenneth Nym](https
 Lien de revue : `/propositions/equilibre/fr/`. Les deux autres nuances restent disponibles pour comparaison ; elles n'activent pas les couches de flou. La vignette Équilibre et la mention « Option retenue » sont actualisées.
 
 Validation ciblée : 1 800 configurations de mise en page et 67 contrôles d'interaction par moteur (Chromium et WebKit), six langues, 20 formats, 49 états axe sans violation détectée. Les contrôles complémentaires du flou, du menu mobile, des préférences d'affichage et du repli sans JavaScript figurent dans `docs/audits/2026-10-04-progressive-nav.json`. Les corrections finales du contraste du menu mobile sur page claire et de l’activation au premier chargement Safari ont été revérifiées sur les deux moteurs (110 assertions complémentaires sans échec).
+
+## Version validée — 5 octobre 2026
+
+La version au flou progressif décrite dans le rapport du 4 octobre est remplacée par la direction approuvée après revue sur localhost. La navbar est transparente avec du texte blanc en haut des pages photographiques. Les pages intérieures commencent directement sur un fond clair avec du texte foncé. Dès que la navbar devient fixe au défilement, un fond blanc apparaît en fondu en même temps que le texte passe au noir. Sur les écrans tactiles, elle s'efface en descendant et revient en remontant.
+
+L'ouverture des rubriques déploie un panneau blanc sans flou. Les liens existants restent traduits et les illustrations fournies par le client (haras, chevaux, maisons) remplacent les photos précédentes. Leur transparence et leur format complet sont conservés. Les commandes tactiles, clavier et souris conservent les interactions natives. Le logo typographique est agrandi et masqué seulement dans les fenêtres trop étroites.
+
+La version validée reste isolée sous `/propositions/equilibre/{lang}/`. Les autres propositions et les routes du site de référence ne sont pas modifiées. La publication sur GitHub actualise la PR de comparaison et sa preview ; elle ne fusionne pas cette branche avec `main`.

@@ -26,6 +26,8 @@ def build():
         shutil.copy2(SOURCE / name, static / name)
     if (SOURCE / 'previews').exists():
         shutil.copytree(SOURCE / 'previews', static / 'previews', dirs_exist_ok=True)
+    if (SOURCE / 'illustrations').exists():
+        shutil.copytree(SOURCE / 'illustrations', static / 'illustrations', dirs_exist_ok=True)
     version = hashlib.sha256(b''.join((SOURCE / n).read_bytes() for n in ('refinement.css', 'refinement.js', *(v + '.css' for v in VARIANTS)))).hexdigest()[:12]
     integrity = []
     pattern = r'\b(href|action)="(/(?:en|fr|nl|de|sv|lb)/[^"\s]*)"'
