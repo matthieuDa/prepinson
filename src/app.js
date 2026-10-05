@@ -73,7 +73,7 @@
     if (pageMain) pageMain.inert = inert;
     if (pageFooter) pageFooter.inert = inert;
     document.querySelector('.stay-ribbon')?.toggleAttribute('inert', inert);
-    document.querySelectorAll('.nav .brand, .nav .navlinks, .nav .language-switch').forEach((element) => {
+    document.querySelectorAll('.nav .navlinks, .nav .language-switch').forEach((element) => {
       element.inert = inert;
     });
   };
@@ -99,6 +99,9 @@
 
   if (menuButton && mobileMenu) {
     mobileMenu.setAttribute('aria-hidden', 'true');
+    header?.querySelector('.brand')?.addEventListener('click', () => {
+      if (mobileMenu.classList.contains('open')) setMenu(false);
+    });
     menuButton.addEventListener('click', () => {
       setMenu(menuButton.getAttribute('aria-expanded') !== 'true');
     });

@@ -2336,5 +2336,161 @@
         "height": 1600
       }
     ]
+  },
+  "ortho24-pool-pasture.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/ortho24-pool-pasture-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/ortho24-pool-pasture-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/ortho24-pool-pasture-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/ortho24-pool-pasture-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "ortho24-kitchen.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/ortho24-kitchen-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/ortho24-kitchen-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/ortho24-kitchen-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/ortho24-kitchen-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "ortho24-dining.webp": {
+    "width": 1800,
+    "height": 1336,
+    "variants": [
+      {
+        "src": "/assets/ortho24-dining-480.webp",
+        "width": 480,
+        "height": 356
+      },
+      {
+        "src": "/assets/ortho24-dining-768.webp",
+        "width": 768,
+        "height": 570
+      },
+      {
+        "src": "/assets/ortho24-dining-1200.webp",
+        "width": 1200,
+        "height": 891
+      },
+      {
+        "src": "/assets/ortho24-dining-1800.webp",
+        "width": 1800,
+        "height": 1336
+      }
+    ]
+  },
+  "ortho24-cinema.webp": {
+    "width": 1800,
+    "height": 1046,
+    "variants": [
+      {
+        "src": "/assets/ortho24-cinema-480.webp",
+        "width": 480,
+        "height": 279
+      },
+      {
+        "src": "/assets/ortho24-cinema-768.webp",
+        "width": 768,
+        "height": 446
+      },
+      {
+        "src": "/assets/ortho24-cinema-1200.webp",
+        "width": 1200,
+        "height": 697
+      },
+      {
+        "src": "/assets/ortho24-cinema-1800.webp",
+        "width": 1800,
+        "height": 1046
+      }
+    ]
+  },
+  "ortho24-lounge.webp": {
+    "width": 1800,
+    "height": 1200,
+    "variants": [
+      {
+        "src": "/assets/ortho24-lounge-480.webp",
+        "width": 480,
+        "height": 320
+      },
+      {
+        "src": "/assets/ortho24-lounge-768.webp",
+        "width": 768,
+        "height": 512
+      },
+      {
+        "src": "/assets/ortho24-lounge-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "src": "/assets/ortho24-lounge-1800.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  "ortho24-billiards.webp": {
+    "width": 1800,
+    "height": 1104,
+    "variants": [
+      {
+        "src": "/assets/ortho24-billiards-480.webp",
+        "width": 480,
+        "height": 294
+      },
+      {
+        "src": "/assets/ortho24-billiards-768.webp",
+        "width": 768,
+        "height": 471
+      },
+      {
+        "src": "/assets/ortho24-billiards-1200.webp",
+        "width": 1200,
+        "height": 736
+      },
+      {
+        "src": "/assets/ortho24-billiards-1800.webp",
+        "width": 1800,
+        "height": 1104
+      }
+    ]
   }
 }

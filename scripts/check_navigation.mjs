@@ -33,6 +33,11 @@ try {
   assert(await button.evaluate(el=>el===document.activeElement&&el.getAttribute('aria-expanded')==='false'),`${lang}: Escape returns focus to menu control`);
   assert(!(await page.locator('main').evaluate(el=>el.inert)),`${lang}: contact unlocked after close`);
   await button.click();
+  assert(!(await page.locator('header .brand').evaluate(el=>el.inert)),`${lang}: wordmark stays interactive while mobile menu is open`);
+  await page.locator('header .brand').click();await page.waitForURL(`**/${lang}/`);
+  assert(!(await page.locator('#mobile-menu').evaluate(el=>el.classList.contains('open'))),`${lang}: wordmark returns home and closes mobile menu`);
+  await page.goto(`${base}/${lang}/contact/`);
+  await button.click();
   await groups.nth(2).locator('summary').click();
   const cottage=groups.nth(2).locator(`a[href='/${lang}/houses/ortho-25/']`);
   await cottage.click();await page.waitForURL(`**/${lang}/houses/ortho-25/`);

@@ -155,7 +155,10 @@ PROPERTIES = {
         "platform": "Casapilot",
         "bedrooms": 4,
         "bathrooms": 4,
-        "gallery": tuple((f"grange-{i}.jpg", f"Ortho 24, La Grange, photograph {i}") for i in range(1, 7)),
+        "gallery": (("grange-1.jpg", "Ortho 24, La Grange, exterior"),) + tuple(
+            (f"ortho24-{scene}.webp", f"Ortho 24, La Grange, {scene}")
+            for scene in ("kitchen", "lounge", "pool-pasture", "dining", "billiards", "cinema")
+        ) + tuple((f"grange-{i}.jpg", f"Ortho 24, La Grange, photograph {i}") for i in range(2, 7)),
     },
     "ortho-25": {
         "short": "Ortho 25, Le Cottage",
@@ -689,3 +692,12 @@ from src.release_content import COPY as RELEASE_COPY
 for _key in ('gallery_title', 'juni_jumping', 'jackson_standing', 'jackson_jumping'):
     UI[_key] = dict(zip(LANGS, RELEASE_COPY[_key]))
 MEDIA['training'] = 'training-new.webp'
+
+GALLERY_ALT.update({
+    "ortho24-pool-pasture.webp": _l("Pool terrace overlooking the paddocks", "Terrasse de la piscine face aux prairies", "Zwembadterras met uitzicht op de weiden", "Poolterrasse mit Blick auf die Weiden", "Poolterrass med utsikt över hagarna", "Poolterrass mat Vue op d’Wisen"),
+    "ortho24-kitchen.webp": _l("Open kitchen and dining room at La Grange", "Cuisine ouverte et salle à manger de La Grange", "Open keuken en eetkamer van La Grange", "Offene Küche und Esszimmer in La Grange", "Öppet kök och matsal i La Grange", "Oppen Kichen an Iesszëmmer zu La Grange"),
+    "ortho24-dining.webp": _l("Dining table beneath the timber beams", "Table à manger sous la charpente en bois", "Eettafel onder de houten balken", "Esstisch unter den Holzbalken", "Matbord under träbjälkarna", "Iessdësch ënnert den Holzbalken"),
+    "ortho24-lounge.webp": _l("Lounge and stone wall at La Grange", "Salon et mur en pierre de La Grange", "Zithoek met stenen muur in La Grange", "Wohnbereich mit Steinwand in La Grange", "Vardagsrum med stenvägg i La Grange", "Salon mat Steemauer zu La Grange"),
+    "ortho24-billiards.webp": _l("Billiards room at La Grange", "Salle de billard de La Grange", "Biljartkamer van La Grange", "Billardzimmer in La Grange", "Biljardrum i La Grange", "Billiardszëmmer zu La Grange"),
+    "ortho24-cinema.webp": _l("Cinema room at La Grange", "Salle de cinéma de La Grange", "Bioscoopruimte van La Grange", "Kinoraum in La Grange", "Biorum i La Grange", "Kinosall zu La Grange"),
+})

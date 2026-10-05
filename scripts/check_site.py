@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 from src.form_data import FORM_COPY  # noqa: E402
 from src.site_data import LANGS, ROUTES  # noqa: E402
 
-DOMAIN = "https://www.prepinson.com"
+DOMAIN = (os.environ.get("SITE_URL") or os.environ.get("URL") or "https://prepinson.netlify.app").rstrip("/")
 ASSET_DOMAIN = os.environ.get("DEPLOY_PRIME_URL", DOMAIN).rstrip("/") if os.environ.get("PREVIEW_MODE") == "true" else DOMAIN
 errors = []
 
@@ -135,6 +135,10 @@ for path in sorted(expected):
         for asset in ("dalton-falsterbo-dressage.webp", "dalton-falsterbo-finish.webp", "dalton-falsterbo-arena-entry.webp"):
             if asset not in raw:
                 fail(rel, f"Dalton reference gallery is missing {asset}")
+    if route == "houses/ortho-24":
+        for scene in ("pool-pasture", "kitchen", "dining", "lounge", "billiards", "cinema"):
+            if f"ortho24-{scene}.webp" not in raw:
+                fail(rel, f"Ortho 24 gallery is missing {scene}")
 
     if page.duplicate_ids:
         fail(rel, f"duplicate IDs: {page.duplicate_ids}")
@@ -217,8 +221,8 @@ for path in sorted(expected):
 gateway = (DIST / "index.html").read_text(encoding="utf-8")
 if "—" in gateway:
     fail("index.html", "language gateway contains an em dash")
-if 'name="robots" content="noindex,follow"' not in gateway:
-    fail("index.html", "root language gateway must remain non-indexable")
+if 'name="robots" content="noindex' in gateway or f'<link rel="canonical" href="{DOMAIN}/">' not in gateway:
+    fail("index.html", "root language gateway must be indexable with its own canonical")
 for phrase in ("Welcome to", "Bienvenue à", "Welkom bij", "Willkommen bei", "Välkommen till", "Wëllkomm zu"):
     if phrase not in gateway:
         fail("index.html", f"missing greeting {phrase}")
@@ -237,8 +241,8 @@ if "/* /404.html 404" not in (DIST / "_redirects").read_text(encoding="utf-8"):
 ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9", "x": "http://www.w3.org/1999/xhtml"}
 tree = ET.parse(DIST / "sitemap.xml")
 urls = tree.findall("s:url", ns)
-if len(urls) != len(LANGS) * len(ROUTES):
-    fail("sitemap.xml", f"expected {len(LANGS)*len(ROUTES)} URLs, got {len(urls)}")
+if len(urls) != len(LANGS) * len(ROUTES) + 1:
+    fail("sitemap.xml", f"expected {len(LANGS)*len(ROUTES)+1} URLs, got {len(urls)}")
 for node in urls:
     alternates = node.findall("x:link", ns)
     if len(alternates) != len(LANGS) + 1:
