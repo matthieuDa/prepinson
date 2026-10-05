@@ -218,7 +218,10 @@ gateway = (DIST / "index.html").read_text(encoding="utf-8")
 if "—" in gateway:
     fail("index.html", "language gateway contains an em dash")
 if 'name="robots" content="noindex,follow"' not in gateway:
-    fail("index.html", "root gateway must be non-indexable fallback")
+    fail("index.html", "root language gateway must remain non-indexable")
+for phrase in ("Welcome to", "Bienvenue à", "Welkom bij", "Willkommen bei", "Välkommen till", "Wëllkomm zu"):
+    if phrase not in gateway:
+        fail("index.html", f"missing greeting {phrase}")
 for lang in LANGS:
     if f'href="/{lang}/"' not in gateway:
         fail("index.html", f"missing gateway link for {lang}")
@@ -246,12 +249,11 @@ if "Disallow:" in robots or f"Sitemap: {DOMAIN}/sitemap.xml" not in robots:
     fail("robots.txt", "robots policy or sitemap declaration is wrong")
 
 config = (ROOT / "netlify.toml").read_text(encoding="utf-8")
-for required in ("Content-Security-Policy", "X-Content-Type-Options", "Referrer-Policy", "Permissions-Policy", 'path = "/"'):
+for required in ("Content-Security-Policy", "X-Content-Type-Options", "Referrer-Policy", "Permissions-Policy"):
     if required not in config:
         fail("netlify.toml", f"missing {required}")
-edge = (ROOT / "netlify/edge-functions/language-redirect.js").read_text(encoding="utf-8")
-if "accept-language" not in edge or "prepinson-language" not in edge or "status: 302" not in edge:
-    fail("language-redirect.js", "language detection, cookie preference or temporary redirect missing")
+if 'function = "language-redirect"' in config:
+    fail("netlify.toml", "language gateway is hidden by a root redirect")
 
 public = "\n".join(p.read_text(encoding="utf-8", errors="ignore") for p in expected)
 for pattern in (r"€\s*\d", r"\b\d+[.,]?\d*\s*€", r"\bEUR\s*\d", r"\bUSD\s*\d"):

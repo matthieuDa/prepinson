@@ -38,6 +38,6 @@ The approved photographs are served as AVIF with WebP fallback and responsive si
 
 ## Forms and deployment
 
-Newsletter subscriptions use one Netlify form named `newsletter`, with explicit consent, locale, consent version and source path. Contact retains six `contact-{lang}` forms. POST actions use localized confirmation routes, not the root language redirect. Netlify stores submissions; campaign delivery is not included. Live receipt must be checked in the site account after inspecting notification settings.
+Newsletter subscriptions use one Netlify form named `newsletter`, with explicit consent, locale, consent version and source path. Contact retains six `contact-{lang}` forms. POST actions use localized confirmation routes. Netlify stores submissions; campaign delivery is not included. Live receipt must be checked in the site account after inspecting notification settings.
 
-Netlify runs the same static build. `/` uses an Edge Function to choose the visitor’s saved language or `Accept-Language`; explicit language URLs remain stable. Deploy Previews receive `X-Robots-Tag: noindex, nofollow, noarchive`. Production publication, domain migration and external account changes are outside this delivery.
+Netlify runs the same static build. `/` displays the six-language gateway; explicit language URLs remain stable. Deploy Previews receive `X-Robots-Tag: noindex, nofollow, noarchive`.
