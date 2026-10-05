@@ -104,8 +104,8 @@ for path in sorted(expected):
     if "https://www.instagram.com/prepinson_houses/" not in raw or "@prepinson_houses" not in raw:
         fail(rel, "current houses Instagram link or label is missing")
     footer = raw.split('<footer', 1)[1].split('</footer>', 1)[0]
-    if footer.count('href="https://maps.app.goo.gl/') != 1 or '<address><a class="address-link"' not in footer:
-        fail(rel, "footer directions must use one linked address")
+    if footer.count('href="https://maps.app.goo.gl/') != 1 or footer.count('<address><a class="address-link"') != 1 or 'Ortho 24' not in footer:
+        fail(rel, "footer directions must link the shared Ortho 24 address")
     if footer.count('href="tel:+32470851310"') != 1:
         fail(rel, "footer must contain the phone number once")
     if route == "contact":

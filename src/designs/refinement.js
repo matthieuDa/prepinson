@@ -18,7 +18,6 @@
     if (header.dataset.editorialNav || getComputedStyle(header).getPropertyValue('--nav-editorial').trim() !== '1') return;
     header.dataset.editorialNav = 'true';
     const groups = [...header.querySelectorAll('.navlinks .nav-group')];
-    const compact = matchMedia('(max-width: 1250px), (any-pointer: coarse)');
     const desktop = matchMedia('(min-width: 1251px)');
     const illustrations = ['haras', 'horses', 'houses'];
     groups.forEach((group, index) => {
@@ -74,7 +73,7 @@
       if (nextDirection && nextDirection !== direction) distance = 0;
       if (nextDirection) direction = nextDirection;
       distance += Math.abs(change);
-      if (!compact.matches || y < 100 || isOpen() || (header.contains(document.activeElement) && document.activeElement.matches(':focus-visible'))) {
+      if (y < 100 || isOpen() || (header.contains(document.activeElement) && document.activeElement.matches(':focus-visible'))) {
         header.classList.remove('nav-away');
       } else if (direction > 0 && distance > 10) {
         header.classList.add('nav-away');

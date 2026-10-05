@@ -174,6 +174,8 @@ async function checkInteractions(browser) {
 
   const cookieBeforeLanguageChoice = (await context.cookies()).find((cookie) => cookie.name === 'prepinson-language');
   assert(!cookieBeforeLanguageChoice, `Language preference changed before a language link was selected: ${cookieBeforeLanguageChoice?.value}`);
+  await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+  await page.waitForFunction(() => !document.querySelector('header.nav')?.classList.contains('nav-away'));
   await languageSwitch.locator('summary').click();
   await languageSwitch.locator('[data-language="fr"]').click();
   await page.waitForURL('**/fr/houses/ortho-24/');

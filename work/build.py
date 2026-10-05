@@ -44,7 +44,7 @@ IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
 IG_HOUSE = "https://www.instagram.com/prepinson_houses/"
 MAP_HARAS = "https://maps.app.goo.gl/qU2NuF7tHseKitHJ6"
 MAP_HOUSE = "https://maps.app.goo.gl/FzkorC926XiJ6Fzw7"
-ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/client_content.py", "src/release_content.py", "src/legal_content.py", "src/navigation.py", "src/styles.css", "src/navigation-refined.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "src/designs/refinement.css", "src/designs/equilibre.css", "src/designs/refinement.js", "src/designs/illustrations/haras.webp", "src/designs/illustrations/horses.webp", "src/designs/illustrations/houses.webp", "work/build.py"))).hexdigest()[:12]
+ASSET_VERSION = hashlib.sha256(b"".join((ROOT / name).read_bytes() for name in ("src/client_content.py", "src/release_content.py", "src/legal_content.py", "src/navigation.py", "src/styles.css", "src/navigation-refined.css", "src/fonts.css", "src/app.js", "src/site_data.py", "src/presentation_data.py", "src/form_data.py", "src/forms.py", "src/activity_data.py", "src/image-manifest.json", "src/designs/refinement.css", "src/designs/equilibre.css", "src/designs/refinement.js", "src/designs/illustrations/haras.webp", "src/designs/illustrations/horses.webp", "src/designs/illustrations/houses.webp", *(f"src/designs/assets/{name}.webp" for name in ("sales", "grevlunda", "prevet", "njoy", "equilannoo")), "work/build.py"))).hexdigest()[:12]
 
 META = {
     "team": ("team_title", "team_desc"),
@@ -60,6 +60,7 @@ META = {
     "houses/ortho-24": ("ortho24_title", "ortho24_desc"),
     "houses/ortho-25": ("ortho25_title", "ortho25_desc"),
     "activities": ("activities_title", "activities_desc"),
+    "partners": ("partners_title", "partners_desc"),
     "legal": ("legal_title", "legal_desc"),
     "privacy": ("privacy_title", "privacy_desc"),
 }
@@ -163,7 +164,7 @@ def header(lang, route, solid=False):
     links = menu(lang, route)
     cls = "nav solid-nav" if solid else "nav"
     brand = f'<a class="brand" href="{home}"><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt=""><span class="wordmark">PREPINSON <small>HARAS DE PREPINSON</small></span></a>'
-    return f'<a class="skip-link" href="#main">{tx("skip", lang)}</a><nav class="stay-ribbon" aria-label="{tx("nav_houses",lang)}"><a href="{url(lang, "houses")}">{tx("nav_discover_houses",lang)} {icon("arrow-up-right")}</a></nav><header class="{cls}">{brand}<nav class="navlinks" aria-label="{tx("menu", lang)}">{links}</nav>{language_switch(lang, route)}<button class="menu-toggle" data-menu-toggle data-open-label="{tx("menu",lang)}" data-close-label="{tx("close",lang)}" aria-label="{tx("menu",lang)}" type="button" aria-expanded="false" aria-controls="mobile-menu"><span>{tx("menu", lang)}</span>{icon("menu")}</button></header><noscript><style>.menu-toggle{{display:none}}@media(max-width:1250px){{.mobile-nav{{position:relative;inset:auto;transform:none;visibility:visible;max-height:none;z-index:1;margin-top:110px}}.solid-nav~.mobile-nav{{margin-top:0}}}}@media(max-width:700px){{.mobile-nav{{margin-top:85px}}}}</style></noscript><nav id="mobile-menu" class="mobile-nav" aria-label="{tx("menu", lang)}">{links}<small>ORTHO · ARDENNES</small></nav>'
+    return f'<a class="skip-link" href="#main">{tx("skip", lang)}</a><header class="{cls}">{brand}<nav class="navlinks" aria-label="{tx("menu", lang)}">{links}</nav>{language_switch(lang, route)}<button class="menu-toggle" data-menu-toggle data-open-label="{tx("menu",lang)}" data-close-label="{tx("close",lang)}" aria-label="{tx("menu",lang)}" type="button" aria-expanded="false" aria-controls="mobile-menu"><span>{tx("menu", lang)}</span>{icon("menu")}</button></header><noscript><style>.menu-toggle{{display:none}}@media(max-width:1250px){{.mobile-nav{{position:relative;inset:auto;transform:none;visibility:visible;max-height:none;z-index:1;margin-top:110px}}.solid-nav~.mobile-nav{{margin-top:0}}}}@media(max-width:700px){{.mobile-nav{{margin-top:85px}}}}</style></noscript><nav id="mobile-menu" class="mobile-nav" aria-label="{tx("menu", lang)}">{links}<small>ORTHO · ARDENNES</small></nav>'
 
 
 
@@ -186,8 +187,9 @@ def home(lang):
         ("01", "boarding", ui("boarding_title", lang), ui("boarding_copy", lang), "boarding"),
         ("02", "training", ui("training_title", lang), ui("training_copy", lang), "training"),
         ("03", "breeding", ui("breeding_title", lang), ui("breeding_copy", lang), "breeding"),
+        ("04", "sales", tx("nav_sales", lang), tx("sales_message", lang), "sales"),
     )
-    cards = "".join(f'<a class="expertise-card" href="{url(lang, "horses")}#{target}"><div class="expertise-image">{image(MEDIA[media], ui("alt_" + media, lang))}<span class="image-index">{number}</span></div><div class="expertise-title"><h3>{title}</h3><span>{icon("arrow-up-right")}</span></div><p>{copy}</p></a>' for number, media, title, copy, target in expert)
+    cards = "".join(f'<a class="expertise-card" href="{url(lang, "horses/for-sale") if target == "sales" else url(lang, "horses") + "#" + target}"><div class="expertise-image">{image("sales.webp" if media == "sales" else MEDIA[media], tx("sales_heading", lang) if media == "sales" else ui("alt_" + media, lang))}</div><div class="expertise-content"><span class="expertise-number">{number}</span><h3>{title}</h3><div class="expertise-detail"><div><p>{copy}</p></div></div><span class="expertise-arrow">{icon("arrow-up-right")}</span></div></a>' for number, media, title, copy, target in expert)
     refs = "".join(f'<a href="{url(lang, "horses/references")}#{slug}"><span class="pedigree-year">0{i}</span><div><h3>{display_title(tx(f"{slug}_title", lang))}</h3></div><span class="pedigree-arrow">{icon("arrow-up-right")}</span></a>' for i, slug in enumerate(HORSE_STORIES, 1))
     people = (("team_eva", "Eva Schiller", ui("eva_role", lang), "eva.schiller@prepinson.com", "+352 691 22 38 36"), ("team_nicolas", "Nicolas Derouault", ui("nicolas_role", lang), "nicolas.derouault@prepinson.com", "+32 470 85 13 10"))
     team = "".join(f'<article class="team-card">{image(MEDIA[media], name)}<div><p class="eyebrow">{role}</p><h3>{name}</h3><a href="mailto:{email}">{email} {icon("arrow-up-right")}</a><a href="tel:{phone.replace(" ", "")}">{phone}</a></div></article>' for media, name, role, email, phone in people)
@@ -216,7 +218,7 @@ def horses(lang):
     body = inner_hero(lang, v1("home_eyebrow", lang), tx("horses_hero", lang), v1("horses_tagline", lang), "training", title_html=v1("horses_hero", lang)) + f'<section id="discover" class="intro container"><div><p class="eyebrow">{tx("world_horses", lang)}</p><h2>{ui("horses_intro_first", lang)}<br><em>{ui("horses_intro_second", lang)}</em></h2></div><p class="body-copy">{tx("horses_intro", lang)}</p></section><section class="service-stories container">'
     for anchor, number, title, copy, media, route, cta in sections:
         body += f'<article id="{anchor}" class="service-story"><div class="service-story-image">{image(media, ui("alt_" + anchor, lang))}</div><div><p class="eyebrow">{number} / {title}</p><h2>{title}</h2><p>{copy}</p>{editorial_link(url(lang, route), cta)}</div></article>'
-    return body + f'<article id="sales" class="service-story"><div class="service-story-image">{image("prepinson-bay-horse-outdoors.webp",tx("sales_heading",lang))}</div><div><p class="eyebrow">04 / {tx("sales_heading",lang)}</p><h2>{tx("sales_range",lang)}</h2><p>{tx("sales_message",lang)}</p><p><a class="text-link" href="mailto:sales@prepinson.com">sales@prepinson.com</a></p>{editorial_link(url(lang,"horses/for-sale"),tx("nav_sales",lang))}</div></article></section>' + sales_references(lang) + f'<section class="container reference-invitation"><h2>{tx("references_hero",lang)}</h2>{editorial_link(url(lang,"horses/references"),tx("nav_references",lang))}</section><section class="horses-team-gallery container" id="team-gallery">{team_album(lang)}{editorial_link(url(lang,"team"),tx("all_team",lang))}</section>'
+    return body + f'<article id="sales" class="service-story"><div class="service-story-image">{image("sales.webp",tx("sales_heading",lang),width=1200,height=1801)}</div><div><p class="eyebrow">04 / {tx("sales_heading",lang)}</p><h2>{tx("sales_range",lang)}</h2><p>{tx("sales_message",lang)}</p><p><a class="text-link" href="mailto:sales@prepinson.com">sales@prepinson.com</a></p>{editorial_link(url(lang,"horses/for-sale"),tx("nav_sales",lang))}</div></article></section>' + sales_references(lang) + f'<section class="container reference-invitation"><h2>{tx("references_hero",lang)}</h2>{editorial_link(url(lang,"horses/references"),tx("nav_references",lang))}</section><section class="horses-team-gallery container" id="team-gallery">{team_album(lang)}{editorial_link(url(lang,"team"),tx("all_team",lang))}</section>'
 
 
 
@@ -238,7 +240,7 @@ def facilities(lang):
 
 
 def sales(lang):
-    return inner_hero(lang, tx("nav_sales", lang), tx("sales_hero", lang), tx("sales_message", lang), "hero-horses-2000.webp") + f'<section id="discover" class="sales-section container"><div><p class="eyebrow">{tx("sales_heading", lang)}</p><h2>{tx("sales_range", lang)}</h2><p>{tx("sales_cta", lang)}</p><p><a class="text-link" href="mailto:sales@prepinson.com">sales@prepinson.com</a></p><a class="btn dark" href="#contact" data-contact-subject="horse-search">{ui("sales_cta", lang)} {icon("arrow-up-right")}</a></div>{image("prepinson-bay-horse-outdoors.webp", tx("sales_range", lang))}</section>' + sales_references(lang)
+    return inner_hero(lang, tx("nav_sales", lang), tx("sales_hero", lang), tx("sales_message", lang), "hero-horses-2000.webp") + f'<section id="discover" class="sales-section container"><div><p class="eyebrow">{tx("sales_heading", lang)}</p><h2>{tx("sales_range", lang)}</h2><p>{tx("sales_cta", lang)}</p><p><a class="text-link" href="mailto:sales@prepinson.com">sales@prepinson.com</a></p><a class="btn dark" href="#contact" data-contact-subject="horse-search">{ui("sales_cta", lang)} {icon("arrow-up-right")}</a></div>{image("sales.webp", tx("sales_range", lang), width=1200, height=1801)}</section>' + sales_references(lang)
 
 
 
@@ -339,6 +341,22 @@ def privacy(lang):
     return f'<section class="text-page container" id="content"><p class="eyebrow">PREPINSON</p><h1>{tx("privacy_heading", lang)}</h1><h2>{tx("privacy_controller",lang)}</h2><p>Haras de Prépinson SRL · BE 0699.571.027<br>Ortho 24, 6983 La Roche-en-Ardenne, {ui("country",lang)}<br><a href="mailto:haras@prepinson.com">haras@prepinson.com</a></p>' + "".join(f'<h2>{tx(a, lang)}</h2><p>{tx(b, lang)}</p>' for a, b in sections if a in TEXT) + '<p><a href="https://www.autoriteprotectiondonnees.be/">Autorité de protection des données · APD / GBA</a> · <a href="https://www.netlify.com/privacy/">Netlify</a> · <a href="https://www.netlify.com/pdf/netlify-dpa.pdf">Netlify DPA</a></p></section>'
 
 
+def partners(lang):
+    marks = (
+        ("Grevlunda", "grevlunda.webp", "https://grevlunda.com/", "grevlunda", 500, 271),
+        ("PreVet", "prevet.webp", "https://prevet.se/", "prevet", 1200, 675),
+        ("nJoy Coaching", "njoy.webp", "https://njoycoaching.fr/", "njoy", 500, 849),
+        ("Equilannoo", "equilannoo.webp", "https://equilannoo.eu/", "equilannoo", 900, 441),
+    )
+    cards = "".join(
+        f'<a class="partner-card partner-{theme}" href="{site}" target="_blank" rel="noopener noreferrer" aria-label="{name} · {ui("official_link", lang)}">'
+        f'<span class="partner-logo">{image(mark, name, width=width, height=height)}</span>'
+        f'<span class="partner-caption"><strong>{name}</strong><span>{ui("official_link", lang)} {icon("arrow-up-right")}</span></span></a>'
+        for name, mark, site, theme, width, height in marks
+    )
+    return f'<section class="partners-page container" id="content"><div class="partners-heading"><p class="eyebrow">PREPINSON</p><h1>{tx("nav_partners", lang)}</h1><p>{tx("partners_intro", lang)}</p></div><div class="partners-grid">{cards}</div></section>'
+
+
 def sales_references(lang):
     rows = ''.join(f'<li><div><h3>{escape(name)}</h3><p>{escape(pedigree)}</p></div><span class="destination"><span aria-hidden="true">{flag}</span> {tx("country_"+country,lang)}</span></li>' for name,pedigree,country,flag in SALES_REFERENCES)
     return f'<section class="sales-references container" id="sales-references"><p class="eyebrow">{tx("sales_references",lang)}</p><h2>{tx("sales_world",lang)}</h2><ul>{rows}</ul></section>'
@@ -360,7 +378,7 @@ def contact_page(lang):
     return render_contact(lang, "contact") if render_contact else fallback_contact(lang, "contact")
 
 
-BUILDERS = {"team": team_page, "horses/boarding": boarding_page, "contact": contact_page, "": home, "horses": horses, "horses/programmes": programmes, "horses/facilities": facilities, "horses/for-sale": sales, "horses/references": references, "houses": houses, "activities": activities, "legal": legal, "privacy": privacy}
+BUILDERS = {"team": team_page, "horses/boarding": boarding_page, "contact": contact_page, "": home, "horses": horses, "horses/programmes": programmes, "horses/facilities": facilities, "horses/for-sale": sales, "horses/references": references, "houses": houses, "activities": activities, "legal": legal, "privacy": privacy, "partners": partners}
 
 
 def dialogs(lang):
@@ -400,7 +418,7 @@ def render(lang, route):
     title, description = tx(META[route][0], lang), tx(META[route][1], lang); canonical = DOMAIN + url(lang, route)
     alternates = "".join(f'<link rel="alternate" hreflang="{code}" href="{DOMAIN + url(code, route)}">' for code in LANGS); xdefault = DOMAIN + ("/" if not route else url("en", route))
     content = house(lang, route.rsplit("/", 1)[1]) if route.startswith("houses/") else BUILDERS[route](lang)
-    solid = route in {"legal", "privacy", "team", "contact", "horses/boarding"}
+    solid = route in {"legal", "privacy", "team", "contact", "horses/boarding", "partners"}
     content = breadcrumbs(lang,route) + content if solid else content.replace('</section>', '</section>' + breadcrumbs(lang,route), 1)
     contact = "" if route == "contact" else (render_contact(lang, route) if render_contact else fallback_contact(lang, route)); footer = render_footer(lang, route) if render_footer else fallback_footer(lang, route)
     body = header(lang, route, solid) + f'<main id="main">{content}{contact}</main>' + footer + (forms_dialogs(lang) if forms_dialogs else dialogs(lang))
@@ -412,7 +430,8 @@ def render(lang, route):
 
 def gateway():
     links = "".join(f'<a href="/{code}/" lang="{code}" hreflang="{code}">{name}</a>' for code, name in LANGUAGE_NAMES.items())
-    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Welcome to Prepinson | Choose your language</title><meta name="description" content="Choose your language to discover Haras de Prepinson and its holiday homes in the Belgian Ardennes."><link rel="preload" href="/assets/fonts/cormorant-garamond-regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/dm-sans-regular.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body class="gateway"><main><div class="gateway-visual">{responsive_image("hero-horses", "Horses and foals in the fields at Haras de Prepinson", cls="gateway-photo", hero=True)}</div><section class="gateway-panel"><a class="gateway-brand" href="/en/"><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt=""><span>PREPINSON<small>HARAS DE PREPINSON</small></span></a><p class="eyebrow">ORTHO · BELGIAN ARDENNES</p><h1>Welcome to Prepinson.<br><em>Bienvenue à Prepinson.</em></h1><p>Choose the language in which you would like to continue.</p><nav aria-label="Language">{links}</nav></section></main></body></html>'
+    greetings = "".join(f'<span lang="{code}" style="--step:{i}"><span>{welcome}</span> <em>Prepinson.</em></span>' for i, (code, welcome) in enumerate((('en', 'Welcome to'), ('fr', 'Bienvenue à'), ('nl', 'Welkom bij'), ('de', 'Willkommen bei'), ('sv', 'Välkommen till'), ('lb', 'Wëllkomm zu'))))
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Prepinson | Choose your language</title><meta name="description" content="Choose your language to discover Haras de Prepinson and its holiday homes in the Belgian Ardennes."><link rel="preload" href="/assets/fonts/cormorant-garamond-regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/dm-sans-regular.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/styles.css?v={ASSET_VERSION}"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body class="gateway"><main><div class="gateway-visual">{responsive_image("hero-horses", "Horses and foals in the fields at Haras de Prepinson", cls="gateway-photo", hero=True)}</div><section class="gateway-panel"><a class="gateway-brand" href="/en/"><img src="/assets/logo.png?v={ASSET_VERSION}" width="260" height="260" alt=""><span>PREPINSON<small>HARAS DE PREPINSON</small></span></a><p class="eyebrow">ORTHO · BELGIAN ARDENNES</p><h1><span class="visually-hidden">Welcome to Prepinson.</span><span class="gateway-greetings" aria-hidden="true">{greetings}</span></h1><p>Choose your language to continue.</p><nav aria-label="Language">{links}</nav></section></main></body></html>'''
 
 
 def not_found():
@@ -439,6 +458,8 @@ def build():
     nav_illustrations.mkdir(parents=True, exist_ok=True)
     for name in ("haras.webp", "horses.webp", "houses.webp"):
         shutil.copy2(ROOT / "src" / "designs" / "illustrations" / name, nav_illustrations / name)
+    for name in ("sales", "grevlunda", "prevet", "njoy", "equilannoo"):
+        shutil.copy2(ROOT / "src" / "designs" / "assets" / f"{name}.webp", OUT / "assets" / f"{name}.webp")
     if (ROOT / "src/icons.svg").exists(): shutil.copy2(ROOT / "src/icons.svg", OUT / "icons.svg")
     for child in list(OUT.iterdir()):
         if child.name in {"assets", "styles.css", "app.js", "favicon.svg", "icons.svg", "instagram-feed.json"}: continue

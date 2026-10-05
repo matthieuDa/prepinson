@@ -66,7 +66,7 @@ try {
   await page.waitForFunction(()=>document.querySelectorAll('.navlinks .nav-group')[2].open);
   await desktop.nth(2).locator('summary').click();
   assert(await desktop.nth(2).evaluate(el=>el.open),`${lang}: click immediately after hover keeps the panel available`);
-  await page.mouse.move(700,300);
+  await page.mouse.move(700,700);
   await page.waitForFunction(()=>!document.querySelectorAll('.navlinks .nav-group')[2].open);
   assert(!(await desktop.nth(2).evaluate(el=>el.open)),`${lang}: panel closes after pointer leaves`);
   await desktop.first().locator('summary').hover();
@@ -81,10 +81,14 @@ try {
   assert(await desktop.nth(1).evaluate(el=>el.open),`${lang}: keyboard focus keeps its panel open after pointer exit`);
   await page.keyboard.press('Escape');
   const mainTop=await page.locator('main').evaluate(el=>el.getBoundingClientRect().top+scrollY);
+  await page.evaluate(()=>document.activeElement?.blur());
   await page.evaluate(()=>scrollTo({top:400,behavior:'instant'}));
   await page.waitForFunction(()=>document.querySelector('header.nav').classList.contains('is-stuck'));
-  assert(await page.locator('header.nav').evaluate(el=>el.getBoundingClientRect().top===0&&el.getBoundingClientRect().height===76),`${lang}: compact desktop header stays visible`);
-  assert(await page.locator('header .brand').evaluate(el=>getComputedStyle(el).transform==='matrix(0.82, 0, 0, 0.82, 0, 0)'),`${lang}: desktop wordmark shrinks with the header`);
+  assert(await page.locator('header.nav').evaluate(el=>getComputedStyle(el).position==='fixed'&&el.classList.contains('nav-away')),`${lang}: desktop header hides on downward scroll`);
+  await page.evaluate(()=>scrollTo({top:200,behavior:'instant'}));
+  await page.waitForFunction(()=>!document.querySelector('header.nav').classList.contains('nav-away'));
+  assert(await page.locator('header.nav').evaluate(el=>el.getBoundingClientRect().top===0),`${lang}: desktop header returns on upward scroll`);
+  assert(await page.locator('header .brand').evaluate(el=>getComputedStyle(el).transform==='none'),`${lang}: desktop wordmark keeps its readable size`);
   assert(Math.abs(await page.locator('main').evaluate(el=>el.getBoundingClientRect().top+scrollY)-mainTop)<1,`${lang}: sticky header causes no content jump`);
   await page.setViewportSize({width:390,height:844});
   assert(await page.locator('header .brand').evaluate(el=>getComputedStyle(el).transform==='none'),`${lang}: mobile wordmark keeps its readable size`);

@@ -4,7 +4,7 @@ from html import escape
 
 from src.form_data import FORM_COPY, LANGS, SUBJECTS
 from src.presentation_data import ui
-from src.navigation import footer_navigation
+from src.site_data import text
 
 
 IG_HARAS = "https://www.instagram.com/haras_de_prepinson/"
@@ -185,14 +185,12 @@ def render_footer(lang, route):
         <p class="form-status" data-form-status role="status" aria-live="polite" hidden></p>
       </form>
     </div>
-    {footer_navigation(lang, clean)}
     <div class="footer-social">
       <div><p class="eyebrow">{escape(copy['horses']).upper()}</p><a href="mailto:haras@prepinson.com">haras@prepinson.com</a><a href="tel:+32470851310">+32 470 85 13 10</a><a href="{IG_HARAS}" target="_blank" rel="noopener noreferrer">@haras_de_prepinson {_arrow_icon()}</a></div>
       <div><p class="eyebrow">{escape(copy['houses']).upper()}</p><a href="mailto:thehouse@prepinson.com">thehouse@prepinson.com</a><a href="{IG_HOUSE}" target="_blank" rel="noopener noreferrer">@prepinson_houses {_arrow_icon()}</a></div>
       <div><p class="eyebrow">{escape(copy['visit']).upper()}</p>{_address_link(lang)}</div>
     </div>
-    <div class="footer-signature" aria-hidden="true">PREPINSON</div>
-    <div class="footer-bottom"><span>© 2026 HARAS DE PREPINSON</span><div class="footer-legal"><a href="/{lang}/legal/">{escape(copy['legal'])}</a><a href="/{lang}/privacy/">{escape(copy['privacy_link'])}</a></div></div>
+    <div class="footer-bottom"><span>© 2026 HARAS DE PREPINSON</span><div class="footer-legal"><a href="/{lang}/partners/">{escape(text('nav_partners', lang))}</a><a href="/{lang}/legal/">{escape(copy['legal'])}</a><a href="/{lang}/privacy/">{escape(copy['privacy_link'])}</a></div></div>
   </div>
 </footer>'''
 

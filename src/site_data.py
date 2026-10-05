@@ -218,7 +218,7 @@ TEXT.update(TEXT_UPDATES)
 
 from src.release_content import COPY as RELEASE_COPY
 TEXT.update(RELEASE_COPY)
-ROUTES = (*ROUTES, 'team', 'horses/boarding', 'contact')
+ROUTES = (*ROUTES, 'team', 'horses/boarding', 'contact', 'partners')
 TEXT['privacy_heading'] = TEXT['privacy_label']
 TEXT['privacy_title'] = tuple(f'{label} | Prepinson' for label in TEXT['privacy_label'])
 TEXT['ortho24_display_title'] = ('La Grange',) * len(LANGS)

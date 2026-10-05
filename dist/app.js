@@ -8,7 +8,6 @@
   const pageMain = document.querySelector('main');
   const pageFooter = document.querySelector('footer');
   const header = document.querySelector('header.nav');
-  const ribbon = document.querySelector('.stay-ribbon');
   const desktopQuery = window.matchMedia('(min-width: 1251px)');
   let navigationFocus = null;
   document.addEventListener('focusin', event => {
@@ -20,8 +19,8 @@
     if (!event.target.closest('.navlinks, #mobile-menu, [data-menu-toggle]')) navigationFocus = null;
   });
 
-  // Keep the original composition at the top; reserve its space on solid pages.
-  if (header && ribbon) {
+  // Overlay the hero at the top, then fix the header while it can hide and return on scroll.
+  if (header) {
     const placeholder = document.createElement('div');
     placeholder.className = 'nav-placeholder';
     placeholder.hidden = true;
@@ -30,7 +29,7 @@
     let frame = 0;
     const updateHeader = () => {
       frame = 0;
-      const stuck = window.scrollY >= ribbon.offsetHeight;
+      const stuck = window.scrollY >= 96;
       header.classList.toggle('is-stuck', stuck);
       placeholder.hidden = !stuck;
       document.documentElement.style.setProperty('--nav-panel-top', `${Math.max(0, header.getBoundingClientRect().bottom)}px`);
@@ -38,7 +37,7 @@
     const scheduleHeader = () => { if (!frame) frame = requestAnimationFrame(updateHeader); };
     window.addEventListener('scroll', scheduleHeader, { passive: true });
     window.addEventListener('resize', scheduleHeader);
-    if ('ResizeObserver' in window) new ResizeObserver(scheduleHeader).observe(ribbon);
+    if ('ResizeObserver' in window) new ResizeObserver(scheduleHeader).observe(header);
     updateHeader();
   }
 
@@ -653,7 +652,6 @@
     if (header.dataset.editorialNav || getComputedStyle(header).getPropertyValue('--nav-editorial').trim() !== '1') return;
     header.dataset.editorialNav = 'true';
     const groups = [...header.querySelectorAll('.navlinks .nav-group')];
-    const compact = matchMedia('(max-width: 1250px), (any-pointer: coarse)');
     const desktop = matchMedia('(min-width: 1251px)');
     const illustrations = ['haras', 'horses', 'houses'];
     groups.forEach((group, index) => {
@@ -669,7 +667,7 @@
       feature.className = 'nav-feature';
       feature.href = destination.href;
       const photo = document.createElement('img');
-      photo.src = `/assets/nav-illustrations/${illustrations[index] || illustrations[0]}.webp?v=dc90888e54b4`;
+      photo.src = `/assets/nav-illustrations/${illustrations[index] || illustrations[0]}.webp?v=47463300a425`;
       photo.alt = '';
       photo.width = 960;
       photo.height = 640;
@@ -709,7 +707,7 @@
       if (nextDirection && nextDirection !== direction) distance = 0;
       if (nextDirection) direction = nextDirection;
       distance += Math.abs(change);
-      if (!compact.matches || y < 100 || isOpen() || (header.contains(document.activeElement) && document.activeElement.matches(':focus-visible'))) {
+      if (y < 100 || isOpen() || (header.contains(document.activeElement) && document.activeElement.matches(':focus-visible'))) {
         header.classList.remove('nav-away');
       } else if (direction > 0 && distance > 10) {
         header.classList.add('nav-away');

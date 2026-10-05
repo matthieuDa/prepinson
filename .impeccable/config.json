@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/forms.py"
+        ],
+        "createdAt": "2026-10-05T11:41:04.779Z",
+        "reason": "Agent verified: this image is inside a closed lightbox dialog; src is assigned by src/app.js before opening, so no broken image is visible."
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "work/build.py"
+        ],
+        "createdAt": "2026-10-05T11:41:18.659Z",
+        "reason": "Agent verified: this image is inside a closed lightbox dialog; src is assigned by src/app.js before opening, so no broken image is visible."
+      }
+    ]
+  }
+}

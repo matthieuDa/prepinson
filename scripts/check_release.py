@@ -20,7 +20,7 @@ errors=[]
 def check(ok,msg):
  if not ok:errors.append(msg)
 for key,values in COPY.items():check(len(values)==6 and all(values),f'{key}: missing translation')
-check(len(ROUTES)==15,'Expected 15 public routes')
+check(len(ROUTES)==16,'Expected 16 public routes')
 for lang in LANGS:
  for route in ROUTES:
   path=ROOT/'dist'/lang/route/'index.html';body=path.read_text();p=Tree();p.feed(body)
@@ -32,7 +32,7 @@ for lang in LANGS:
    if target.exists() and anchor:
     parser=Tree();parser.feed(target.read_text());check(anchor in parser.ids,f'{path}: missing anchor {link}')
   check('localStorage' not in body,'Inline persistent storage')
-  check('class="footer-navigation"' in body,f'{path}: footer navigation missing')
+  check('class="footer-navigation"' not in body and f'/{lang}/partners/' in body and 'Ortho 24' in body,f'{path}: compact footer missing')
   for _,items in GROUPS:
    for _,dest in items:
     if not dest.startswith('#'):check(f'/{lang}/{dest}/' in body,f'{path}: missing nav {dest}')
@@ -46,7 +46,7 @@ for lang in LANGS:
  for pedigree in ('Soliman – Rubin Royal OLD','Eldorado de Hus – Spartakhus','Spartakhus – Lavaletto','Diamant de Semilly – Cardento'):check(pedigree in refs,f'{lang}: incomplete {pedigree}')
  for route in ('horses','horses/for-sale'):
   page=(ROOT/'dist'/lang/route/'index.html').read_text()
-  for name in ('Dalton','Gatsby','Ines','Gamble','Idalgo'):check(name+' de Prepinson' in page,f'{lang}/{route}: missing sales reference {name}')
+  for name in ('Dalton','Gatsby','Ines','Gamble','Idalgo','Juni','Jackson'):check(name+' de Prepinson' in page,f'{lang}/{route}: missing horse reference {name}')
 js=(ROOT/'src/app.js').read_text()
 check('Max-Age=' not in js and 'localStorage' not in js,'Language preference must be session only')
 red=(ROOT/'dist/_redirects').read_text()

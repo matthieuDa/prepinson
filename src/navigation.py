@@ -9,7 +9,7 @@ FOOTER_MENU_LABEL = {
 }
 
 GROUPS = (
- ('nav_haras', (('nav_presentation', '#haras'), ('nav_team', 'team'), ('nav_facilities', 'horses/facilities'))),
+ ('nav_haras', (('nav_presentation', '#haras'), ('nav_team', 'team'), ('nav_facilities', 'horses/facilities'), ('nav_partners', 'partners'))),
  ('nav_horses', (('nav_overview', 'horses'), ('nav_boarding', 'horses/boarding'), ('nav_training', 'horses/programmes'), ('nav_sales', 'horses/for-sale'), ('nav_references', 'horses/references'))),
  ('nav_houses', (('nav_discover_houses', 'houses'), ('La Grange', 'houses/ortho-24'), ('Le Cottage', 'houses/ortho-25'), ('nav_activities', 'activities'))),
 )
