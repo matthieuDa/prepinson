@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Read-only checks against a deployed preview. Never submits forms."""
-import sys,json,datetime,concurrent.futures,urllib.request,urllib.error,xml.etree.ElementTree as ET
+"""Read-only checks against a deployed site. Never submits forms."""
+import sys,json,datetime,os,concurrent.futures,urllib.request,urllib.error,xml.etree.ElementTree as ET
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
 from src.site_data import LANGS,ROUTES
-DOMAIN="https://www.prepinson.com"
 from src.legacy_routes import LEGACY_ROUTES
 BASE=sys.argv[1].rstrip('/')
+DOMAIN=os.environ.get('CANONICAL_DOMAIN', 'https://prepinson.netlify.app' if '.netlify.app' in BASE else BASE).rstrip('/')
 OUT=Path(sys.argv[2] if len(sys.argv)>2 else 'outputs/publication-2026-09-30/deployment.json')
 class NoRedirect(urllib.request.HTTPRedirectHandler):
  def redirect_request(self,*args):return None
@@ -44,7 +44,7 @@ def page(item):
  if not any(k.lower()=='content-security-policy' for k in h):fail.append('CSP')
  if 'netlify.app' in BASE and not any(k.lower()=='x-robots-tag' and 'noindex' in v for k,v in h.items()):fail.append('preview not noindex')
  return {'path':path,'status':status,'errors':fail}
-with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:checks=list(pool.map(page,[(l,r) for l in LANGS for r in ROUTES]))
+with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:checks.extend(pool.map(page,[(l,r) for l in LANGS for r in ROUTES]))
 for old,new,expected in LEGACY_ROUTES:
  status,h,b=get(old);location=next((v for k,v in h.items() if k.lower()=='location'),'')
  fail=[]
