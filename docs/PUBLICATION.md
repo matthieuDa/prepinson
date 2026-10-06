@@ -45,10 +45,10 @@ Avant la bascule :
 2. Préparer l’envoi des newsletters avec un lien de désinscription simple dans chaque email, sans pixel de suivi. Netlify Forms collecte les inscriptions ; il ne constitue pas un outil d’envoi de campagnes.
 3. Vérifier les droits de publication des photographies et vidéos, y compris ceux provenant des plateformes de réservation, et les autorisations des personnes représentées. La provenance est documentée dans `work/asset-sources.json` et `work/property-sources.json` ; elle ne remplace pas les autorisations.
 4. Faire une sauvegarde complète de WordPress auprès de l’hébergeur actuel, fichiers et base de données. Un export Git du nouveau site ou une copie des pages publiques ne remplace pas cette sauvegarde.
-5. Identifier et conserver le déploiement Netlify retenu, son commit Git et le déploiement précédent. Terminer la recette Firefox/Safari et la revue visuelle des six langues.
+5. Identifier et conserver le déploiement Netlify retenu, son commit Git et le déploiement précédent. Exécuter `python3 scripts/check_deployment.py https://[URL-de-preview]` : `/` doit rediriger selon le navigateur ou le choix de session, avec l’anglais par défaut. Terminer la recette Firefox/Safari et la revue visuelle des six langues.
 6. Attacher `www.prepinson.com` et `prepinson.com`, choisir `www` comme canonique, obtenir le certificat HTTPS, puis modifier uniquement les enregistrements web nécessaires. Ne pas remplacer les serveurs DNS sans inventaire complet de la zone.
 7. Préserver MX, SPF, DKIM, DMARC et les validations Microsoft. État relevé : MX `0 prepinson-com.mail.protection.outlook.com.` ; SPF `v=spf1 include:_mailcust.gandi.net include:spf.protection.outlook.com -all`. Les sélecteurs DKIM ne sont pas devinés : exporter la zone complète chez le registrar avant toute opération.
-8. Après bascule, vérifier `/`, `/fr/`, une ancienne URL par langue, une erreur 404, `/robots.txt`, `/sitemap.xml`, HTTPS, formulaires, médias et état Instagram. Vérifier que la production n’a aucun `noindex` et que la preview reste non indexable.
+8. Après bascule, relancer `python3 scripts/check_deployment.py https://www.prepinson.com` puis vérifier `/`, `/fr/`, une ancienne URL par langue, une erreur 404, `/robots.txt`, `/sitemap.xml`, HTTPS, formulaires, médias et état Instagram. Vérifier que la production n’a aucun `noindex` et que la preview reste non indexable.
 
 ### Retour arrière
 

@@ -155,7 +155,7 @@ for path in sorted(expected):
     if canonicals != [canonical]:
         fail(rel, f"canonical mismatch {canonicals}")
     expected_alts = {code: DOMAIN + f"/{code}/" + (route + "/" if route else "") for code in LANGS}
-    expected_alts["x-default"] = DOMAIN + ("/" if not route else f"/en/{route}/")
+    expected_alts["x-default"] = DOMAIN + "/en/" + (route + "/" if route else "")
     alts = {hreflang: href for rels, hreflang, href in links if rels == "alternate" and hreflang}
     if alts != expected_alts:
         fail(rel, f"hreflang mismatch {alts}")
@@ -221,8 +221,8 @@ for path in sorted(expected):
 gateway = (DIST / "index.html").read_text(encoding="utf-8")
 if "—" in gateway:
     fail("index.html", "language gateway contains an em dash")
-if 'name="robots" content="noindex' in gateway or f'<link rel="canonical" href="{DOMAIN}/">' not in gateway:
-    fail("index.html", "root language gateway must be indexable with its own canonical")
+if 'name="robots" content="noindex,follow"' not in gateway:
+    fail("index.html", "root language gateway must be a non-indexable fallback")
 for phrase in ("Welcome to", "Bienvenue à", "Welkom bij", "Willkommen bei", "Välkommen till", "Wëllkomm zu"):
     if phrase not in gateway:
         fail("index.html", f"missing greeting {phrase}")
@@ -241,8 +241,10 @@ if "/* /404.html 404" not in (DIST / "_redirects").read_text(encoding="utf-8"):
 ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9", "x": "http://www.w3.org/1999/xhtml"}
 tree = ET.parse(DIST / "sitemap.xml")
 urls = tree.findall("s:url", ns)
-if len(urls) != len(LANGS) * len(ROUTES) + 1:
-    fail("sitemap.xml", f"expected {len(LANGS)*len(ROUTES)+1} URLs, got {len(urls)}")
+if len(urls) != len(LANGS) * len(ROUTES):
+    fail("sitemap.xml", f"expected {len(LANGS)*len(ROUTES)} URLs, got {len(urls)}")
+if any(node.find("s:loc", ns).text == DOMAIN + "/" for node in urls):
+    fail("sitemap.xml", "redirecting root must not appear in sitemap")
 for node in urls:
     alternates = node.findall("x:link", ns)
     if len(alternates) != len(LANGS) + 1:
@@ -256,8 +258,11 @@ config = (ROOT / "netlify.toml").read_text(encoding="utf-8")
 for required in ("Content-Security-Policy", "X-Content-Type-Options", "Referrer-Policy", "Permissions-Policy"):
     if required not in config:
         fail("netlify.toml", f"missing {required}")
-if 'function = "language-redirect"' in config:
-    fail("netlify.toml", "language gateway is hidden by a root redirect")
+if 'function = "language-redirect"' not in config or 'path = "/"' not in config:
+    fail("netlify.toml", "root language redirect is missing")
+edge = (ROOT / "netlify/edge-functions/language-redirect.js").read_text(encoding="utf-8")
+if "accept-language" not in edge or "prepinson-language" not in edge or "status: 302" not in edge:
+    fail("language-redirect.js", "language negotiation, cookie or temporary redirect missing")
 
 public = "\n".join(p.read_text(encoding="utf-8", errors="ignore") for p in expected)
 for pattern in (r"€\s*\d", r"\b\d+[.,]?\d*\s*€", r"\bEUR\s*\d", r"\bUSD\s*\d"):

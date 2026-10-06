@@ -11,12 +11,30 @@ OUT=Path(sys.argv[2] if len(sys.argv)>2 else 'outputs/publication-2026-09-30/dep
 class NoRedirect(urllib.request.HTTPRedirectHandler):
  def redirect_request(self,*args):return None
 opener=urllib.request.build_opener(NoRedirect)
-def get(path):
+def get(path, request_headers=None):
  try:
-  r=opener.open(BASE+path,timeout=30)
+  r=opener.open(urllib.request.Request(BASE+path,headers=request_headers or {}),timeout=30)
  except urllib.error.HTTPError as e:r=e
  return r.status,dict(r.headers),r.read()
 checks=[];errors=[]
+for name,path,request_headers,language in [
+ ('regional browser language','/?campaign=qa',{'Accept-Language':'fr-BE,fr;q=0.9,en;q=0.8'},'fr'),
+ ('Dutch browser language','/',{'Accept-Language':'nl-NL,nl;q=0.9'},'nl'),
+ ('unsupported browser language','/',{'Accept-Language':'xx-XX'},'en'),
+ ('missing browser language','/',{},'en'),
+ ('manual session choice','/',{'Accept-Language':'fr-BE','Cookie':'prepinson-language=lb'},'lb'),
+]:
+ status,h,_=get(path,request_headers)
+ location=next((v for k,v in h.items() if k.lower()=='location'),'')
+ cache=next((v for k,v in h.items() if k.lower()=='cache-control'),'')
+ vary=next((v for k,v in h.items() if k.lower()=='vary'),'')
+ expected=BASE+f'/{language}/'+('?campaign=qa' if '?' in path else '')
+ fail=[]
+ if status!=302:fail.append(f'expected 302, got {status}')
+ if location!=expected:fail.append(f'expected {expected}, got {location}')
+ if 'no-store' not in cache:fail.append('redirect response is cacheable')
+ if not {'accept-language','cookie'}.issubset({part.strip().lower() for part in vary.split(',')}):fail.append('missing language/cookie Vary')
+ checks.append({'path':path,'case':name,'status':status,'location':location,'errors':fail})
 def page(item):
  lang,route=item;path=f'/{lang}/'+(route+'/' if route else '')
  status,h,b=get(path);s=b.decode();fail=[]

@@ -2,6 +2,10 @@
   command = "INSTAGRAM_SNAPSHOT_MODE=skip ./scripts/build.sh"
   publish = "dist"
 
+[[edge_functions]]
+  function = "language-redirect"
+  path = "/"
+
 [functions]
   node_bundler = "esbuild"
   external_node_modules = ["sharp"]
